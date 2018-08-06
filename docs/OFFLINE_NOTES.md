@@ -11,3 +11,8 @@ Tipes from the Gentoo forums:
 * `emerge -fp <target>` will download any required external files to the
   distfiles directory, seems like I may want to do this: `emerge -uDNpfv --with-bdeps=y @world`
 
+References:
+
+* https://forums.gentoo.org/viewtopic-p-3461249.html
+* https://wiki.gentoo.org/wiki/Local_distfiles_cache
+* http://swift.siphos.be/aglara/aglara.pdf
