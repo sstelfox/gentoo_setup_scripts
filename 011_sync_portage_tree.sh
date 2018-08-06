@@ -3,9 +3,11 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-# Do a fast bulk sync, then a slower more refined rsync
-chroot /mnt/gentoo emerge-webrsync &> /dev/null
-chroot /mnt/gentoo emerge --sync &> /dev/null
+if [ "${LOCAL}" != "yes" ]; then
+  # Do a fast bulk sync, then a slower more refined rsync
+  chroot /mnt/gentoo emerge-webrsync &> /dev/null
+  chroot /mnt/gentoo emerge --sync &> /dev/null
+fi
 
 # Remove all of the gentoo news that has been announced to date
 chroot /mnt/gentoo eselect news read all --quiet

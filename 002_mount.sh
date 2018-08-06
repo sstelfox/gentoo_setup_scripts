@@ -47,8 +47,16 @@ if ! mount | grep -q '/mnt/gentoo/boot'; then
 fi
 
 if [ -n "${NFS_SOURCE}" ]; then
-  if ! mount | grep -q '/mnt/gentoo_cache'; then
-    mkdir -p /mnt/gentoo_cache
-    mount ${NFS_SOURCE} /mnt/gentoo_cache
+  if ! mount | grep -q '/mnt/nfs_source'; then
+    mkdir -p /mnt/nfs_source
+    mount ${NFS_SOURCE} /mnt/nfs_source
+
+    mkdir -p /mnt/nfs_source/{distfiles,packages} /mnt/gentoo/usr/portage/{distfiles,packages}
+
+    mount --rbind /mnt/nfs_source/disfiles /mnt/gentoo/usr/portage/distfiles
+    mount --make-rslave /mnt/gentoo/usr/portage/distfiles
+
+    mount --rbind /mnt/nfs_source/disfiles /mnt/gentoo/usr/portage/packages
+    mount --make-rslave /mnt/gentoo/usr/portage/packages
   fi
 fi
