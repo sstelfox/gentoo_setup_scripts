@@ -8,4 +8,5 @@ if [ "$(getenforce)" == "Enforcing" ]; then
 fi
 
 docker run -d --rm --name gentoo_nfs --privileged -v $(pwd):/gentoo_cache \
-  -p 2049:2049 -e SHARED_DIRECTORY=/gentoo_cache itsthenetwork/nfs-server-alpine:latest
+  -p 2049:2049 -e SHARED_DIRECTORY=/gentoo_cache -e SYNC=true \
+  itsthenetwork/nfs-server-alpine:latest

@@ -18,8 +18,11 @@ POLICY_TYPES="strict"
 L10N="en"
 LINGUAS="en"
 
-$(mirrorselect -o -s 3 -q -D -H -R 'North America' 2> /dev/null)
 EOF
+
+if [ "${LOCAL}" != "yes" ]; then
+  mirrorselect -o -s 3 -q -D -H -R 'North America' 2> /dev/null >> /mnt/gentoo/etc/portage/make.conf
+fi
 
 mkdir -p /mnt/gentoo/etc/portage/package.use
 echo 'app-shells/bash -net' > /mnt/gentoo/etc/portage/package.use/bash
