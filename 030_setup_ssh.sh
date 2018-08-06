@@ -12,9 +12,6 @@ chroot /mnt/gentoo emerge net-misc/openssh
 cat << 'EOF' > /mnt/gentoo/etc/ssh/ssh_config
 # /etc/ssh/ssh_config
 
-Port 22
-Port 2200
-
 CheckHostIP yes
 HashKnownHosts yes
 IdentitiesOnly yes
@@ -47,7 +44,7 @@ cat << 'EOF' > /mnt/gentoo/etc/ssh/sshd_config
 HostKeyAlgorithms ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
 
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+KexAlgorithms curve25519-sha256@libssh.org,curve25519-sha256,diffie-hellman-group-exchange-sha256
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-sha1-96-etm@openssh.com
 
 ClientAliveInterval 10
