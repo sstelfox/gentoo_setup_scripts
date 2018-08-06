@@ -3,6 +3,9 @@
 . ./_config.sh
 . ./_error_handling.sh
 
+# TODO: I don't think this is needed anymore
+exit 0
+
 echo 'dev-libs/libpcre2 jit' > /mnt/gentoo/etc/portage/package.use/git
 chroot /mnt/gentoo emerge dev-vcs/git
 
@@ -15,5 +18,7 @@ sync-uri = https://github.com/sstelfox/personal_overlay.git
 auto-sync = yes
 EOF
 
-# We need to get our repo synced down as well
-chroot /mnt/gentoo emerge --sync
+# We need to get our repo synced down as well if we're online
+if [ "${LOCAL}" != "yes" ]; then
+  chroot /mnt/gentoo emerge --sync
+fi

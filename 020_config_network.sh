@@ -53,7 +53,7 @@ cat << 'EOF' > /mnt/gentoo/etc/resolv.conf
 # Set this host's domain and when no FQDN is provided which domains to query to
 # try and find the host requested.
 domain devtty.org
-search prd.btv.devtty.org devtty.org
+search prd.aus.devtty.org devtty.org
 
 # Make DNS resolution fail fast, limit unqualified queries, and change which
 # DNS servers we're using per-query. When IPv6 is more supported on the local
@@ -62,8 +62,8 @@ search prd.btv.devtty.org devtty.org
 options attempts:2 rotate timeout:1 edns0 no-tld-query
 
 # Configure the nameserver IPs this machine will use
-nameserver 8.8.4.4
-nameserver 8.8.8.8
+nameserver 1.1.1.1
+nameserver 1.0.0.1
 EOF
 
 chroot /mnt/gentoo ln -s /etc/init.d/net.{lo,eth0}

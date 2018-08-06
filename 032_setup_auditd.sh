@@ -3,6 +3,8 @@
 . ./_config.sh
 . ./_error_handling.sh
 
+# TODO: Need to convert this to support local mode
+
 mkdir -p /mnt/gentoo/etc/portage/package.accept_keywords
 echo 'sys-process/audit ~amd64' > /mnt/gentoo/etc/portage/package.accept_keywords/auditd
 

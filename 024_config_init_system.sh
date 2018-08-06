@@ -4,7 +4,7 @@
 . ./_error_handling.sh
 
 sed -i '/ctrlaltdel/d' /mnt/gentoo/etc/inittab
-#echo 's0:12345:respawn:/sbin/agetty -L 115200 ttyS0 vt100' >> /mnt/gentoo/etc/inittab
+echo 's0:12345:respawn:/sbin/agetty -L 115200 ttyS0 vt100' >> /mnt/gentoo/etc/inittab
 
 cat << 'EOF' > /mnt/gentoo/etc/rc.conf
 # /etc/rc.conf
