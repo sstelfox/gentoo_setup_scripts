@@ -6,45 +6,55 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-TARGET_FILES=$(curl -s ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/ | grep -oE 'stage4-amd64-hardened\+minimal-[0-9TZ]+\.tar\.bz2(\.DIGESTS\.asc)?' | sort -u)
-for FILE in ${TARGET_FILES}; do
-  curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/${FILE}
-done
+if [ "${LOCAL}" != "yes" ]; then
+  TARGET_FILES=$(curl -s ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/ | grep -oE 'stage4-amd64-hardened\+minimal-[0-9TZ]+\.tar\.bz2(\.DIGESTS\.asc)?' | sort -u)
+  for FILE in ${TARGET_FILES}; do
+    curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/${FILE}
+  done
 
-# Setup GPG by generating a key
-rm -rf /root/.gnupg
-mkdir -p /root/.gnupg
-chmod 0700 /root/.gnupg
+  # Setup GPG by generating a key
+  rm -rf /root/.gnupg
+  mkdir -p /root/.gnupg
+  chmod 0700 /root/.gnupg
 
-cat << 'EOF' > /root/.gnupg/gpg.conf
+  cat << 'EOF' > /root/.gnupg/gpg.conf
 require-cross-certification
 keyserver keys.gnupg.net
 EOF
-chmod 0600 /root/.gnupg/gpg.conf
+  chmod 0600 /root/.gnupg/gpg.conf
 
-# Gentoo Release Signing Key, Kind of disappoint this isn't shipped on the ISO
-# which also has to be cryptographically checked. We have to receive this to
-# continue...
-gpg2 --recv-keys 0xBB572E0E2D182910
+  # Gentoo Release Signing Key, Kind of disappoint this isn't shipped on the ISO
+  # which also has to be cryptographically checked. We have to receive this to
+  # continue...
+  gpg2 --recv-keys 0xBB572E0E2D182910
 
-# The script will automatically abort if this check fails
-gpg2 --verify /mnt/gentoo/*.tar.bz2.DIGESTS.asc
+  # The script will automatically abort if this check fails
+  gpg2 --verify /mnt/gentoo/*.tar.bz2.DIGESTS.asc
 
-SHA512_DGST=$(openssl dgst -r -sha512 /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
-GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  SHA512_DGST=$(openssl dgst -r -sha512 /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
+  GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
 
-if [ "${SHA512_DGST}" != "${GOOD_SHA512_DGST}" ]; then
-  echo "Bad SHA512 Checksum."
-  exit 1
+  if [ "${SHA512_DGST}" != "${GOOD_SHA512_DGST}" ]; then
+    echo "Bad SHA512 Checksum."
+    exit 1
+  fi
+
+  GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  WHRLPL_DGST=$(openssl dgst -r -whirlpool /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
+
+  if [ "${WHRLPL_DGST}" != "${GOOD_WHRLPL_DGST}" ]; then
+    echo "Bad Whirlpool Checksum."
+    exit 1
+  fi
+
+  if [ -n "${NFS_SOURCE}" ]; then
+    cp /mnt/gentoo/*.tar.bz2 /mnt/gentoo_cache/
+  fi
 fi
 
-GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
-WHRLPL_DGST=$(openssl dgst -r -whirlpool /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
-
-if [ "${WHRLPL_DGST}" != "${GOOD_WHRLPL_DGST}" ]; then
-  echo "Bad Whirlpool Checksum."
-  exit 1
+if [ "${LOCAL}" == "yes" ]; then
+  tar -xpf /mnt/gentoo_cache/*.tar.bz2 -C /mnt/gentoo
+else
+  tar -xpf /mnt/gentoo/*.tar.bz2 -C /mnt/gentoo
+  rm -f /mnt/gentoo/*.tar.bz2*
 fi
-
-tar -xpf /mnt/gentoo/*.tar.bz2 -C /mnt/gentoo
-rm -f /mnt/gentoo/*.tar.bz2*

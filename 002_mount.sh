@@ -45,3 +45,10 @@ if ! mount | grep -q '/mnt/gentoo/boot'; then
   mkdir -p /mnt/gentoo/boot
   mount LABEL=EFI /mnt/gentoo/boot
 fi
+
+if [ -n "${NFS_SOURCE}" ]; then
+  if ! mount | grep -q '/mnt/gentoo_cache'; then
+    mkdir -p /mnt/gentoo_cache
+    mount ${NFS_SOURCE} /mnt/gentoo_cache
+  fi
+fi

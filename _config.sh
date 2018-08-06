@@ -1,4 +1,15 @@
+
+# Which block device to use as the root filesystem
 DISK="/dev/vda"
+
+# Whether to attempt to run the entire installation without making an external
+# network connection, instead this will use the configured NFS server
+LOCAL="yes"
+
+# When specified, this will mount an NFS directory specified. When run in local
+# mode this will be used to source installation files, otherwise it'll be used
+# to cache installation files.
+NFS_SOURCE="192.168.122.1:/gentoo_cache"
 
 # Whether or not to use UEFI or a normal boot shim
 EFI="no"
