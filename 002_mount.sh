@@ -37,7 +37,7 @@ if ! mount | grep -q '/mnt/gentoo '; then
 fi
 
 # No reason not to always encrypt swap
-if ! swapon -s | grep -q '/dev/mapper/system-swap'; then
+if ! swapon -s | grep -qE '(/dev/mapper/system-swap|dm-1)'; then
   swapon /dev/mapper/system-swap
 fi
 
@@ -50,13 +50,17 @@ if [ -n "${NFS_SOURCE}" ]; then
   if ! mount | grep -q '/mnt/nfs_source'; then
     mkdir -p /mnt/nfs_source
     mount ${NFS_SOURCE} /mnt/nfs_source
+  fi
 
-    mkdir -p /mnt/nfs_source/{distfiles,packages} /mnt/gentoo/usr/portage/{distfiles,packages}
+  mkdir -p /mnt/nfs_source/{distfiles,packages} /mnt/gentoo/usr/portage/{distfiles,packages}
 
-    mount --rbind /mnt/nfs_source/disfiles /mnt/gentoo/usr/portage/distfiles
+  if ! mount | grep -q 'distfiles'; then
+    mount --rbind /mnt/nfs_source/distfiles /mnt/gentoo/usr/portage/distfiles
     mount --make-rslave /mnt/gentoo/usr/portage/distfiles
+  fi
 
-    mount --rbind /mnt/nfs_source/disfiles /mnt/gentoo/usr/portage/packages
+  if ! mount | grep -q 'packages'; then
+    mount --rbind /mnt/nfs_source/packages /mnt/gentoo/usr/portage/packages
     mount --make-rslave /mnt/gentoo/usr/portage/packages
   fi
 fi
