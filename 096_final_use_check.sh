@@ -7,4 +7,8 @@
 # rebuilt when other segments change their use flags...
 chroot /mnt/gentoo emerge --update --newuse --deep @world
 chroot /mnt/gentoo emerge @preserved-rebuild
-chroot /mnt/gentoo emerge --depclean
+
+# Only perform clean up if we're working with a local cache
+if [ -z "${NFS_SOURCE}" ]; then
+  chroot /mnt/gentoo emerge --depclean
+fi

@@ -10,7 +10,11 @@ if [ "${FULL_REBUILD}" = "yes" ]; then
   touch /tmp/prebuild_checkpoint
 
   chroot /mnt/gentoo emerge --emptytree --with-bdeps=y @world
-  chroot /mnt/gentoo emerge --depclean
+
+  # Only perform clean up if we're working with a local cache
+  if [ -z "${NFS_SOURCE}" ]; then
+    chroot /mnt/gentoo emerge --depclean
+  fi
 
   echo 'Locating files that have stuck around from the stage...'
   find /mnt/gentoo -xdev -type d -path /mnt/gentoo/boot/efi -prune -o -type f -executable -not -newer /tmp/prebuild_checkpoint -print0 2>/dev/null | xargs -0 file --no-pad --separator='@@@' | grep -iv '@@@.* text' || true
