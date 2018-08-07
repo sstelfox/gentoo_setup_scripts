@@ -48,12 +48,12 @@ EOF
   fi
 
   if [ -n "${NFS_SOURCE}" ]; then
-    cp /mnt/gentoo/*.tar.bz2 /mnt/gentoo_cache/
+    cp /mnt/gentoo/*.tar.bz2 /mnt/nfs_source/cache/
   fi
 fi
 
 if [ "${LOCAL}" == "yes" ]; then
-  tar -xpf /mnt/gentoo_cache/*.tar.bz2 -C /mnt/gentoo
+  tar -xpf /mnt/nfs_source/cache/*.tar.bz2 -C /mnt/gentoo
 else
   tar -xpf /mnt/gentoo/*.tar.bz2 -C /mnt/gentoo
   rm -f /mnt/gentoo/*.tar.bz2*
