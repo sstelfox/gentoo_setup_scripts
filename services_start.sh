@@ -7,11 +7,11 @@ if [ "$(getenforce)" == "Enforcing" ]; then
   exit 1
 fi
 
-docker run -d --rm --name gentoo_nfs --privileged -v $(pwd):/gentoo_cache \
-  -p 2049:2049 -e SHARED_DIRECTORY=/gentoo_cache itsthenetwork/nfs-server-alpine:latest
+docker run -d --rm --name gentoo_nfs --privileged -v $(pwd):/setup_scripts \
+  -p 2049:2049 -e SHARED_DIRECTORY=/setup_scripts itsthenetwork/nfs-server-alpine:latest
 
 docker run -d --rm --name gentoo_binhost -p 8200:80 \
-  -v $(pwd)/gentoo_cache:/usr/share/nginx/html:ro nginx:alpine
+  -v $(pwd)/cache:/usr/share/nginx/html:ro nginx:alpine
 
 sudo iptables -A INPUT -m tcp -p tcp --dport 2049 -i virbr0 -j ACCEPT
 sudo iptables -A INPUT -m tcp -p tcp --dport 8200 -i virbr0 -j ACCEPT
