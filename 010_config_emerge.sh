@@ -20,7 +20,9 @@ LINGUAS="en"
 
 EOF
 
-if [ "${LOCAL}" != "yes" ]; then
+if [ -z "${GENTOO_MIRRORS:-}" ]; then
+  echo -e "\nGENTOO_MIRRORS=\"${GENTOO_MIRRORS}\"" >> /mnt/gentoo/etc/portage/make.conf
+elif [ "${LOCAL}" != "yes" ]; then
   mirrorselect -o -s 3 -q -D -H -R 'North America' 2> /dev/null >> /mnt/gentoo/etc/portage/make.conf
 fi
 
