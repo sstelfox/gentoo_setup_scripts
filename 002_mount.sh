@@ -53,7 +53,7 @@ if [ -n "${NFS_SOURCE}" ]; then
   fi
 
   if ! mount | grep -q '/mnt/gentoo/usr/portage'; then
-    mkdir -p /mnt/nfs_source/cache/ /mnt/gentoo/usr/portage/
+    mkdir -p /mnt/nfs_source/cache /mnt/gentoo/usr/portage
     mount --rbind /mnt/nfs_source/cache /mnt/gentoo/usr/portage
     mount --make-rslave /mnt/gentoo/usr/portage
   fi
