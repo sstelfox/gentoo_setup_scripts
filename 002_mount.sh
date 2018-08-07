@@ -52,20 +52,9 @@ if [ -n "${NFS_SOURCE}" ]; then
     mount ${NFS_SOURCE} /mnt/nfs_source
   fi
 
-  mkdir -p /mnt/nfs_source/cache/{distfiles,packages,portage} /mnt/gentoo/usr/portage/{distfiles,packages,portage}
-
-  if ! mount | grep -q 'distfiles'; then
-    mount --rbind /mnt/nfs_source/cache/distfiles /mnt/gentoo/usr/portage/distfiles
-    mount --make-rslave /mnt/gentoo/usr/portage/distfiles
-  fi
-
-  if ! mount | grep -q 'packages'; then
-    mount --rbind /mnt/nfs_source/cache/packages /mnt/gentoo/usr/portage/packages
-    mount --make-rslave /mnt/gentoo/usr/portage/packages
-  fi
-
-  if ! mount | grep -q 'portage'; then
-    mount --rbind /mnt/nfs_source/cache/portage /mnt/gentoo/usr/portage/portage
-    mount --make-rslave /mnt/gentoo/usr/portage/portage
+  if ! mount | grep -q '/mnt/gentoo/usr/portage'; then
+    mkdir -p /mnt/nfs_source/cache/ /mnt/gentoo/usr/portage/
+    mount --rbind /mnt/nfs_source/cache /mnt/gentoo/usr/portage
+    mount --make-rslave /mnt/gentoo/usr/portage
   fi
 fi

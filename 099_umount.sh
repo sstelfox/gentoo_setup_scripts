@@ -8,8 +8,7 @@ mount | grep -q /mnt/gentoo/proc && umount /mnt/gentoo/proc
 mount | grep -q /mnt/gentoo/run && umount -l /mnt/gentoo/run
 mount | grep -q /mnt/gentoo/sys && umount -l /mnt/gentoo/sys
 
-mount | grep -q distfiles && umount -l /mnt/gentoo/usr/portage/distfiles
-mount | grep -q packages && umount -l /mnt/gentoo/usr/portage/packages
+mount | grep -q '/mnt/gentoo/usr/portage' && umount -l /mnt/gentoo/usr/portage
 mount | grep -q nfs_source && umount -l /mnt/nfs_source
 
 mount | grep -q boot && umount -f /mnt/gentoo/boot

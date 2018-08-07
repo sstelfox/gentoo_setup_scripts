@@ -4,12 +4,17 @@ DISK="/dev/sda"
 
 # Whether to attempt to run the entire installation without making an external
 # network connection, instead this will use the configured NFS server
-LOCAL="no"
+LOCAL="yes"
 
 # When specified, this will mount an NFS directory specified. When run in local
 # mode this will be used to source installation files, otherwise it'll be used
 # to cache installation files.
 NFS_SOURCE="192.168.122.1:/"
+
+# When provided the install will configure and attempt to source compiled
+# packages from the following location. This can drastically speed up the
+# install time if matching packages are available.
+BIN_HOST="http://192.168.122.1:8200/packages"
 
 # Whether or not to use UEFI or a normal boot shim
 EFI="no"
@@ -41,7 +46,7 @@ ADMIN_USER="sstelfox"
 GITHUB_KEY_USER="sstelfox"
 
 # Set this to "true" to log all executed commands to the screen.
-DEBUG=""
+DEBUG="${DEBUG:-}"
 
 BASE_DIRECTORY="$( cd "$(dirname $( dirname "${BASH_SOURCE[0]}" ))" && pwd )"
 
