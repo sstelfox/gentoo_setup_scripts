@@ -4,7 +4,7 @@ DISK="/dev/sda"
 
 # Whether to attempt to run the entire installation without making an external
 # network connection, instead this will use the configured NFS server
-LOCAL="yes"
+LOCAL="no"
 
 # When specified, this will mount an NFS directory specified. When run in local
 # mode this will be used to source installation files, otherwise it'll be used

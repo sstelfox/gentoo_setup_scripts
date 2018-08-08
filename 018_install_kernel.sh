@@ -66,7 +66,10 @@ persistent_policy="by-uuid"
 EOF
 
 if [ "${KERNEL_CONFIG}" = "kvm" ]; then
-  # The KVM kernel is very minimal and doesn't use modules
+  # The KVM kernel is very minimal and doesn't use modules, if it wasn't for
+  # the posibility of encryption I wouldn't use a initramfs at all...
+  # TODO: When encryption isn't used and we're on the KVM kernel skip dracut
+  # and the initramfs altogether...
   chroot /mnt/gentoo /bin/bash -c 'dracut --no-kernel -f /boot/initramfs-current.img'
 else
   # Build an initramfs using the latest kernel modules (there should only be
