@@ -4,10 +4,13 @@
 . ./_error_handling.sh
 
 if [ "${LOCAL}" != "yes" ]; then
-  # Do a fast bulk sync, then a slower more refined rsync
-  chroot /mnt/gentoo emerge-webrsync &> /dev/null
+  # Do a fast bulk sync if we have nothing, then a slower more refined rsync
+  [ -f /mnt/gentoo/usr/portage/header.txt ] || chroot /mnt/gentoo emerge-webrsync &> /dev/null
   chroot /mnt/gentoo emerge --sync &> /dev/null
 fi
+
+# TODO: I should probably set the system profile now so the packages can go
+# straight to the final binary targets.
 
 # Remove all of the gentoo news that has been announced to date
 chroot /mnt/gentoo eselect news read all --quiet
