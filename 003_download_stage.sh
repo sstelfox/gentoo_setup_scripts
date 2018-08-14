@@ -7,9 +7,9 @@
 . ./_error_handling.sh
 
 if [ "${LOCAL}" != "yes" ]; then
-  TARGET_FILES=$(curl -s ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/ | grep -oE 'stage4-amd64-hardened\+minimal-[0-9TZ]+\.tar\.bz2(\.DIGESTS\.asc)?' | sort -u)
+  TARGET_FILES=$(curl -s "${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/" | grep -oE 'stage4-amd64-hardened\+minimal-nomultilib-[0-9TZ]+\.tar\.bz2(\.DIGESTS\.asc)?')
   for FILE in ${TARGET_FILES}; do
-    curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage3-amd64-hardened/${FILE}
+    curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/${FILE}
   done
 
   # Setup GPG by generating a key
