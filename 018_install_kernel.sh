@@ -41,7 +41,7 @@ if [ "${KERNEL_CONFIG}" != "kvm" ]; then
   chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make modules_install"
 fi
 
-chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; && make bzImage"
+chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make bzImage"
 chroot /mnt/gentoo /bin/bash -c "cp /usr/src/linux/arch/x86/boot/bzImage /boot/vmlinuz-current"
 
 # TODO: boot process measurements aren't a bad idea, two projects are built
