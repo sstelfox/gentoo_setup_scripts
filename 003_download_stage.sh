@@ -49,12 +49,12 @@ EOF
 
   if [ -n "${NFS_SOURCE}" ]; then
     mkdir -p /mnt/nfs_source/reference_files/
-    cp /mnt/gentoo/*.tar.bz2 /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal.tar.bz2
+    cp /mnt/gentoo/*.tar.bz2 /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.bz2
   fi
 fi
 
 if [ "${LOCAL}" == "yes" ]; then
-  tar -xpf /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal.tar.bz2 -C /mnt/gentoo
+  tar -xpf /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.bz2 -C /mnt/gentoo
 else
   tar -xpf /mnt/gentoo/*.tar.bz2 -C /mnt/gentoo
   rm -f /mnt/gentoo/*.tar.bz2*

@@ -23,6 +23,11 @@ PARTED_BASE_CMD="/usr/sbin/parted ${DISK} --script --align optimal --machine --"
 # * LVM -> root (whatever is left)
 # * LVM -> swap (based on table above)
 
+if [ ! -b ${DISK} ]; then
+  echo "Configured disk doesn't exist."
+  exit 1
+fi
+
 # We need to clear and reset the partition tabel
 /bin/dd bs=1M count=4 status=none if=/dev/zero of=${DISK} oflag=sync
 ${PARTED_BASE_CMD} mklabel gpt
