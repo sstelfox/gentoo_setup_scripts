@@ -54,5 +54,3 @@ BASE_DIRECTORY="$( cd "$(dirname $( dirname "${BASH_SOURCE[0]}" ))" && pwd )"
 # prevents things like emerge from finding sed and bzip which is really
 # annoying...
 export PATH="/sbin:/bin:/usr/sbin:/usr/bin"
-
-GENTOO_MIRRORS="http://gentoo.mirrors.easynews.com/linux/gentoo/"
