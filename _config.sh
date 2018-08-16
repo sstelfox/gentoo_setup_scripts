@@ -9,7 +9,7 @@ LOCAL="${LOCAL:-no}"
 # When specified, this will mount an NFS directory specified. When run in local
 # mode this will be used to source installation files, otherwise it'll be used
 # to cache installation files.
-NFS_SOURCE="192.168.122.1:/"
+NFS_SOURCE="192.168.122.1:"
 
 # When provided the install will configure and attempt to source compiled
 # packages from the following location. This can drastically speed up the
