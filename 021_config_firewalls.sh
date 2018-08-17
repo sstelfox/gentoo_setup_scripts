@@ -75,8 +75,13 @@ table inet filter {
     # with a dedicated update server and/or web proxies.
     tcp dport { 80, 443, 873 } accept
 
-    # Allow SSH'ing into other local boxes once you're on one
+    # Allow SSH'ing into other local boxes once you're on one, this is libvirt specific
+    # TODO: This should be whatever local network the box is on
     ip daddr 192.168.122.0/24 tcp dport 22 accept
+
+    # Allow connecting to the NFS portage share, this is libvirt specific
+    # TODO: This should be whatever the local build box share is
+    ip daddr 192.168.122.1 tcp dport 2049 accept
 
     # Allow DNS, could be restricted with a local recursive resolver
     tcp dport 53 accept
