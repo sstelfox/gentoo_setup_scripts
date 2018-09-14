@@ -26,7 +26,11 @@ EOF
   # Gentoo Release Signing Key, Kind of disappoint this isn't shipped on the ISO
   # which also has to be cryptographically checked. We have to receive this to
   # continue...
-  gpg2 --recv-keys 0xBB572E0E2D182910
+  if [ -f "${BASE_DIRECTORY}/gentoo_signing_key.gpg" ]; then
+    gpg2 --import ${BASE_DIRECTORY}/gentoo_signing_key.gpg
+  else
+    gpg2 --recv-keys 0xBB572E0E2D182910
+  fi
 
   # The script will automatically abort if this check fails
   gpg2 --verify /mnt/gentoo/*.tar.bz2.DIGESTS.asc
