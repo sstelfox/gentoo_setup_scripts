@@ -1,6 +1,6 @@
 
 # Which block device to use as the root filesystem
-DISK="/dev/sda"
+DISK="/dev/vda"
 
 # Whether to attempt to run the entire installation without making an external
 # network connection, instead this will use the configured NFS server
@@ -54,3 +54,5 @@ BASE_DIRECTORY="$( cd "$(dirname $( dirname "${BASH_SOURCE[0]}" ))" && pwd )"
 # prevents things like emerge from finding sed and bzip which is really
 # annoying...
 export PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+
+GENTOO_MIRRORS="http://gentoo.mirrors.easynews.com/linux/gentoo/"
