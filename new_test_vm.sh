@@ -12,7 +12,7 @@ fi
 
 sudo virt-install --connect qemu:///system --name gentoo_test --ram 8192 \
   --arch x86_64 --vcpus 2 --security="type=dynamic" --hvm --virt-type=kvm \
-  --cdrom /var/lib/libvirt/images/gentoo_minima_install_cd.iso \
+  --cdrom /var/lib/libvirt/images/gentoo_minimal_install_cd.iso \
   --os-type=linux --os-variant=rhel7.5 --noautoconsole --graphics=spice \
   --video qxl --channel spicevmc --network="network=default" \
   --disk="pool=default,size=20,sparse=true,format=qcow2" \
