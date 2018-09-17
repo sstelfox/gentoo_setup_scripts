@@ -79,9 +79,11 @@ table inet filter {
     # TODO: This should be whatever local network the box is on
     ip daddr 192.168.122.0/24 tcp dport 22 accept
 
-    # Allow connecting to the NFS portage share, this is libvirt specific
+    # Allow connecting to the NFS portage share and package server, this is
+    # libvirt specific
+    #
     # TODO: This should be whatever the local build box share is
-    ip daddr 192.168.122.1 tcp dport 2049 accept
+    ip daddr 192.168.122.1 tcp dport { 2049, 8200 } accept
 
     # Allow DNS, could be restricted with a local recursive resolver
     tcp dport 53 accept
