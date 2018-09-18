@@ -12,7 +12,6 @@ if [ "${LOCAL}" != "yes" ]; then
     curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/${FILE}
   done
 
-  # Setup GPG by generating a key
   rm -rf /root/.gnupg
   mkdir -p /root/.gnupg
   chmod 0700 /root/.gnupg
