@@ -19,6 +19,9 @@ cat << 'EOF' > /mnt/gentoo/var/lib/nftables/rules-save
 
 flush ruleset
 
+# Supports using the following syntax:
+#include "/var/lib/nftables/rules/additional-rules"
+
 table inet filter {
   chain input {
     type filter hook input priority 0; policy drop;
