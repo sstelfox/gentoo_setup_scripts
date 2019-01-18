@@ -4,7 +4,7 @@
 . ./_error_handling.sh
 
 cat << 'EOF' > /mnt/gentoo/etc/portage/package.use/postfix
-mail-mta/postfix sasl
+mail-mta/postfix berkdb sasl
 EOF
 
 chroot /mnt/gentoo emerge mail-mta/postfix
@@ -25,3 +25,6 @@ chroot /mnt/gentoo chown root:mail /var/spool/mail
 chroot /mnt/gentoo chmod 03775 /var/spool/mail
 
 chroot /mnt/gentoo rc-update add postfix default
+
+# Ensure postfix can general alias maps
+chroot /mnt/gentoo newaliases
