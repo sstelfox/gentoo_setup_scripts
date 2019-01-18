@@ -33,7 +33,8 @@ cp ${BASE_DIRECTORY}/kernel_configs/${KERNEL_CONFIG} /mnt/gentoo/usr/src/linux/.
 # * Testing can be done (after a fresh boot) with: dmesg | grep microcode.
 #   Should show lines indicating the updates.
 
-chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make silentoldconfig"
+# If this blows up again I can use `yes "" | make oldconfig`
+chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make olddefconfig"
 chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make --jobs $(($(nproc) + 1)) --load-average $(nproc)"
 
 # KVM kernel has no modules...
