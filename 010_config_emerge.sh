@@ -12,7 +12,7 @@ CFLAGS="-O2 -pipe"
 CXXFLAGS="\${CFLAGS}"
 CHOST="x86_64-pc-linux-gnu"
 
-EMERGE_DEFAULT_OPTS="--jobs $(($(nproc) + 1)) --load-average $(nproc)"
+EMERGE_DEFAULT_OPTS="--jobs $(($(nproc) + 1)) --load-average $(nproc) --binpkg-respect-use=y"
 FEATURES="buildpkg cgroup getbinpkg ipc-sandbox network-sandbox${binpkgfeature:-}"
 USE="audit caps cgroups mmx kerberos python sctp sse sse2 -perl -systemd -tcpd"
 
