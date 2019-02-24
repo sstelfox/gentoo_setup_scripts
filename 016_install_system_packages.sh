@@ -9,4 +9,4 @@ chroot /mnt/gentoo emerge sys-apps/dmidecode app-arch/lz4 net-misc/curl \
   sys-kernel/dracut
 
 # Remove some unecessary packages
-chroot /mnt/gentoo emerge -D net-misc/dhcp
+chroot /mnt/gentoo emerge -D net-firewall/iptables net-misc/dhcp
