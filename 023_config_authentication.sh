@@ -60,7 +60,7 @@ EOF
 cat << 'EOF' > /mnt/gentoo/etc/sudoers
 # /etc/sudoers
 
-Cmnd_Alias ALLOWED_EXEC = /sbin/poweroff, /sbin/rc-service, /sbin/rc-status, /sbin/rc-update, /sbin/reboot, /sbin/shutdown, /usr/bin/emerge, /usr/sbin/usermod
+Cmnd_Alias ALLOWED_EXEC = /sbin/poweroff, /sbin/rc-service, /sbin/rc-status, /sbin/rc-update, /sbin/reboot, /sbin/shutdown, /usr/bin/emerge, /usr/bin/equery, /usr/bin/eselect, /usr/sbin/usermod
 Cmnd_Alias BLACKLIST = /bin/su
 Cmnd_Alias SHELLS = /bin/sh, /bin/bash
 Cmnd_Alias USER_WRITEABLE = /home/*, /tmp/*, /var/tmp/*
