@@ -24,8 +24,7 @@ rc_nocolor="YES"
 rc_shell="/sbin/sulogin"
 rc_tty_number="9"
 
-rc_logger="NO"
-
+rc_logger="YES"
 rc_parallel="YES"
 
 unicode="YES"
