@@ -26,31 +26,34 @@ table inet filter {
   chain input {
     type filter hook input priority 0; policy drop;
 
-    # Drop invalid connections
-    ct state invalid drop
+    # Drop invalid connections and packets
+    ct state invalid counter drop
 
     # Allow established and related connections
     ct state established,related accept
 
     # Allow traffic crossing the loopback interface
-    iif "lo" accept
+    iif lo accept
 
-    ip protocol icmp icmp type { destination-unreachable, echo-request, parameter-problem, time-exceeded } accept
+    # ICMP diagnostic messages that related to errors will be covered by the
+    # related connection tracking rule above.
 
-    # IPv6 routers will also want: nd-router-solicit
-    ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, echo-request, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, packet-too-big, parameter-problem, time-exceeded } accept
+    # Allow IPv4 pings
+    ip version 4 ip protocol icmp icmp type echo-request accept
+
+    # Allow IPv6 basic functionality and pings, IPv6 routers will also want: nd-router-solicit
+    ip6 version 6 ip6 nexthdr icmpv6 icmpv6 type { echo-request, nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert } accept
 
     # SSH (port 22 locally and my alt port everywhere)
     ip saddr 192.168.122.0/24 tcp dport 22 accept
     tcp dport 2200 accept
 
-    # IPv4 DHCP
-    ip protocol tcp tcp dport 67 tcp sport 68 accept
-
     # Probably don't want this on production systems but great for
     # diagnostics...
     #ct state new log level warn prefix "ingress attempt: "
-    counter
+
+    # Keep track of all the packets dropped by the default rule explicitly
+    counter drop
   }
 
   chain forward {
@@ -64,15 +67,16 @@ table inet filter {
     ct state established,related accept
 
     # Allow traffic crossing the loopback interface
-    oif "lo" accept
+    oif lo accept
 
-    ip protocol icmp icmp type { echo-request, echo-reply } accept
+    ip version 4 ip protocol icmp icmp type echo-request accept
 
-    # IPv6 routers will also want: nd-router-advert, packet-too-big, time-exceeded
-    ip6 nexthdr icmpv6 icmpv6 type { echo-request, echo-reply, nd-router-solicit, nd-neighbor-solicit, nd-neighbor-advert, parameter-problem } accept
+    # IPv6 routers will also want: nd-router-advert
+    ip6 version 6 ip6 nexthdr icmpv6 icmpv6 type { echo-request, nd-neighbor-advert, nd-neighbor-solicit, nd-router-solicit } accept
 
-    # Allow IPv4 DHCP
-    tcp dport 67 tcp sport 68 accept
+    # Allow DHCP
+    ip version 4 udp dport 67 udp sport 68 accept
+    ip6 version 6 udp dport 547 udp sport 546 accept
 
     # Allow HTTP, HTTPS, and rsync protocols, for updating. Could be restricted
     # with a dedicated update server and/or web proxies.
@@ -99,6 +103,7 @@ table inet filter {
     # misconfiguration of something. Either way they should be logged and
     # addressed.
     ct state new log level warn prefix "egress attempt: "
+
     counter reject with icmp type admin-prohibited
   }
 }
