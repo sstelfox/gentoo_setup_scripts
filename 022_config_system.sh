@@ -15,11 +15,11 @@ eval `blkid -o export ${DISK}2`
 cat << EOF > /mnt/gentoo/etc/fstab
 # /etc/fstab
 
-UUID="${UUID}"          /boot   vfat  defaults,noatime,noexec   0 2
+UUID="${UUID}"            /boot   vfat  defaults,noatime,noexec   0 2
 /dev/mapper/system-swap   none    swap  defaults                  0 0
 /dev/mapper/system-root   /       xfs   defaults,noatime          0 1
 
-tmpfs                     /tmp   tmpfs  rw,nosuid,nodev,noatime   0 0
+tmpfs                     /tmp   tmpfs  rw,noatime,nodev,nosuid   0 0
 EOF
 
 if [ "${ENCRYPTED}" = "yes" ]; then

@@ -16,7 +16,7 @@ chroot /mnt/gentoo emerge net-fs/nfs-utils
 # TODO: Once kerberos is setup I should set the sec mode to 'krb5p'. I may need
 # to remove 'noexec' from this... When not on a build server, I should probably
 # have this as read only as well.
-echo '192.168.122.1:/cache      /usr/portage  nfs4  rw,noatime,nodev,noexec,nosuid  0 0' >> /mnt/gentoo/etc/fstab
+echo '192.168.122.1:/cache      /usr/portage  nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0' >> /mnt/gentoo/etc/fstab
 
 # The following should be the build host export (ideally with sec=krb5p for integrity and encryption)
 # /etc/exports
