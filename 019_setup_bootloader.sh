@@ -35,10 +35,12 @@ GRUB_DISABLE_SUBMENU=y
 GRUB_DISTRIBUTOR="Whisper"
 EOF
 
-if [ "${GRUB_OVER_SERIAL}" = "yes" ]; then
+# Enable grub on both the standard console and over serial when using the KVM
+# kernel
+if [ "${KERNEL_CONFIG}" = "kvm" ]; then
   cat << 'EOF' >> /mnt/gentoo/etc/default/grub
 
-GRUB_TERMINAL=serial
+GRUB_TERMINAL="console serial"
 GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"
 EOF
 fi
