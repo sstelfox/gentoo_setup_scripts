@@ -6,23 +6,28 @@
 # Disable three finger salutes
 sed -i '/ctrlaltdel/d' /mnt/gentoo/etc/inittab
 
-# This doesn't seem to be necessary as the serial console seems to be setup by
-# default now. I may want to switch the terminal type from vt100 to vt102 or
-# linux at some point but this should be fine
-#
-# * I will likely want to add '--login-pause --wait-cr --timeout 61' to the agetty arguments
-# * I could also try using '-n' to force the login problem to handle everything
-#   (maybe?)
-# * If I wanted to allow automatic login (since local accounts don't have
-#   passwords by default here, or any other reason, untested). I can use:
-#
-#   `/sbin/agetty -L --autologin --login-pause root 115200 ttyS0 vt100`
-#
-#   I could also do the above on another serial port
-#
-#if [ "${KERNEL_CONFIG}" = "kvm" ]; then
-#  echo 's0:12345:respawn:/sbin/agetty -L 115200 ttyS0 vt100' >> /mnt/gentoo/etc/inittab
-#fi
+# Clear out the default serial console and configure one that allows us to
+# login before the local admin user has set a password. We want to make sure
+# there is a checklist in the MOTD for disabling this.
+
+sed -i 'd/^s0:/' /mnt/gentoo/etc/inittab
+cat << EOF >> /mnt/gentoo/etc/inittab
+# During the initial bit (admin user doesn't have a local password)
+s0:12345:respawn:/sbin/agetty -L --login-pause --timeout 0 --autologin ${ADMIN_USER} 115200 ttyS0 linux
+# Should be changed to this:
+#s0:12345:respawn:/sbin/agetty -L --timeout 30 --wait-cr 115200 ttyS0 linux
+EOF
+
+cat << 'EOF' > /mnt/gentoo/etc/motd
+
+NOTICE: Initial setup checklist that still needs to be done:
+
+* Setup a local administrative password and/or central authentication
+* Disable automatic serial login on ttyS0 in /etc/inittab
+* Enable authentication in the sudoers file
+* Remove this MOTD
+
+EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/rc.conf
 # /etc/rc.conf
