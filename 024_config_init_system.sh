@@ -34,7 +34,7 @@ rc_shell="/sbin/sulogin"
 rc_tty_number="9"
 
 rc_logger="YES"
-rc_parallel="YES"
+rc_parallel="NO"
 
 unicode="YES"
 EOF
