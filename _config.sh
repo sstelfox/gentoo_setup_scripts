@@ -30,6 +30,14 @@ FULL_REBUILD="no"
 # Which of the pre-generated kernel configs to use
 KERNEL_CONFIG="kvm"
 
+# When using the 'kvm' kernel we want to default grub to show up over the
+# serial port instead of the graphical port
+if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+  GRUB_OVER_SERIAL="yes"
+else
+  GRUB_OVER_SERIAL="no"
+fi
+
 # Serpent is slower but a more conservative security wise, AES is fast and
 # generally hardware accelerated...
 #CIPHER="serpent-xts-plain64"

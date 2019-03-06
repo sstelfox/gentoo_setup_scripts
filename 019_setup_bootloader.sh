@@ -12,13 +12,21 @@ fi
 
 chroot /mnt/gentoo emerge sys-boot/grub
 
-cat << 'EOF' > /mnt/gentoo/etc/default/grub
+# We want to additionally spit out the kernel messages to the KVM serial
+# console
+if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+  ADDITIONAL_BOOT_OPTS="console=tty0 console=ttyS0,115200n8"
+fi
+
 # GPD also wants "i915.fastboot=1 fbcon=rotate:1"
 # Plymouth wants "quiet splash"
-GRUB_CMDLINE_LINUX_DEFAULT="lvm net.ifnames=0"
+cat << EOF > /mnt/gentoo/etc/default/grub
+# /etc/default/grub
+
+GRUB_CMDLINE_LINUX_DEFAULT="lvm net.ifnames=0 ${ADDITIONAL_BOOT_OPTS:-}"
 
 GRUB_DEFAULT=1
-GRUB_TIMEOUT=1
+GRUB_TIMEOUT=3
 
 GRUB_DISABLE_LINUX_UUID=false
 GRUB_DISABLE_RECOVERY=true
@@ -26,6 +34,14 @@ GRUB_DISABLE_SUBMENU=y
 
 GRUB_DISTRIBUTOR="Whisper"
 EOF
+
+if [ "${GRUB_OVER_SERIAL}" = "yes" ]; then
+  cat << 'EOF' >> /mnt/gentoo/etc/default/grub
+
+GRUB_TERMINAL=serial
+GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"
+EOF
+fi
 
 # For some stupid reason this kernel is getting installed...
 rm -f /boot/*-openstack
