@@ -10,13 +10,13 @@ sed -i '/ctrlaltdel/d' /mnt/gentoo/etc/inittab
 # default now. I may want to switch the terminal type from vt100 to vt102 or
 # linux at some point but this should be fine
 #
-# * I will likely want to add '-p -w -t 60' to the agetty arguments
+# * I will likely want to add '--login-pause --wait-cr --timeout 61' to the agetty arguments
 # * I could also try using '-n' to force the login problem to handle everything
 #   (maybe?)
 # * If I wanted to allow automatic login (since local accounts don't have
 #   passwords by default here, or any other reason, untested). I can use:
 #
-#   `/sbin/agetty -L --autologin root 115200 ttyS0 vt100`
+#   `/sbin/agetty -L --autologin --login-pause root 115200 ttyS0 vt100`
 #
 #   I could also do the above on another serial port
 #
