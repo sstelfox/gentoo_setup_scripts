@@ -4,7 +4,7 @@
 . ./_error_handling.sh
 
 if [ -n "${BIN_HOST:-}" ]; then
-  binpkgfeature=" getbinpkg"
+  binpkgfeature="getbinpkg"
 fi
 
 cat << EOF > /mnt/gentoo/etc/portage/make.conf
@@ -13,7 +13,7 @@ CXXFLAGS="\${CFLAGS}"
 CHOST="x86_64-pc-linux-gnu"
 
 EMERGE_DEFAULT_OPTS="--jobs $(($(nproc) + 1)) --load-average $(nproc) --binpkg-respect-use=y"
-FEATURES="buildpkg cgroup getbinpkg ipc-sandbox network-sandbox${binpkgfeature:-}"
+FEATURES="buildpkg cgroup ipc-sandbox network-sandbox ${binpkgfeature:-}"
 USE="audit caps cgroups kerberos python -perl -systemd -tcpd"
 
 GRUB_PLATFORMS="efi-64 pc"
