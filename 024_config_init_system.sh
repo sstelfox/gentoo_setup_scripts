@@ -10,7 +10,7 @@ sed -i '/ctrlaltdel/d' /mnt/gentoo/etc/inittab
 # login before the local admin user has set a password. We want to make sure
 # there is a checklist in the MOTD for disabling this.
 
-sed -i 'd/^s0:/' /mnt/gentoo/etc/inittab
+sed -i '/^s0:/d' /mnt/gentoo/etc/inittab
 cat << EOF >> /mnt/gentoo/etc/inittab
 # During the initial bit (admin user doesn't have a local password)
 s0:12345:respawn:/sbin/agetty -L --login-pause --timeout 0 --autologin ${ADMIN_USER} 115200 ttyS0 linux
