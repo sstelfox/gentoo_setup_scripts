@@ -14,6 +14,8 @@ if [ "${ENCRYPTED}" = "yes" ]; then
     echo ${DISK_PASSPHRASE} | cryptsetup luksOpen --allow-discards ${DISK}3 \
       crypt
 
+    unset DISK_PASSPHRASE
+
     # This will re-enable debug mode if it was previously enabled and prevents
     # duplicating that logic here.
     . ./_error_handling.sh

@@ -76,14 +76,30 @@ if [ "${ENCRYPTED}" = "yes" ]; then
   # In case we're in DEBUG mode, do not print out the disk passphrase
   set +o xtrace
 
-  read -e -p "Encryption Passphrase: " -s -r DISK_PASSPHRASE
-  echo
+  # Ensure we get the passphrase correct
+  while true; do
+    read -e -p "Encryption Passphrase: " -s -r DISK_PASSPHRASE
+    echo
+    read -e -p "Verify Encryption Passphrase: " -s -r VERIFY_PASSPHRASE
+    echo
+
+    if [ "${DISK_PASSPHRASE}" = "${VERIFY_PASSPHRASE}" ]; then
+      echo "Verified."
+      break
+    else
+      echo "Passphrases don't match. Please try again."
+    fi
+  done
+
+  unset VERIFY_PASSPHRASE
 
   echo $DISK_PASSPHRASE | cryptsetup --verbose --cipher aes-xts-plain64 \
     --key-size 512 --hash sha512 --iter-time 2500 --use-urandom --batch-mode \
     --force-password luksFormat ${DISK}3
 
   echo ${DISK_PASSPHRASE} | cryptsetup luksOpen --allow-discards ${DISK}3 crypt
+
+  unset DISK_PASSPHRASE
 
   # This will re-enable debug mode if it was previously enabled and prevents
   # duplicating that logic here.
