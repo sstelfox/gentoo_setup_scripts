@@ -60,10 +60,10 @@ EOF
 cat << 'EOF' > /mnt/gentoo/etc/sudoers
 # /etc/sudoers
 
-Cmnd_Alias ALLOWED_EXEC = /bin/mount, /bin/umount, /sbin/poweroff, \
-    /sbin/rc-service, /sbin/rc-status, /sbin/rc-update, /sbin/reboot, \
-    /sbin/shutdown, /usr/bin/emerge, /usr/bin/equery, /usr/bin/eselect, \
-    /usr/sbin/usermod
+Cmnd_Alias ALLOWED_EXEC = /bin/mount, /bin/passwd, /bin/umount, \
+    /sbin/poweroff, /sbin/rc-service, /sbin/rc-status, /sbin/rc-update, \
+    /sbin/reboot, /sbin/shutdown, /usr/bin/emerge, /usr/bin/equery, \
+    /usr/bin/eselect, /usr/sbin/usermod
 
 Cmnd_Alias BLACKLIST = /bin/su
 Cmnd_Alias SHELLS = /bin/sh, /bin/bash
@@ -89,5 +89,6 @@ Defaults!SHELLS log_output
 Defaults !authenticate
 
 root      ALL=(ALL)   ALL
-%sudoers  ALL=(ALL)   ALL,!BLACKLIST,!USER_WRITEABLE,!SHELLS
+#%sudoers  ALL=(ALL)   ALL,!BLACKLIST,!USER_WRITEABLE,!SHELLS
+%sudoers  ALL=(ALL)   ALL,!BLACKLIST,!USER_WRITEABLE
 EOF

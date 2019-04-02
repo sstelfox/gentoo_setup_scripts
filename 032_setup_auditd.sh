@@ -10,9 +10,7 @@ echo 'sys-process/audit ~amd64' > /mnt/gentoo/etc/portage/package.accept_keyword
 
 chroot /mnt/gentoo emerge sys-process/audit
 
-# Because of my default very aggressive ruleset, I'll leave this disabled for
-# its first run... TODO: Handle this better...
-#chroot /mnt/gentoo rc-update add auditd boot
+chroot /mnt/gentoo rc-update add auditd boot
 
 rm -f /mnt/gentoo/etc/audisp/plugins.d/*
 
