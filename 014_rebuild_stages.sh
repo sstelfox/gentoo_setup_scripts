@@ -9,7 +9,9 @@ if [ "${FULL_REBUILD}" = "yes" ]; then
 
   touch /tmp/prebuild_checkpoint
 
-  chroot /mnt/gentoo emerge --emptytree --with-bdeps=y @world
+  # Build every single package in our tree from source ensuring that we don't
+  # reuse any of the existing binaries
+  chroot /mnt/gentoo emerge --emptytree --usepkg-exclude=* --with-bdeps=y @world
 
   # Only perform clean up if we're working with a local cache
   if [ -z "${NFS_SOURCE}" ]; then
