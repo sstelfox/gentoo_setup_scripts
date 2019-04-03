@@ -51,6 +51,7 @@ ClientAliveInterval 10
 
 SyslogFacility AUTHPRIV
 UseDNS no
+PrintMotd no
 
 AllowTcpForwarding no
 Banner /etc/issue.net
