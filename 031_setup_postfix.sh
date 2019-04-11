@@ -7,6 +7,10 @@ cat << 'EOF' > /mnt/gentoo/etc/portage/package.use/postfix
 mail-mta/postfix berkdb sasl
 EOF
 
+cat << 'EOF' > /mnt/gentoo/etc/portage/package.accept_keywords/postfix
+mail-mta/postfix ~amd64
+EOF
+
 chroot /mnt/gentoo emerge mail-mta/postfix
 
 mkdir -p /mnt/gentoo/etc/postfix

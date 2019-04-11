@@ -7,12 +7,17 @@ if [ -n "${BIN_HOST:-}" ]; then
   binpkgfeature="getbinpkg"
 fi
 
+# Using these options will make the initial system builds go faster, but when
+# used as a base image may cause issues as they don't get continuously updated
+# with the actual system's CPU information
+#EMERGE_DEFAULT_OPTS="--jobs $(($(nproc) + 1)) --load-average $(nproc)"
+
 cat << EOF > /mnt/gentoo/etc/portage/make.conf
 CFLAGS="-O2 -pipe"
 CXXFLAGS="\${CFLAGS}"
 CHOST="x86_64-pc-linux-gnu"
 
-EMERGE_DEFAULT_OPTS="--jobs $(($(nproc) + 1)) --load-average $(nproc) --binpkg-respect-use=y"
+EMERGE_DEFAULT_OPTS="--binpkg-respect-use=y"
 FEATURES="buildpkg cgroup ipc-sandbox network-sandbox ${binpkgfeature:-}"
 USE="audit caps cgroups kerberos python -perl -systemd -tcpd"
 
