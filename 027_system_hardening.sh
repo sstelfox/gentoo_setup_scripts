@@ -37,7 +37,7 @@ kernel.perf_event_paranoid = 2
 kernel.sysrq = 0
 
 # Set ptrace protections
-kernel.yama.ptrace_scope = 1
+kernel.yama.ptrace_scope = 3
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/net_hardening.conf
