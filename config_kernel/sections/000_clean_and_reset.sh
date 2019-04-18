@@ -7,7 +7,8 @@
 log "Removing any existing kernel config and all build artifacts"
 run_command /usr/src/linux make mrproper
 
-# Start with a completely empty config, we'll enable hardware support and
-# software selection as we need / want to for our appropriate targets.
-log "Creating an empty config"
-run_command /usr/src/linux make allnoconfig
+# Start with a completely standard config, we'll enable / disable hardware
+# support and software selection as we need / want to for our appropriate
+# base config and specific targets.
+log "Creating the default kernel config"
+run_command /usr/src/linux make defconfig
