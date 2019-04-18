@@ -48,3 +48,6 @@ kernel_config --disable TRACEPOINTS
 kernel_config --disable TRACING
 kernel_config --disable UPROBE_EVENTS
 kernel_config --disable UPROBES
+kernel_config --undefine FUNCTION_ERROR_INJECTION
+kernel_config --undefine KRETPROBES
+kernel_config --undefine OPTPROBES

@@ -75,13 +75,14 @@ kernel_config --set-val IMA_MEASURE_PCR_IDX 10
 # Deprecated
 kernel_config --disable IMA_TRUSTED_KEYRING
 
-# For the integrity measurements have them include a signature
-kernel_config --disable IMA_NG_TEMPLATE
-kernel_config --enable IMA_SIG_TEMPLATE
-
 # Use SHA1 it should be collision resistent enough for this task
-kernel_config --set-val IMA_DEFAULT_HASH "sha1"
+kernel_config --set-val IMA_DEFAULT_HASH \"sha1\"
 kernel_config --enable IMA_DEFAULT_HASH_SHA1
+
+# For the integrity measurements have them include a signature
+kernel_config --enable IMA_SIG_TEMPLATE
+kernel_config --disable IMA_NG_TEMPLATE
+kernel_config --set-val IMA_DEFAULT_TEMPLATE "ima-sig"
 
 # When there is an integrity measurement on a file, we do want to actually
 # perform the validation against it.
