@@ -28,5 +28,8 @@ kernel_config --enable GENTOO_LINUX_UDEV
 kernel_config --enable GENTOO_LINUX_INIT_SCRIPT
 kernel_config --disable GENTOO_LINUX_INIT_SYSTEMD
 
-# Other very core settings
+# These are still core, but they depend on some earlier settings
+kernel_config --enable ACPI
 kernel_config --enable INET
+kernel_config --enable NUMA
+kernel_config --enable PCI

@@ -34,3 +34,8 @@ kernel_config --enable SCHED_AUTOGROUP
 # https://lwn.net/Articles/759781/
 #kernel_config --enable PSI
 #kernel_config --enable PSI_DEFAULT_DISABLED
+
+# TODO: For UEFI any additional parameters we might want to pass to the kernel
+# at boot need to be specified here:
+#kernel_config --enable CMDLINE_BOOL
+#kernel_config --set-str CMDLINE "console=tty0 console=ttyS0"

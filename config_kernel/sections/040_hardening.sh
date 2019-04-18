@@ -49,3 +49,20 @@ kernel_config --enable SCHED_STACK_END_CHECK
 # a signed on boot initramfs. This would prevent loading modules post-boot, but
 # I vastly prefer static kernel anyways.
 #kernel_config --enable SECURITY_LOADPIN
+
+# Enable protections against speculative indirect branch prediction attacks in
+# the kernel
+kernel_config --enable RETPOLINE
+
+# While rare, corruption of lower bytes can indicate faulty hardware, attacks,
+# or other things. This also opens a bunch of other security options.
+kernel_config --enable X86_CHECK_BIOS_CORRUPTION
+
+# Based on the documentation this is likely only useful on Intel processor but
+# may prevent userspace access to more privileged runtime modes.
+# TODO: Should this be hardware specific?
+kernel_config --enable X86_SMAP
+
+# Allow the kernel functions to live in different address spaces. This makes
+# additional security options available and enables them like KASLR.
+kernel_config --enable RELOCATABLE
