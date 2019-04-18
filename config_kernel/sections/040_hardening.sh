@@ -24,3 +24,5 @@ kernel_config --enable DOUBLEFAULT
 
 # Warn when kernel memory includes writable executable pages
 kernel_config --enable DEBUG_WX
+
+kernel_config --enable CPU_ISOLATION

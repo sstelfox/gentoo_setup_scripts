@@ -12,6 +12,10 @@ kernel_config --enable X86_VERBOSE_BOOTUP
 # And start logging as quickly as possible
 kernel_config --enable EARLY_PRINTK
 
+#kernel_config --set-val LOG_BUF_SHIFT 18
+#kernel_config --set-val LOG_CPU_MAX_BUF_SHIFT 12
+#kernel_config --set-val PRINTK_SAFE_LOG_BUF_SHIFT 13
+
 # Enable timestamps on all the messages dumped by the kernel
 #kernel_config --enable PRINTK_TIME
 #kernel_config --set-val CONSOLE_LOGLEVEL_DEFAULT 7

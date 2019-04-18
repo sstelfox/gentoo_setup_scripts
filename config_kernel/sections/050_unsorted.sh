@@ -15,6 +15,9 @@ kernel_config --enable BLK_WBT_MQ
 # https://www.phoronix.com/scan.php?page=article&item=linux_2637_video&num=1
 kernel_config --enable SCHED_AUTOGROUP
 
+#kernel_config --enable POSIX_MQUEUE
+#kernel_config --enable CROSS_MEMORY_ATTACH
+
 # This seems super interesting but probably isn't generally necessary. The
 # reboot to enable also kind of sucks. If I ever needed these kind of
 # diagnostics I wouldn't want to effect the bad state by rebooting to try and
