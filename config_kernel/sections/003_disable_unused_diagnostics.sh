@@ -27,6 +27,7 @@ kernel_config --disable EARLY_PRINTK_USB
 kernel_config --disable EVENT_TRACING
 kernel_config --disable FTRACE
 kernel_config --disable GENERIC_TRACER
+kernel_config --disable KPROBES
 kernel_config --disable KPROBE_EVENTS
 kernel_config --disable NOP_TRACER
 kernel_config --disable PROBE_EVENTS

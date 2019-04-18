@@ -6,6 +6,6 @@
 
 log "Configuring binary execution options"
 
-# Allow the kernel to run and recognize common binary formats
-kernel_config --enable BINFMT_ELF
-kernel_config --enable BINFMT_SCRIPT
+# Neither of these are required for general use
+kernel_config --disable BINFMT_MISC
+kernel_config --disable COREDUMP

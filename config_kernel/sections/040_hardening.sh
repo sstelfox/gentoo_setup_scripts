@@ -33,6 +33,7 @@ kernel_config --enable IO_STRICT_DEVMEM
 
 # Warn when kernel memory includes writable executable pages
 kernel_config --enable DEBUG_WX
+kernel_config --enable X86_PTDUMP_CORE
 
 # Only root should be able to access dmesg
 kernel_config --enable SECURITY_DMESG_RESTRICT
@@ -48,6 +49,7 @@ kernel_config --enable INTEL_TXT
 # kernel. This protects against large classes of heap overflow exploits and
 # memory exposures.
 kernel_config --enable HARDENED_USERCOPY
+kernel_config --disable HARDENED_USERCOPY_FALLBACK
 
 # Provide additional protection on string and memory functions when the
 # compiler is aware of buffer sizes.
@@ -58,56 +60,65 @@ kernel_config --enable SECURITY_YAMA
 
 # For the various integrity subsystems, support signing the data with
 # asymmetric keys to prevent tampering of the data.
+kernel_config --enable SIGNATURE
 kernel_config --enable INTEGRITY_SIGNATURE
 kernel_config --enable INTEGRITY_ASYMMETRIC_KEYS
+kernel_config --enable INTEGRITY_TRUSTED_KEYRING
 
 # Enable system integrity measurements
 kernel_config --enable IMA
+
+# Selected automatically:
+kernel_config --enable IMA_LSM_RULES
+kernel_config --set-val IMA_MEASURE_PCR_IDX 10
+
+# Deprecated
+kernel_config --disable IMA_TRUSTED_KEYRING
 
 # For the integrity measurements have them include a signature
 kernel_config --disable IMA_NG_TEMPLATE
 kernel_config --enable IMA_SIG_TEMPLATE
 
+# Use SHA1 it should be collision resistent enough for this task
+kernel_config --set-val IMA_DEFAULT_HASH "sha1"
+kernel_config --enable IMA_DEFAULT_HASH_SHA1
+
 # When there is an integrity measurement on a file, we do want to actually
 # perform the validation against it.
 kernel_config --enable IMA_APPRAISE
 
+# TODO: These two would be useful once I get the all in one EFI system in place
+# to enforce the system security and preload a readonly integrity policy:
+#kernel_config --enable IMA_ARCH_POLICY
+#kernel_config --enable IMA_APPRAISE_BUILD_POLICY
+
+# TODO: This seems like it should be temporary but I need it until I'm sure I
+# have all the kinks worked out.
+kernel_config --enable IMA_APPRAISE_BOOTPARAM
+
+# Protect files extended attributes as well
 kernel_config --enable EVM
+kernel_config --enable EVM_ATTR_FSUUID
 
+# Selected by EVM & INTEGRITY, protect the keys used for integrity checking
+kernel_config --enable ENCRYPTED_KEYS
 
+# Allow a present TPM device to provide additional entropy to our random pools
+kernel_config --enable HW_RANDOM_TPM
 
-
-
-#kernel_config --enable CPU_ISOLATION
+# Enabled by the appraisal specifications
+kernel_config --enable TCG_TPM
+kernel_config --enable TCG_CRB
+kernel_config --enable TCG_TIS_CORE
+kernel_config --enable TCG_TIS
 
 # Validate the stack when things are scheduled
-#kernel_config --enable SCHED_STACK_END_CHECK
+kernel_config --enable SCHED_STACK_END_CHECK
 
 # TODO: I really want to test this to see if I can restrict all the contents to
 # a signed on boot initramfs. This would prevent loading modules post-boot, but
 # I vastly prefer static kernel anyways.
 #kernel_config --enable SECURITY_LOADPIN
-
-# Enable protections against speculative indirect branch prediction attacks in
-# the kernel
-#kernel_config --enable RETPOLINE
-
-# While rare, corruption of lower bytes can indicate faulty hardware, attacks,
-# or other things. This also opens a bunch of other security options.
-#kernel_config --enable X86_CHECK_BIOS_CORRUPTION
-
-# Based on the documentation this is likely only useful on Intel processor but
-# may prevent userspace access to more privileged runtime modes.
-# TODO: Should this be hardware specific?
-#kernel_config --enable X86_SMAP
-
-# Allow the kernel functions to live in different address spaces. This makes
-# additional security options available and enables them like KASLR.
-#kernel_config --enable RELOCATABLE
-
-# Add canary values around the stack to assist in detection of certain classes
-# of memory overwrite attacks.
-#kernel_config --enable STACKPROTECTOR
 
 # This is a performance trade of but provides more aggressive protections
 # against use-after-free conditions.
