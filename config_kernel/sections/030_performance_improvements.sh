@@ -6,11 +6,7 @@
 
 log "Adjusting some performance related settings"
 
-# Switch to the more efficient panic unwinder
-kernel_config --enable UNWINDER_ORC
-kernel_config --disable UNWINDER_FRAME_POINTER
-
-# This allows GCC to optimize highly likely paths while having a negligible
-# performance impact on the least likely branches. Can provide large
-# performance gains.
-kernel_config --enable JUMP_LABEL
+# TODO: Look into Automatic process group scheduling as it applies to server
+# loads. It's primarily designed for desktop loads but may provide some
+# protection against resource stealing by aggressive processes.
+#kernel_config --enable SCHED_AUTOGROUP
