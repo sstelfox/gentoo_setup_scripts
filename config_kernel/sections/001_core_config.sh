@@ -33,3 +33,8 @@ kernel_config --disable GENTOO_LINUX_INIT_SYSTEMD
 # early in the boot process (CONFIG_DEVTMPFS and DEVTMPFS_MOUNT)":
 kernel_config --enable DEVTMPFS
 kernel_config --enable DEVTMPFS_MOUNT
+
+kernel_config --enable PROC_FS
+
+# Other very core settings
+kernel_config --enable INET

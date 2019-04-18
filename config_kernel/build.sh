@@ -13,9 +13,9 @@ SECTION_LIST="$(ls sections/*.sh 2> /dev/null | sort -n)"
 # Run each of them
 for section in ${SECTION_LIST}; do
   if [ -x ${section} ]; then
-    log "Running config section: ${section}"
+    log "${TTY_COLOR_GREEN}Running config section: ${section}${TTY_COLOR_RST}"
     ./${section}
   else
-    log "Skipping config section: ${section}"
+    log "${TTY_COLOR_GREEN}Skipping config section: ${section}${TTY_COLOR_RST}"
   fi
 done
