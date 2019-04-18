@@ -10,6 +10,11 @@ function fatal() {
   exit 1
 }
 
+# Shortcut for the kernel CLI config utility
+function kernel_config {
+  run_command /usr/src/linux ./scripts/config ${@}
+}
+
 function log() {
   echo "${@}"
 }
@@ -23,7 +28,7 @@ function run_command() {
       fatal "Provided working directory doesn't exist"
     fi
 
-    (cd "${working_directory}"; ${@})
+    (cd "${working_directory}"; ${@}) > .last_command_output.txt 2>&1
   else
     if [ ! -d "${CHROOT_DIRECTORY}" ]; then
       fatal "Specified chroot directory doesn't exist"
@@ -39,6 +44,6 @@ function run_command() {
     shift
     local args="${@}"
 
-    chroot "${CHROOT_DIRECTORY}" /bin/bash -c "cd ${working_directory}; ${command} ${args}"
+    chroot "${CHROOT_DIRECTORY}" /bin/bash -c "cd ${working_directory}; ${command} ${args}" > .last_command_output.txt 2>&1
   fi
 }

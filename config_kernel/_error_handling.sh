@@ -10,6 +10,8 @@ set -o nounset
 function error_handler() {
   echo "Error occurred in ${3} executing line ${1} with status code ${2}"
   echo "The pipe status values were: ${4}"
+  echo
+  echo "Output from the last run command can be found in ./.last_command_output.txt"
 }
 
 # Please note basename... is intentionally at the end as it's a command that

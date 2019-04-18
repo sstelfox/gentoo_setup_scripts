@@ -4,6 +4,9 @@
 . ./_config.sh
 . ./_common_functions.sh
 
+# Ensure we're in our base directory
+cd ${BASE_DIRECTORY}
+
 # Collect an ordered list of sections to run...
 SECTION_LIST="$(ls sections/*.sh 2> /dev/null | sort -n)"
 
