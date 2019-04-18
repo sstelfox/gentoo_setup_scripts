@@ -15,8 +15,15 @@ kernel_config --enable BLK_WBT_MQ
 # https://www.phoronix.com/scan.php?page=article&item=linux_2637_video&num=1
 kernel_config --enable SCHED_AUTOGROUP
 
+# TODO: I probably need this options
 #kernel_config --enable POSIX_MQUEUE
 #kernel_config --enable CROSS_MEMORY_ATTACH
+
+# TODO: These various lock detection mechanisms are likely good to enable
+#kernel_config --enable SOFTLOCKUP_DETECTOR
+#kernel_config --enable HARDLOCKUP_DETECTOR
+#kernel_config --enable DETECT_HUNG_TASK
+#kernel_config --enable WQ_WATCHDOG
 
 # This seems super interesting but probably isn't generally necessary. The
 # reboot to enable also kind of sucks. If I ever needed these kind of

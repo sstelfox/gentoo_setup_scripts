@@ -6,4 +6,5 @@
 
 log "Setting up initramfs support"
 
+# TODO:
 #kernel_config --enable BLK_DEV_INITRD

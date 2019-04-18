@@ -28,13 +28,5 @@ kernel_config --enable GENTOO_LINUX_UDEV
 kernel_config --enable GENTOO_LINUX_INIT_SCRIPT
 kernel_config --disable GENTOO_LINUX_INIT_SYSTEMD
 
-# Recommended by the Gentoo Handbook: "Also select Maintain a devtmpfs file
-# system to mount at /dev so that critical device files are already available
-# early in the boot process (CONFIG_DEVTMPFS and DEVTMPFS_MOUNT)":
-kernel_config --enable DEVTMPFS
-kernel_config --enable DEVTMPFS_MOUNT
-
-kernel_config --enable PROC_FS
-
 # Other very core settings
 kernel_config --enable INET

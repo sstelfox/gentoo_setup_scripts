@@ -6,6 +6,15 @@
 
 log "Configuring the available filesystems"
 
+# Recommended by the Gentoo Handbook: "Also select Maintain a devtmpfs file
+# system to mount at /dev so that critical device files are already available
+# early in the boot process (CONFIG_DEVTMPFS and DEVTMPFS_MOUNT)":
+kernel_config --enable DEVTMPFS
+kernel_config --enable DEVTMPFS_MOUNT
+
+kernel_config --enable PROC_FS
+kernel_config --enable SYSFS
+
 kernel_config --enable XFS_FS
 kernel_config --enable XFS_POSIX_ACL
 kernel_config --enable XFS_ONLINE_SCRUB
@@ -32,6 +41,8 @@ kernel_config --enable NFSD_V4
 # File locking is required for NFS filesystems
 kernel_config --enable FILE_LOCKING
 
+# TODO: The following
+
 # In the future I may want to use this to export virtual machine images over
 # NFS...
 #kernel_config --enable EXPORTFS_BLOCK_OPS
@@ -42,6 +53,7 @@ kernel_config --enable FILE_LOCKING
 # Eventually I will play with Ceph, I'll want to enable this:
 #kernel_config --enable CEPH_FS
 #kernel_config --enable CEPH_FS_POSIX_ACL
+#kernel_config --enable CEPH_LIB
 
 # Samba / CIFS
 #kernel_config --enable CIFS
@@ -50,3 +62,9 @@ kernel_config --enable FILE_LOCKING
 #kernel_config --enable CIFS_XATTR
 #kernel_config --enable CIFS_ACL
 #kernel_config --enable CIFS_DFS_UPCALL
+
+# TODO: This might be worth disabling if not necessary
+#kernel_config --disable PROC_PAGE_MONITOR
+
+# Allow tmpfs to have security attributes on it
+kernel_config --enable TMPFS_POSIX_ACL

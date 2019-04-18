@@ -20,9 +20,10 @@ kernel_config --enable IKCONFIG_PROC
 kernel_config --enable OPTIMIZE_INLINING
 
 kernel_config --enable ENABLE_MUST_CHECK
+# TODO:
 #kernel_config --enable STACK_VALIDATION
 kernel_config --enable STRIP_ASM_SYMS
 
-# I may want to increase this if there are a lot of warnings, 1024 is the
+# TODO: I may want to increase this if there are a lot of warnings, 1024 is the
 # default, but it seems like other distributions raises this up to 2048.
 #kernel_config --set-val FRAME_WARN 2048
