@@ -66,3 +66,11 @@ kernel_config --enable X86_SMAP
 # Allow the kernel functions to live in different address spaces. This makes
 # additional security options available and enables them like KASLR.
 kernel_config --enable RELOCATABLE
+
+# Add canary values around the stack to assist in detection of certain classes
+# of memory overwrite attacks.
+kernel_config --enable STACKPROTECTOR
+
+# This is a performance trade of but provides more aggressive protections
+# against use-after-free conditions.
+kernel_config --enable REFCOUNT_FULL

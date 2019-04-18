@@ -12,7 +12,6 @@ kernel_config --enable 64BIT
 kernel_config --enable BLOCK
 kernel_config --enable NET
 kernel_config --enable CRYPTO
-kernel_config --enable SWAP
 kernel_config --enable MULTIUSER
 
 kernel_config --disable EMBEDDED
@@ -33,3 +32,5 @@ kernel_config --enable ACPI
 kernel_config --enable INET
 kernel_config --enable NUMA
 kernel_config --enable PCI
+kernel_config --enable PRINTK
+kernel_config --enable SWAP
