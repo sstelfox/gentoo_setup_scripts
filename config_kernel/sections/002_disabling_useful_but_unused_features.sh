@@ -32,3 +32,5 @@ kernel_config --disable TASK_XACCT
 
 # The following may be needed by kexec but until then I don't need it
 kernel_config --disable FIRMWARE_MEMMAP
+
+kernel_config --disable KEXEC

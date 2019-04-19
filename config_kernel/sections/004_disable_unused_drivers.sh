@@ -29,6 +29,29 @@ kernel_config --disable BLK_DEV_SR_VENDOR
 kernel_config --disable SCSI_PROC_FS
 
 kernel_config --disable ATA_SFF
+kernel_config --disable X86_16BIT
+
+kernel_config --disable CONFIG_MICROCODE
+kernel_config --disable CONFIG_MICROCODE_AMD
+kernel_config --disable CONFIG_MICROCODE_INTEL
+
+kernel_config --disable AMD_MEM_ENCRYPT
+kernel_config --disable IOSF_MBI
+kernel_config --disable CALGARY_IOMMU
+kernel_config --disable SCHED_MC_PRIO
+kernel_config --disable MTRR
+
+kernel_config --disable X86_INTEL_MEMORY_PROTECTION_KEYS
+kernel_config --disable X86_MCE_AMD
+kernel_config --disable X86_MCE_INTEL
+kernel_config --disable X86_REROUTE_FOR_BROKEN_BOOT_IRQS
+
+kernel_config --disable PERF_EVENTS_INTEL_UNCORE
+kernel_config --disable PERF_EVENTS_INTEL_RAPL
+kernel_config --disable PERF_EVENTS_INTEL_CSTATE
+
+# This has been superceded for newer processors by X86_64_ACPI_NUMA
+kernel_config --disable AMD_NUMA
 
 # Generally I don't need RAID support on any of my machines, ZFS is used when
 # multiple disks are involved and I don't believe this is required for it.
@@ -52,17 +75,21 @@ kernel_config --disable CHR_DEV_SG
 # testing.
 kernel_config --disable INPUT_MOUSE
 
+kernel_config --disable INPUT_EVDEV
 kernel_config --disable INPUT_JOYSTICK
+kernel_config --disable INPUT_LEDS
+kernel_config --disable INPUT_MISC
 kernel_config --disable INPUT_POLLDEV
+kernel_config --disable INPUT_SPARSEKMAP
 kernel_config --disable INPUT_TABLET
 kernel_config --disable INPUT_TOUCHSCREEN
-kernel_config --disable INPUT_MISC
 
 kernel_config --disable NETCONSOLE
 
 kernel_config --disable FDDI
 kernel_config --disable USB_NET_DRIVERS
 kernel_config --disable SERIAL_NONSTANDARD
+kernel_config --disable BACKLIGHT_LCD_SUPPORT
 
 # This seems to only be needed by input devices that use serial ports which I
 # doubt I'll need.

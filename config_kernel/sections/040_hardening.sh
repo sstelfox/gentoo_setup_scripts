@@ -41,13 +41,9 @@ kernel_config --enable SECURITY_DMESG_RESTRICT
 # For TPM and IMA support the securityfs filesystem needs to be enabled
 kernel_config --enable SECURITYFS
 
-# Only Intel systems that support TXT enable it for additional measurements.
-# This has no effect when the instructions aren't present.
-kernel_config --enable INTEL_TXT
-
 # Perform additional checks when copying memory between the userspace and the
 # kernel. This protects against large classes of heap overflow exploits and
-# memory exposures.
+# memory exposures. TODO: Disabling the fallback may have negative consequences
 kernel_config --enable HARDENED_USERCOPY
 kernel_config --disable HARDENED_USERCOPY_FALLBACK
 

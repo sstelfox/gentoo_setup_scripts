@@ -6,6 +6,8 @@
 
 log "Configuring various power control settings"
 
+kernel_config --enable ACPI_SPCR_TABLE
+
 kernel_config --enable CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 kernel_config --disable CPU_FREQ_DEFAULT_GOV_USERSPACE
 

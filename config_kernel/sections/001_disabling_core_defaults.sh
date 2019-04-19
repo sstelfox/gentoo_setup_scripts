@@ -9,7 +9,7 @@ log "Disabling selective core default features"
 # TODO: I've never been sure about this. It probably makes sense for a VM host
 # but does this help me or do anything at all under normal workloads? Maybe for
 # forked processes? Needs additional research.
-#kernel_config --disable KSM
+kernel_config --disable KSM
 
 # This is specifically virtual hosting (allowing guests to run under this
 # kernel). Generally my kernels are used more as guests and thus don't need
@@ -67,3 +67,25 @@ kernel_config --disable ACPI_VIDEO
 # something indicates otherwise. I should definitely test a few things with
 # this.
 kernel_config --disable CONNECTOR
+
+# Disable the old school legacy application emulation support. Since I'm using
+# a Gentoo target all of my code should be freshly compiled and not require
+# this fallback. I've been wrong before though...
+kernel_config --disable LEGACY_VSYSCALL_EMULATE
+kernel_config --enable LEGACY_VSYSCALL_NONE
+
+# Another couple of legacy emulation layers that I don't need
+kernel_config --disable MODIFY_LDT_SYSCALL
+kernel_config --disable X86_VSYSCALL_EMULATION
+
+# TODO: Test if this is needed, I kind of doubt it for modern systems
+#kernel_config --disable ISA_DMA_API
+
+kernel_config --disable MODULE_UNLOAD
+
+kernel_config --disable IP_MROUTE
+kernel_config --disable IP_MULTIPLE_TABLES
+kernel_config --disable IP_PNP
+
+# This may be necessary to enable for physical hardware
+kernel_config --disable PCI_QUIRKS

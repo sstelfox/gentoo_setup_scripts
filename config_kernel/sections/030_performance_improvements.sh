@@ -10,3 +10,5 @@ log "Adjusting some performance related settings"
 # loads. It's primarily designed for desktop loads but may provide some
 # protection against resource stealing by aggressive processes.
 #kernel_config --enable SCHED_AUTOGROUP
+
+kernel_config --enable TRANSPARENT_HUGEPAGE
