@@ -46,7 +46,7 @@ EOF
 fi
 
 # For some stupid reason this kernel is getting installed...
-rm -f /boot/*-openstack
+rm -f /mnt/gentoo/boot/*-openstack
 
 if [ "${EFI}" = "yes" ]; then
   chroot /mnt/gentoo grub-install --target=x86_64-efi --efi-directory=/boot --removable
