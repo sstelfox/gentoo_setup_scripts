@@ -19,3 +19,10 @@ for section in ${SECTION_LIST}; do
     log "${TTY_COLOR_GREEN}Skipping config section: ${section}${TTY_COLOR_RST}"
   fi
 done
+
+if [ -x "target_specific/${KERNEL_TARGET}" ]; then
+  log "${TTY_COLOR_GREEN}Running target specific kernel options${TTY_COLOR_RST}"
+fi
+
+log "Finalizing the config..."
+run_command /usr/src/linux make olddefconfig

@@ -79,3 +79,19 @@ kernel_config --disable ROOT_NFS
 #kernel_config --enable CIFS_XATTR
 #kernel_config --enable CIFS_ACL
 #kernel_config --enable CIFS_DFS_UPCALL
+
+# Various block layer stuff I don't need
+kernel_config --disable BLK_DEBUG_FS
+kernel_config --disable BLK_DEV_BSG
+
+# Get rid of various partition types we don't need
+kernel_config --disable AMIGA_PARTITION
+kernel_config --disable BSD_DISKLABEL
+kernel_config --disable KARMA_PARTITION
+kernel_config --disable MAC_PARTITION
+kernel_config --disable MINIX_SUBPARTITION
+kernel_config --disable OSF_PARTITION
+kernel_config --disable SGI_PARTITION
+kernel_config --disable SUN_PARTITION
+kernel_config --disable SOLARIS_X86_PARTITION
+kernel_config --disable UNIXWARE_DISKLABEL

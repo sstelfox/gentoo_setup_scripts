@@ -10,3 +10,8 @@ log "Setting some unnecessary options that are personal preferences"
 kernel_config --enable IKCONFIG
 kernel_config --enable IKCONFIG_PROC
 kernel_config --enable BUILD_BIN2C
+
+# Prefer just using the BFQ scheduler
+kernel_config --enable MQ_IOSCHED_DEADLINE
+kernel_config --enable MQ_IOSCHED_KYBER
+kernel_config --enable IOSCHED_BFQ
