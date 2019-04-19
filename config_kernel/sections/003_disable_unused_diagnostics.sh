@@ -12,6 +12,7 @@
 
 log "Disabling unused diagnostic information"
 
+kernel_config --disable ATA_VERBOSE_ERROR
 kernel_config --disable DEBUG_BOOT_PARAMS
 kernel_config --disable DEBUG_BUGVERBOSE
 kernel_config --disable DEBUG_MEMORY_INIT
@@ -21,11 +22,13 @@ kernel_config --disable EARLY_PRINTK_DBGP
 kernel_config --disable EVENT_TRACING
 kernel_config --disable FTRACE
 kernel_config --disable KPROBES
+kernel_config --disable PNP_DEBUG_MESSAGES
 kernel_config --disable PROFILING
 kernel_config --disable PROVIDE_OHCI1394_DMA_INIT
 kernel_config --disable RCU_TRACE
 kernel_config --disable RUNTIME_TESTING_MENU
 kernel_config --disable SCHEDSTATS
+kernel_config --disable SCSI_CONSTANTS
 kernel_config --disable SLUB_DEBUG
 kernel_config --disable STACKTRACE
 kernel_config --disable UPROBE_EVENTS

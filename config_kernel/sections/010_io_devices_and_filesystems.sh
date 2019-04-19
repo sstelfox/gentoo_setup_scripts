@@ -6,6 +6,15 @@
 
 log "Configuring the available filesystems"
 
+# Allow access to AHCI commands for SATA attached devices. This allows
+# increased performance in both virtual and physical machines.
+kernel_config --enable SATA_AHCI_PLATFORM
+
+# Allow encrypted datamapper targets (and allow authenticated encryption using
+# the integrity options)
+kernel_config --enable DM_CRYPT
+kernel_config --enable DM_INTEGRITY
+
 # EXT4 isn't necessary for me
 kernel_config --disable EXT4_FS
 
@@ -71,6 +80,7 @@ kernel_config --disable ROOT_NFS
 #kernel_config --enable CEPH_FS
 #kernel_config --enable CEPH_FS_POSIX_ACL
 #kernel_config --enable CEPH_LIB
+#kernel_config --enable BLK_DEV_RBD
 
 # Samba / CIFS
 #kernel_config --enable CIFS
