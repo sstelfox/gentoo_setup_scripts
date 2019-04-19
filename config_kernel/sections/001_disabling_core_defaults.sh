@@ -35,14 +35,11 @@ kernel_config --disable ELF_CORE
 
 # No. Just No.
 kernel_config --disable PCSPKR_PLATFORM
-kernel_config --disable I8253_LOCK
 
 # This is an interesting feature but can allow unprivileged triggering of
 # certain behaviors such as hard rebooting. The kernels are stable enough that
 # the magic sequences have the potential for more harm than good.
 kernel_config --disable MAGIC_SYSRQ
-kernel_config --disable MAGIC_SYSRQ_SERIAL
-kernel_config --undefine MAGIC_SYSRQ_DEFAULT_ENABLE
 
 # These compression methods aren't ever used by me, eventually I'll likely want
 # to disable LZ4 as well when I embed the initramfs CPIO file in the kernel
@@ -56,11 +53,3 @@ kernel_config --disable RD_XZ
 # Use LZ4 to compress the kernel instead of the Gzip default
 kernel_config --disable KERNEL_GZIP
 kernel_config --enable KERNEL_LZ4
-
-# Because we don't need to decompress a initramfs or the kernel with any of
-# these algorithms we can also remove the support for them inside the kernel.
-kernel_config --disable DECOMPRESS_BZIP2
-kernel_config --disable DECOMPRESS_GZIP
-kernel_config --disable DECOMPRESS_LZMA
-kernel_config --disable DECOMPRESS_LZO
-kernel_config --disable DECOMPRESS_XZ
