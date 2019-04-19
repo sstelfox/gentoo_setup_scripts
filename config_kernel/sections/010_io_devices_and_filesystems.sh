@@ -105,3 +105,6 @@ kernel_config --disable SGI_PARTITION
 kernel_config --disable SUN_PARTITION
 kernel_config --disable SOLARIS_X86_PARTITION
 kernel_config --disable UNIXWARE_DISKLABEL
+
+# Various EFI settings
+kernel_config --enable EFI_BOOTLOADER_CONTROL

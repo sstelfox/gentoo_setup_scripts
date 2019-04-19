@@ -29,3 +29,6 @@ kernel_config --disable TASKSTATS
 kernel_config --disable TASK_DELAY_ACCT
 kernel_config --disable TASK_IO_ACCOUNTING
 kernel_config --disable TASK_XACCT
+
+# The following may be needed by kexec but until then I don't need it
+kernel_config --disable FIRMWARE_MEMMAP

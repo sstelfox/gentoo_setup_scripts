@@ -62,6 +62,11 @@ kernel_config --disable NETCONSOLE
 
 kernel_config --disable FDDI
 kernel_config --disable USB_NET_DRIVERS
+kernel_config --disable SERIAL_NONSTANDARD
+
+# This seems to only be needed by input devices that use serial ports which I
+# doubt I'll need.
+kernel_config --disable SERIO_SERPORT
 
 # There is a bunch of ethernet devices enabled by default that I don't need
 kernel_config --disable NET_VENDOR_3COM

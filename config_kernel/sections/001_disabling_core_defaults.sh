@@ -53,3 +53,17 @@ kernel_config --disable RD_XZ
 # Use LZ4 to compress the kernel instead of the Gzip default
 kernel_config --disable KERNEL_GZIP
 kernel_config --enable KERNEL_LZ4
+
+kernel_config --disable SUSPEND
+kernel_config --disable HIBERNATION
+
+kernel_config --disable ACPI_AC
+kernel_config --disable ACPI_BATTERY
+kernel_config --disable ACPI_DOCK
+kernel_config --disable ACPI_FAN
+kernel_config --disable ACPI_VIDEO
+
+# Not sure what might actually use this but I'm going to disable this until
+# something indicates otherwise. I should definitely test a few things with
+# this.
+kernel_config --disable CONNECTOR

@@ -22,6 +22,7 @@ kernel_config --disable EARLY_PRINTK_DBGP
 kernel_config --disable EVENT_TRACING
 kernel_config --disable FTRACE
 kernel_config --disable KPROBES
+kernel_config --disable PM_DEBUG
 kernel_config --disable PNP_DEBUG_MESSAGES
 kernel_config --disable PROFILING
 kernel_config --disable PROVIDE_OHCI1394_DMA_INIT
