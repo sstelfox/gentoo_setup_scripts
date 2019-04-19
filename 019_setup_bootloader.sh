@@ -14,7 +14,7 @@ chroot /mnt/gentoo emerge sys-boot/grub
 
 # We want to additionally spit out the kernel messages to the KVM serial
 # console
-if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   ADDITIONAL_BOOT_OPTS="console=tty0 console=ttyS0,115200n8"
 fi
 
@@ -37,7 +37,7 @@ EOF
 
 # Enable grub on both the standard console and over serial when using the KVM
 # kernel
-if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   cat << 'EOF' >> /mnt/gentoo/etc/default/grub
 
 GRUB_TERMINAL="console serial"

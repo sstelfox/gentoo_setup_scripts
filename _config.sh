@@ -28,7 +28,7 @@ ENCRYPTED="no"
 FULL_REBUILD="no"
 
 # Which of the pre-generated kernel configs to use
-KERNEL_CONFIG="kvm"
+KERNEL_TARGET="kvm_guest"
 
 # Serpent is slower but a more conservative security wise, AES is fast and
 # generally hardware accelerated...

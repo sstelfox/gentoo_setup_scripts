@@ -7,6 +7,11 @@
 # Ensure we're in our base directory
 cd ${BASE_DIRECTORY}
 
+# Used to build up the custom kernel from configuration scripts rather than
+# hard coded .config files. This specific versions is passed in as the first
+# argument.
+KERNEL_TARGET="${1:-kvm_guest}"
+
 # Collect an ordered list of sections to run...
 SECTION_LIST="$(ls sections/*.sh 2> /dev/null | sort -n)"
 

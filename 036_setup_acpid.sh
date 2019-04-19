@@ -4,7 +4,7 @@
 . ./_error_handling.sh
 
 # Fully virtual machines don't need ACPId
-if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   exit 0
 fi
 

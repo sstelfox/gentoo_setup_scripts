@@ -15,10 +15,3 @@ CHROOT_DIRECTORY="/mnt/gentoo"
 
 # Set this to "yes" to log all executed commands to the screen.
 DEBUG="${DEBUG:-yes}"
-
-# Whether to build the kernel with EFI support or not
-ENABLE_EFI="yes"
-
-# Used to build up the custom kernel from configuration scripts rather than
-# hard coded .config files
-KERNEL_TARGET="kvm_guest"

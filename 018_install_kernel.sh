@@ -7,8 +7,6 @@ mkdir -p /mnt/gentoo/etc/portage/package.accept_keywords
 echo 'sys-kernel/gentoo-sources ~amd64' > /mnt/gentoo/etc/portage/package.accept_keywords/kernel
 chroot /mnt/gentoo emerge sys-kernel/gentoo-sources
 
-cp ${BASE_DIRECTORY}/kernel_configs/${KERNEL_CONFIG} /mnt/gentoo/usr/src/linux/.config
-
 # TODO: sys-firmware/intel-microcode needs to be loaded, the following page has
 # information on how to build the firmware into the kernel:
 # https://wiki.gentoo.org/wiki/Intel_microcode
@@ -33,11 +31,11 @@ cp ${BASE_DIRECTORY}/kernel_configs/${KERNEL_CONFIG} /mnt/gentoo/usr/src/linux/.
 # * Testing can be done (after a fresh boot) with: dmesg | grep microcode.
 #   Should show lines indicating the updates.
 
-chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make olddefconfig"
+./kernel_config/create_config.sh ${KERNEL_TARGET}
 chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make --jobs $(($(nproc) + 1)) --load-average $(nproc)"
 
 # KVM kernel has no modules...
-if [ "${KERNEL_CONFIG}" != "kvm" ]; then
+if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
   chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make modules_install"
 fi
 
@@ -65,7 +63,7 @@ do_prelink="no"
 persistent_policy="by-uuid"
 EOF
 
-if [ "${KERNEL_CONFIG}" = "kvm" ]; then
+if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   # The KVM kernel is very minimal and doesn't use modules, if it wasn't for
   # the posibility of encryption I wouldn't use a initramfs at all...
   # TODO: When encryption isn't used and we're on the KVM kernel skip dracut
