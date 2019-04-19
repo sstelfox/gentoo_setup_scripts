@@ -168,3 +168,19 @@ kernel_config --disable ETHERNET
 # primarily used by the realtek drivers more than the ones I'd enable.
 kernel_config --disable PHYLIB
 kernel_config --disable MDIO_DEVICE
+
+# Disable some weird serial options
+kernel_config --disable SERIAL_8250_DEPRECATED_OPTIONS
+kernel_config --disable SERIAL_8250_DETECT_IRQ
+kernel_config --disable SERIAL_8250_DMA
+kernel_config --disable SERIAL_8250_EXTENDED
+kernel_config --disable SERIAL_8250_LPSS
+kernel_config --disable SERIAL_8250_MID
+kernel_config --disable SERIAL_8250_PCI
+kernel_config --disable SERIAL_8250_RSA
+kernel_config --disable SERIAL_8250_SHARE_IRQ
+
+# NOTE: This defaults to 4, I may need to bump this back if I have issues
+# accessing the console but I don't think the pre-registration is required for
+# normal functionality.
+kernel_config --set-val SERIAL_8250_RUNTIME_UARTS 0

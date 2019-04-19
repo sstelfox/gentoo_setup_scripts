@@ -107,4 +107,23 @@ kernel_config --disable SOLARIS_X86_PARTITION
 kernel_config --disable UNIXWARE_DISKLABEL
 
 # Various EFI settings
+
+# Allow choosing the next entry to boot into
 kernel_config --enable EFI_BOOTLOADER_CONTROL
+
+# NOTE: DO NOT Enable EFI_VARS* as data corruption can happen for anything that
+# uses that interface mixed with the new EFIVAR_FS system.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1252137
+kernel_config --disable EFI_VARS
+kernel_config --enable EFIVAR_FS
+
+# Allow the kernel to be booted directly by UEFI, but also via a normal bootloader
+kernel_config --enable EFI_STUB
+
+# If the firmware is 32-bit I may need to enable this for EFI boot handoff
+#kernel_config --enable EFI_MIXED
+
+# Allow the kernel to print it's diagnostics to the EFI framebuffer early on
+kernel_config --enable EARLY_PRINTK_EFI
+
+#CACHEFILES

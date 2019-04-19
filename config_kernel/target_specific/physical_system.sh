@@ -27,3 +27,7 @@ kernel_config --enable NETWORK_PHY_TIMESTAMPING
 # Support ECC memory
 kernel_config --enable MEMORY_FAILURE
 kernel_config --enable HWPOISON_INJECT
+
+# Allow IPSec offloading
+kernel_config --enable INET_ESP_OFFLOAD
+kernel_config --enable INET6_ESP_OFFLOAD

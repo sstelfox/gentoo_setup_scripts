@@ -4,6 +4,8 @@
 . ./_config.sh
 . ./_common_functions.sh
 
+${BASE_DIRECTORY}/target_specific/physical_system.sh
+
 kernel_config --enable INTEL_IDLE
 kernel_config --enable X86_INTEL_PSTATE
 kernel_config --enable X86_P4_CLOCKMOD

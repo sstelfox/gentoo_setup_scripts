@@ -89,3 +89,7 @@ kernel_config --disable IP_PNP
 
 # This may be necessary to enable for physical hardware
 kernel_config --disable PCI_QUIRKS
+
+# Disable modules, just bake everything in. It simplifies a lot and removes the
+# main vector backdoors get into the kernel.
+kernel_config --disable MODULES
