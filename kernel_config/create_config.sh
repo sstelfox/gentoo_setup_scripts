@@ -1,11 +1,15 @@
 #!/bin/bash
 
+echo "Starting kernel config"
+echo "Switch to directory: $(dirname ${0})"
+
+# Ensure we're in our base directory
+cd $(dirname ${0})
+pwd
+
 . ./_error_handling.sh
 . ./_config.sh
 . ./_common_functions.sh
-
-# Ensure we're in our base directory
-cd ${BASE_DIRECTORY}
 
 # Used to build up the custom kernel from configuration scripts rather than
 # hard coded .config files. This specific versions is passed in as the first

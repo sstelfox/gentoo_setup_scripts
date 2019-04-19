@@ -2,9 +2,12 @@
 # The above is to prevent this file from being executed. It should only be
 # sourced.
 
-TTY_COLOR_GREEN="$(tput setaf 2)"
-TTY_COLOR_RED="$(tput setaf 1)"
-TTY_COLOR_RST="$(tput sgr0)"
+#TTY_COLOR_GREEN="$(tput setaf 2)"
+#TTY_COLOR_RED="$(tput setaf 1)"
+#TTY_COLOR_RST="$(tput sgr0)"
+TTY_COLOR_GREEN=""
+TTY_COLOR_RED=""
+TTY_COLOR_RST=""
 
 function fatal() {
   echo "${TTY_COLOR_RED}${@}${TTY_COLOR_RST}"

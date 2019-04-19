@@ -7,8 +7,6 @@
 # annoying...
 export PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 
-BASE_DIRECTORY="$( cd "$(dirname $( dirname "${BASH_SOURCE[0]}" ))" && pwd )"
-
 # If not empty all commands will be chroot'd into the specified directory
 # before being executed.
 CHROOT_DIRECTORY="/mnt/gentoo"
