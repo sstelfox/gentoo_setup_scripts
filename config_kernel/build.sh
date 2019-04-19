@@ -20,8 +20,9 @@ for section in ${SECTION_LIST}; do
   fi
 done
 
-if [ -x "target_specific/${KERNEL_TARGET}" ]; then
-  log "${TTY_COLOR_GREEN}Running target specific kernel options${TTY_COLOR_RST}"
+if [ -x "target_specific/${KERNEL_TARGET}.sh" ]; then
+  log "${TTY_COLOR_GREEN}Running target specific (${KERNEL_TARGET}) kernel options${TTY_COLOR_RST}"
+  ./target_specific/${KERNEL_TARGET}.sh
 fi
 
 log "Finalizing the config..."
