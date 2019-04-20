@@ -180,7 +180,7 @@ kernel_config --disable SERIAL_8250_PCI
 kernel_config --disable SERIAL_8250_RSA
 kernel_config --disable SERIAL_8250_SHARE_IRQ
 
-# NOTE: This defaults to 4, I may need to bump this back if I have issues
-# accessing the console but I don't think the pre-registration is required for
-# normal functionality.
-kernel_config --set-val SERIAL_8250_RUNTIME_UARTS 0
+# NOTE: This defaults to four but I only need one at boot time to expose the
+# boot messages over the virtual console. Any other serial ports can get
+# created by udev if needed.
+kernel_config --set-val SERIAL_8250_RUNTIME_UARTS 1
