@@ -4,6 +4,8 @@
 . ./_config.sh
 . ./_common_functions.sh
 
+log "Running target specific kernel options: physical_system"
+
 kernel_config --enable ENERGY_MODEL
 kernel_config --enable KSM
 kernel_config --enable SFI

@@ -4,6 +4,10 @@
 . ./_config.sh
 . ./_common_functions.sh
 
+log "Running target specific kernel options: kvm_guest"
+
+kernel_config --enable VIRTIO_MENU
+
 kernel_config --enable HYPERVISOR_GUEST
 kernel_config --enable PARAVIRT
 kernel_config --enable VIRTIO_PCI
@@ -22,6 +26,7 @@ kernel_config --enable CRYPTO_DEV_VIRTIO
 kernel_config --enable DRM_VIRTIO_GPU
 kernel_config --enable HW_RANDOM_VIRTIO
 kernel_config --enable PARAVIRT_SPINLOCKS
+kernel_config --enable RPMSG_VIRTIO
 
 # Allow the VM host to add and remove memory
 kernel_config --enable MEMORY_HOTPLUG

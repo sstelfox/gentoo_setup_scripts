@@ -15,6 +15,7 @@ kernel_config --disable KSM
 # kernel). Generally my kernels are used more as guests and thus don't need
 # this whole class of options.
 kernel_config --disable VIRTUALIZATION
+kernel_config --disable VIRTIO_MENU
 
 # This is a legacy compatibility layer I won't be using
 kernel_config --disable USELIB

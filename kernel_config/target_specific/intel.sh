@@ -6,6 +6,8 @@
 
 ./target_specific/physical_system.sh
 
+log "Running target specific kernel options: intel"
+
 kernel_config --enable INTEL_IDLE
 kernel_config --enable X86_INTEL_PSTATE
 kernel_config --enable X86_P4_CLOCKMOD

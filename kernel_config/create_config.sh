@@ -30,7 +30,7 @@ for section in ${SECTION_LIST}; do
 done
 
 if [ -x "target_specific/${KERNEL_TARGET}.sh" ]; then
-  log "${TTY_COLOR_GREEN}Running target specific (${KERNEL_TARGET}) kernel options${TTY_COLOR_RST}"
+  log "${TTY_COLOR_GREEN}Beginning target specific configuration for: ${KERNEL_TARGET}${TTY_COLOR_RST}"
   ./target_specific/${KERNEL_TARGET}.sh
 fi
 

@@ -184,3 +184,7 @@ kernel_config --disable SERIAL_8250_SHARE_IRQ
 # boot messages over the virtual console. Any other serial ports can get
 # created by udev if needed.
 kernel_config --set-val SERIAL_8250_RUNTIME_UARTS 1
+
+kernel_config --disable IOMMU_SUPPORT
+kernel_config --disable AMD_IOMMU
+kernel_config --disable INTEL_IOMMU
