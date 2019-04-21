@@ -12,3 +12,8 @@ log "Adjusting some performance related settings"
 #kernel_config --enable SCHED_AUTOGROUP
 
 kernel_config --enable TRANSPARENT_HUGEPAGE
+
+kernel_config --enable CLEANCACHE
+kernel_config --enable FRONTSWAP
+kernel_config --enable ZSWAP
+kernel_config --enable Z3FOLD

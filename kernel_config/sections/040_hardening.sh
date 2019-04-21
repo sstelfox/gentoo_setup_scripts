@@ -99,6 +99,7 @@ kernel_config --enable EVM_ATTR_FSUUID
 
 # Selected by EVM & INTEGRITY, protect the keys used for integrity checking
 kernel_config --enable ENCRYPTED_KEYS
+kernel_config --enable TRUSTED_KEYS
 
 # Allow a present TPM device to provide additional entropy to our random pools
 kernel_config --enable HW_RANDOM_TPM
@@ -108,6 +109,8 @@ kernel_config --enable TCG_TPM
 kernel_config --enable TCG_CRB
 kernel_config --enable TCG_TIS_CORE
 kernel_config --enable TCG_TIS
+kernel_config --enable TPM_KEY_PARSER
+kernel_config --enable ASYMMETRIC_TPM_KEY_SUBTYPE
 
 # Validate the stack when things are scheduled
 kernel_config --enable SCHED_STACK_END_CHECK
@@ -119,4 +122,15 @@ kernel_config --enable SCHED_STACK_END_CHECK
 
 # This is a performance trade of but provides more aggressive protections
 # against use-after-free conditions.
-#kernel_config --enable REFCOUNT_FULL
+kernel_config --enable REFCOUNT_FULL
+
+# Some additional GCC plugins can be used to harden the systems, some of these
+# decrease the performance a bit. The latent entropy slows the boot a bit but
+# can help ensure entropy is available earlier.
+kernel_config --enable GCC_PLUGINS
+kernel_config --enable GCC_PLUGIN_LATENT_ENTROPY
+kernel_config --enable GCC_PLUGIN_RANDSTRUCT
+kernel_config --enable GCC_PLUGIN_RANDSTRUCT_PERFORMANCE
+kernel_config --enable GCC_PLUGIN_STACKLEAK
+kernel_config --enable GCC_PLUGIN_STRUCTLEAK
+kernel_config --enable GCC_PLUGIN_STRUCTLEAK_BYREF_ALL

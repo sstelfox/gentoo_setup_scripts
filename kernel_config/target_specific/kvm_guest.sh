@@ -28,6 +28,9 @@ kernel_config --enable HW_RANDOM_VIRTIO
 kernel_config --enable PARAVIRT_SPINLOCKS
 kernel_config --enable RPMSG_VIRTIO
 
+kernel_config --enable SOFT_WATCHDOG
+kernel_config --enable SOFT_WATCHDOG_PRETIMEOUT
+
 # Allow the VM host to add and remove memory
 kernel_config --enable MEMORY_HOTPLUG
 kernel_config --enable MEMORY_HOTPLUG_DEFAULT_ONLINE

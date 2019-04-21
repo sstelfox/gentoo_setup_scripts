@@ -29,6 +29,7 @@ kernel_config --enable INET_AH
 kernel_config --enable INET_ESP
 kernel_config --enable INET_XFRM_MODE_TRANSPORT
 kernel_config --enable INET_XFRM_MODE_TUNNEL
+kernel_config --enable NET_KEY
 
 # May also need IPSec compression but that seems like a bad idea
 #kernel_config --enable INET_IPCOMP

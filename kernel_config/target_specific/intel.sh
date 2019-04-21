@@ -8,6 +8,7 @@
 
 log "Running target specific kernel options: intel"
 
+kernel_config --enable CPU_SUP_INTEL
 kernel_config --enable INTEL_IDLE
 kernel_config --enable X86_INTEL_PSTATE
 kernel_config --enable X86_P4_CLOCKMOD
@@ -35,3 +36,8 @@ kernel_config --enable PERF_EVENTS_INTEL_UNCORE
 # Optimize the kernel with newer Intel instructions
 kernel_config --disable GENERIC_CPU
 kernel_config --enable MCORE2
+
+kernel_config --enable KVM_INTEL
+
+kernel_config --enable ITCO_WDT
+kernel_config --enable ITCO_VENDOR_SUPPORT

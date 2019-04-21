@@ -126,4 +126,21 @@ kernel_config --enable EFI_STUB
 # Allow the kernel to print it's diagnostics to the EFI framebuffer early on
 kernel_config --enable EARLY_PRINTK_EFI
 
-#CACHEFILES
+# This avoids a vulnerability in EFI systems that could allow said attacker to
+# reboot the system without clearing secrets from RAM. For this to not cause
+# excessive delays userland needs to be configured to clear the
+# MemoryOverwriteRequest flag on a clean shutdown. TODO: I need to create a
+# service target for this.
+#
+#kernel_config --enable RESET_ATTACK_MITIGATION
+
+# Framebuffer / early output control including graphics & text. The EFI & VESA
+# framebuffers are fallbacks for the simple framebuffer which is newer. Note: I
+# probably don't need the fallbacks anymore.
+kernel_config --enable FB_EFI
+kernel_config --enable FB_VESA
+kernel_config --enable X86_SYSFB
+kernel_config --enable FB_SIMPLE
+
+kernel_config --enable VGACON_SOFT_SCROLLBACK_PERSISTENT_ENABLE_BY_DEFAULT
+kernel_config --enable FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER

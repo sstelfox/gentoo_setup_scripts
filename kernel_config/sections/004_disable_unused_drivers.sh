@@ -188,3 +188,11 @@ kernel_config --set-val SERIAL_8250_RUNTIME_UARTS 1
 kernel_config --disable IOMMU_SUPPORT
 kernel_config --disable AMD_IOMMU
 kernel_config --disable INTEL_IOMMU
+
+kernel_config --disable CPU_SUP_AMD
+kernel_config --disable CPU_SUP_CENTAUR
+kernel_config --disable CPU_SUP_HYGON
+kernel_config --disable CPU_SUP_INTEL
+
+kernel_config --disable USB_MON
+kernel_config --disable USB_PRINTER

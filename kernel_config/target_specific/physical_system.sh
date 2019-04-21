@@ -6,11 +6,14 @@
 
 log "Running target specific kernel options: physical_system"
 
+kernel_config --enable PROCESSOR_SELECT
+
 kernel_config --enable ENERGY_MODEL
 kernel_config --enable KSM
 kernel_config --enable SFI
 kernel_config --enable WQ_POWER_EFFICIENT_DEFAULT
 kernel_config --enable X86_ACPI_CPUFREQ
+kernel_config --enable X86_PCC_CPUFREQ
 
 kernel_config --disable CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 kernel_config --enable CPU_FREQ_DEFAULT_GOV_SCHEDUTIL
@@ -19,17 +22,37 @@ kernel_config --disable CPU_FREQ_GOV_PERFORMANCE
 kernel_config --enable CPU_FREQ_GOV_CONSERVATIVE
 
 kernel_config --enable ACPI_AC
+kernel_config --enable ACPI_APEI
+kernel_config --enable ACPI_APEI_GHES
+kernel_config --enable ACPI_APEI_MEMORY_FAILURE
+kernel_config --enable ACPI_APEI_PCIEAER
 kernel_config --enable ACPI_BATTERY
+kernel_config --enable ACPI_BGRT
+kernel_config --enable ACPI_EXTLOG
 kernel_config --enable ACPI_FAN
 kernel_config --enable ACPI_PCI_SLOT
 kernel_config --enable ACPI_PROCESSOR_AGGREGATOR
+kernel_config --enable DPTC_POWER
+kernel_config --enable NUMA_BALANCING
+kernel_config --enable PMIC_OPREGION
+kernel_config --enable X86_CPU_RESCTRL
 
 kernel_config --enable NETWORK_PHY_TIMESTAMPING
-
-# Support ECC memory
-kernel_config --enable MEMORY_FAILURE
-kernel_config --enable HWPOISON_INJECT
 
 # Allow IPSec offloading
 kernel_config --enable INET_ESP_OFFLOAD
 kernel_config --enable INET6_ESP_OFFLOAD
+
+kernel_config --enable VIRTUALIZATION
+kernel_config --enable VHOST_NET
+kernel_config --enable KVM
+
+kernel_config --enable ETHERNET
+
+# Allows more complicated SCSI commands
+kernel_config --enable BLK_DEV_BSG
+
+kernel_config --enable USB_GADGET
+kernel_config --enable USB_MASS_STORAGE
+kernel_config --enable USB_SERIAL
+kernel_config --enable USB_SERIAL_GENERIC

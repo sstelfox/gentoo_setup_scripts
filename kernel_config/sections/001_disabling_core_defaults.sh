@@ -80,7 +80,7 @@ kernel_config --disable MODIFY_LDT_SYSCALL
 kernel_config --disable X86_VSYSCALL_EMULATION
 
 # TODO: Test if this is needed, I kind of doubt it for modern systems
-#kernel_config --disable ISA_DMA_API
+kernel_config --disable ISA_DMA_API
 
 kernel_config --disable MODULE_UNLOAD
 
