@@ -35,9 +35,9 @@ chroot /mnt/gentoo emerge sys-kernel/gentoo-sources
 chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make --jobs $(($(nproc) + 1)) --load-average $(nproc)"
 
 # KVM kernel has no modules...
-if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
-  chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make modules_install"
-fi
+#if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
+#  chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make modules_install"
+#fi
 
 chroot /mnt/gentoo /bin/bash -c "cd /usr/src/linux; make bzImage"
 chroot /mnt/gentoo /bin/bash -c "cp /usr/src/linux/arch/x86/boot/bzImage /boot/vmlinuz-current"
@@ -63,17 +63,17 @@ do_prelink="no"
 persistent_policy="by-uuid"
 EOF
 
-if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
+#if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   # The KVM kernel is very minimal and doesn't use modules, if it wasn't for
   # the posibility of encryption I wouldn't use a initramfs at all...
   # TODO: When encryption isn't used and we're on the KVM kernel skip dracut
   # and the initramfs altogether...
   chroot /mnt/gentoo /bin/bash -c 'dracut --no-kernel -f /boot/initramfs-current.img'
-else
+#else
   # Build an initramfs using the latest kernel modules (there should only be
   # one but it never hurts to be sure)
-  chroot /mnt/gentoo /bin/bash -c 'dracut --kver $(ls /lib/modules/ | sort -rn | head -n 1) -f /boot/initramfs-current.img'
-fi
+#  chroot /mnt/gentoo /bin/bash -c 'dracut --kver $(ls /lib/modules/ | sort -rn | head -n 1) -f /boot/initramfs-current.img'
+#fi
 
 exit 0
 
