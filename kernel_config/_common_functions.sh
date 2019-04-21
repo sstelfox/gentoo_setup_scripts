@@ -27,7 +27,7 @@ function run_command() {
   local working_directory="${1}"
   shift
 
-  if [ -z "${CHROOT_DIRECTORY}" ]; then
+  if [ -z "${CHROOT_DIRECTORY:-}" ]; then
     if [ ! -d "${working_directory}" ]; then
       fatal "Provided working directory doesn't exist"
     fi

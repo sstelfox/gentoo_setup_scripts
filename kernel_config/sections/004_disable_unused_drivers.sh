@@ -75,7 +75,9 @@ kernel_config --disable CHR_DEV_SG
 # testing.
 kernel_config --disable INPUT_MOUSE
 
-kernel_config --disable INPUT_EVDEV
+# This is required for power button support
+#kernel_config --disable INPUT_EVDEV
+
 kernel_config --disable INPUT_JOYSTICK
 kernel_config --disable INPUT_LEDS
 kernel_config --disable INPUT_MISC

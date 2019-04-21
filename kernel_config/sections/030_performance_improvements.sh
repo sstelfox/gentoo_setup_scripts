@@ -16,4 +16,5 @@ kernel_config --enable TRANSPARENT_HUGEPAGE
 kernel_config --enable CLEANCACHE
 kernel_config --enable FRONTSWAP
 kernel_config --enable ZSWAP
+kernel_config --enable ZBUD
 kernel_config --enable Z3FOLD

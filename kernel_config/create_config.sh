@@ -14,7 +14,7 @@ pwd
 # Used to build up the custom kernel from configuration scripts rather than
 # hard coded .config files. This specific versions is passed in as the first
 # argument.
-KERNEL_TARGET="${1:-kvm_guest}"
+KERNEL_TARGET="${1}"
 
 # Collect an ordered list of sections to run...
 SECTION_LIST="$(ls sections/*.sh 2> /dev/null | sort -n)"

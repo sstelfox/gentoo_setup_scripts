@@ -50,3 +50,5 @@ kernel_config --enable USB_UAS
 # If I start using iSCSI stuff
 #kernel_config --enable SCSI_ISCSI_ATTRS
 #kernel_config --enable ISCSI_TCP
+
+# TODO: I need to do the NFSD server stuff still...
