@@ -30,3 +30,8 @@ kernel_config --enable USB_ROLES_INTEL_XHCI
 
 kernel_config --enable USB_NET_DRIVERS
 # TODO: More specific network drivers
+
+kernel_config --enable GPD_POCKET_FAN
+
+# Not sure if this will do anything for me but could be useful
+#kernel_config --enable HID_BATTERY_STRENGTH

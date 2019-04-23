@@ -15,6 +15,7 @@ kernel_config --enable EDAC_DECODE_MCE
 kernel_config --enable PERF_EVENTS_AMD_POWER
 kernel_config --enable X86_MCE_AMD
 kernel_config --enable X86_AMD_PLATFORM_DEVICE
+kernel_config --enable CRYPTO_DEV_CCP
 
 # Optimize the kernel with newer Intel instructions
 kernel_config --disable GENERIC_CPU

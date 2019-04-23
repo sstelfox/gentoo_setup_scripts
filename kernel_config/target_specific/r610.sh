@@ -24,12 +24,16 @@ kernel_config --enable PCI_QUIRKS
 
 kernel_config --enable WDAT_WDT
 kernel_config --enable ACPI_IPMI
+kernel_config --enable IPMI_DEVICE_INTERFACE
 kernel_config --enable IPMI_HANDLER
+kernel_config --enable IPMI_PANIC_EVENT
+kernel_config --enable IPMI_POWEROFF
 kernel_config --enable IPMI_SI
 kernel_config --enable IPMI_SSIF
 kernel_config --enable IPMI_WATCHDOG
 
 kernel_config --enable DCDBAS
+kernel_config --enable DELL_SMBIOS
 
 kernel_config --enable CHR_DEV_SCH
 kernel_config --enable CHR_DEV_ST
@@ -67,3 +71,16 @@ kernel_config --enable NFSD_V4_SECURITY_LABEL
 #kernel_config --enable NFSD_BLOCKLAYOUT
 #kernel_config --enable NFSD_SCSILAYOUT
 #kernel_config --enable NFSD_FLEXFILELAYOUT
+
+# I may still need one of these for the SAS card
+#kernel_config --enable SCSI_MPT2SAS
+#kernel_config --enable SCSI_MPT3SAS
+
+# I need to figure out which one of these are in use...
+kernel_config --enable TCG_ATMEL
+kernel_config --enable TCG_INFINEON
+kernel_config --enable TCG_NSC
+kernel_config --enable TCG_TIS_I2C_ATMEL
+kernel_config --enable TCG_TIS_I2C_INFINEON
+kernel_config --enable TCG_TIS_I2C_NUVOTON
+kernel_config --enable TCG_TIS_ST33ZP24_I2C

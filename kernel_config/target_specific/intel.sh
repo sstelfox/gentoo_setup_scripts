@@ -19,8 +19,16 @@ kernel_config --enable CONFIG_MICROCODE_INTEL
 
 kernel_config --enable HW_RANDOM_INTEL
 
+kernel_config --enable IOMMU_SUPPORT
+kernel_config --enable INTEL_IOATDMA
 kernel_config --enable INTEL_IOMMU
+kernel_config --enable INTEL_ISH_HID
+kernel_config --enable INTEL_PCH_THERMAL
 kernel_config --enable INTEL_TXT
+kernel_config --enable INTEL_TURBO_MAX_3
+
+kernel_config --enable DRM_I915
+kernel_config --disable DRM_I915_CAPTURE_ERROR
 
 kernel_config --enable MTRR
 kernel_config --enable SCHED_MC_PRIO
@@ -41,3 +49,5 @@ kernel_config --enable KVM_INTEL
 
 kernel_config --enable ITCO_WDT
 kernel_config --enable ITCO_VENDOR_SUPPORT
+
+# NOTE: I may be able to use EXTRA_FIRMWARE to inject the intel microcode...

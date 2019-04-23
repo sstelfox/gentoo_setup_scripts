@@ -15,3 +15,9 @@ kernel_config --enable BUILD_BIN2C
 kernel_config --disable MQ_IOSCHED_DEADLINE
 kernel_config --disable MQ_IOSCHED_KYBER
 kernel_config --enable IOSCHED_BFQ
+
+# Enable the hangcheck timer, it's like an internal watchdog system that will
+# automatically reboot the system is certain parts of the kernel become
+# unresponsive. Can't hurt to have another mechanism to automatically recover
+# from failures.
+kernel_config --enable HANGCHECK_TIMER

@@ -134,3 +134,5 @@ kernel_config --enable GCC_PLUGIN_RANDSTRUCT_PERFORMANCE
 kernel_config --enable GCC_PLUGIN_STACKLEAK
 kernel_config --enable GCC_PLUGIN_STRUCTLEAK
 kernel_config --enable GCC_PLUGIN_STRUCTLEAK_BYREF_ALL
+
+# TODO: Enable required crypto for hard drive encryption?

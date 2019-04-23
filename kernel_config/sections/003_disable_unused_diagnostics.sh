@@ -37,3 +37,6 @@ kernel_config --disable UPROBE_EVENTS
 # This doesn't quite belong here, but trigger a compilation warning for section
 # mismatches.
 kernel_config --disable SECTION_MISMATCH_WARN_ONLY
+
+kernel_config --disable ALLOW_DEV_COREDUMP
+kernel_config --disable DEBUG_DEVRES

@@ -56,3 +56,15 @@ kernel_config --enable USB_GADGET
 kernel_config --enable USB_MASS_STORAGE
 kernel_config --enable USB_SERIAL
 kernel_config --enable USB_SERIAL_GENERIC
+
+# This needs additional testing and may cause boot hanging on systems that
+# don't work with it. Otherwise it may allow passing the actual screen
+# resolution set by the early boot to the kernel to give a better console
+# experience.
+kernel_config --enable FIRMWARE_EDID
+
+# On systems that support ACPI 4.0 we should be able to read power details
+kernel_config --enable SENSORS_ACPI_POWER
+
+# Use the RTC to save and restore the current clock
+kernel_config --enable RTC_HCTOSYS

@@ -198,3 +198,30 @@ kernel_config --disable CPU_SUP_INTEL
 
 kernel_config --disable USB_MON
 kernel_config --disable USB_PRINTER
+
+kernel_config --disable HW_RANDOM_VIA
+
+kernel_config --disable NEW_LEDS
+kernel_config --disable HID_GENERIC
+
+# Various HID devices that we don't need
+kernel_config --disable HID_A4TECH
+kernel_config --disable HID_APPLE
+kernel_config --disable HID_BELKIN
+kernel_config --disable HID_CHERRY
+kernel_config --disable HID_CHICONY
+kernel_config --disable HID_CYPRESS
+kernel_config --disable HID_EZKEY
+kernel_config --disable HID_GYRATION
+kernel_config --disable HID_ITE
+kernel_config --disable HID_KENSINGTON
+kernel_config --disable HID_LOGITECH
+kernel_config --disable HID_MICROSOFT
+kernel_config --disable HID_MONTEREY
+kernel_config --disable HID_NTRIG
+kernel_config --disable HID_PANTHERLORD
+kernel_config --disable HID_PETALYNX
+kernel_config --disable HID_REDRAGON
+kernel_config --disable HID_SAMSUNG
+kernel_config --disable HID_SUNPLUS
+kernel_config --disable HID_TOPSEED
