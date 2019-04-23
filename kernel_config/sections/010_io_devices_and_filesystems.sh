@@ -59,22 +59,9 @@ kernel_config --enable NFS_V4_2
 kernel_config --set-val NFS_V4_1_IMPLEMENTATION_ID_DOMAIN "kernel.org"
 kernel_config --enable NFS_V4_SECURITY_LABEL
 
-# By default I generally don't need the server but I do host NFS servers. It
-# may be better to include this in the default kernel but for now I'm happy to
-# leave this out.
-#kernel_config --enable NFSD
-#kernel_config --enable NFSD_V4
-
 # This would be pretty neat to play around with at some point for some of my
 # virtual machines but I don't need it for now.
-kernel_config --disable ROOT_NFS
-
-# In the future I may want to use this to export virtual machine images over
-# NFS...
-#kernel_config --enable EXPORTFS_BLOCK_OPS
-#kernel_config --enable NFSD_BLOCKLAYOUT
-#kernel_config --enable NFSD_SCSILAYOUT
-#kernel_config --enable NFSD_FLEXFILELAYOUT
+#kernel_config --disable ROOT_NFS
 
 # Eventually I will play with Ceph, I'll want to enable this:
 #kernel_config --enable CEPH_FS

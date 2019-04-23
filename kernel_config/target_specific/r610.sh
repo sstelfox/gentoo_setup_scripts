@@ -51,4 +51,19 @@ kernel_config --enable USB_UAS
 #kernel_config --enable SCSI_ISCSI_ATTRS
 #kernel_config --enable ISCSI_TCP
 
-# TODO: I need to do the NFSD server stuff still...
+# It may be better to include the NFS server in the default kernel but for now
+# I'm happy to leave this only on this class of machines.
+kernel_config --enable NFSD
+kernel_config --enable NFSD_V4
+kernel_config --enable NFSD_V4_SECURITY_LABEL
+
+# If I have to support a v3 NFS client I should enable this to allow extending
+# POSIX ACLs to clients (it will be enforced on the server no matter what).
+#kernel_config --enable NFSD_V3_ACL
+
+# In the future I may want to use this to export virtual machine images over
+# NFS...
+#kernel_config --enable EXPORTFS_BLOCK_OPS
+#kernel_config --enable NFSD_BLOCKLAYOUT
+#kernel_config --enable NFSD_SCSILAYOUT
+#kernel_config --enable NFSD_FLEXFILELAYOUT
