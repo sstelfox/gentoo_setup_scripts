@@ -25,6 +25,8 @@ NOTICE: Initial setup checklist that still needs to be done:
 * Setup a local administrative password and/or central authentication
 * Disable automatic serial login on ttyS0 in /etc/inittab
 * Enable authentication in the sudoers file
+* Update the hostname in /etc/hostname and /etc/conf.d/hostname
+* Update the hosts file
 * Remove this MOTD
 
 EOF
