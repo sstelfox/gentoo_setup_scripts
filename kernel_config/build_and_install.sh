@@ -9,7 +9,7 @@ if [ ! -f /usr/src/linux/.config ]; then
   exit 1
 fi
 
-if [ "${EUID}" = "0" ]; then
+if [ "${EUID}" != "0" ]; then
   echo "This needs to be done by root"
   exit 2
 fi
