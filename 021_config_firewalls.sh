@@ -33,7 +33,7 @@ table inet filter {
     ct state established,related accept
 
     # Allow traffic crossing the loopback interface
-    iif lo accept
+    iif "lo" accept
 
     # ICMP diagnostic messages that related to errors will be covered by the
     # related connection tracking rule above.
@@ -67,7 +67,7 @@ table inet filter {
     ct state established,related accept
 
     # Allow traffic crossing the loopback interface
-    oif lo accept
+    oif "lo" accept
 
     ip version 4 ip protocol icmp icmp type echo-request accept
 

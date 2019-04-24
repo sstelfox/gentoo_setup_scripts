@@ -8,4 +8,5 @@ if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
 fi
 
 # Install TPM tools. Taking control of it has to be a manual
-emerge app-crypt/tpm-tools
+chroot /mnt/gentoo emerge app-crypt/tpm-tools
+chroot /mnt/gentoo rc-update add tcsd boot

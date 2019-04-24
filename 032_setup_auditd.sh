@@ -10,7 +10,7 @@ echo 'sys-process/audit ~amd64' > /mnt/gentoo/etc/portage/package.accept_keyword
 
 chroot /mnt/gentoo emerge sys-process/audit
 
-chroot /mnt/gentoo rc-update add auditd boot
+#chroot /mnt/gentoo rc-update add auditd boot
 
 rm -f /mnt/gentoo/etc/audisp/plugins.d/*
 
