@@ -21,9 +21,6 @@ kernel_config --disable RFKILL
 kernel_config --disable WLAN
 kernel_config --disable WIRELESS
 
-# Disable QoS support, might re-enable this in the future
-kernel_config --disable NET_SCHED
-
 # Core IPSec support
 kernel_config --enable INET_AH
 kernel_config --enable INET_ESP
@@ -58,3 +55,6 @@ kernel_config --disable INET6_XFRM_MODE_BEET
 
 # Don't enable the IPv6-in-IPv4 tunnels
 kernel_config --disable IPV6_SIT
+
+# Disable QoS support, might re-enable this in the future
+kernel_config --disable NET_SCHED

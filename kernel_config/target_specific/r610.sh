@@ -77,10 +77,22 @@ kernel_config --enable NFSD_V4_SECURITY_LABEL
 #kernel_config --enable SCSI_MPT3SAS
 
 # I need to figure out which one of these are in use...
-kernel_config --enable TCG_ATMEL
-kernel_config --enable TCG_INFINEON
-kernel_config --enable TCG_NSC
-kernel_config --enable TCG_TIS_I2C_ATMEL
-kernel_config --enable TCG_TIS_I2C_INFINEON
-kernel_config --enable TCG_TIS_I2C_NUVOTON
-kernel_config --enable TCG_TIS_ST33ZP24_I2C
+#kernel_config --enable TCG_ATMEL
+#kernel_config --enable TCG_INFINEON
+#kernel_config --enable TCG_NSC
+#kernel_config --enable TCG_TIS_I2C_ATMEL
+#kernel_config --enable TCG_TIS_I2C_INFINEON
+#kernel_config --enable TCG_TIS_I2C_NUVOTON
+#kernel_config --enable TCG_TIS_ST33ZP24_I2C
+
+# Seems the R610 uses this non-standard type to mark some memory as BIOS
+# protected, we need to be able to handle it.
+kernel_config --enable X86_PMEM_LEGACY
+
+# Don't need this intel specific setting
+kernel_config --disable DRM_I915
+
+# Report detected memory errors
+kernel_config --enable EDAC_DEBUG
+kernel_config --enable EDAC_GHES
+kernel_config --enable EDAC_I7CORE

@@ -131,3 +131,9 @@ kernel_config --enable FB_SIMPLE
 
 kernel_config --enable VGACON_SOFT_SCROLLBACK_PERSISTENT_ENABLE_BY_DEFAULT
 kernel_config --enable FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
+
+# Enable the crypto required for the disk encryption setup in this repo
+kernel_config --enable CRYPTO_XTS
+kernel_config --enable CRYPTO_AES_X86_64
+
+kernel_config --enable PROC_CHILDREN

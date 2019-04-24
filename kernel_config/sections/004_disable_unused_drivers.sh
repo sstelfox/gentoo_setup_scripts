@@ -225,3 +225,15 @@ kernel_config --disable HID_REDRAGON
 kernel_config --disable HID_SAMSUNG
 kernel_config --disable HID_SUNPLUS
 kernel_config --disable HID_TOPSEED
+
+kernel_config --disable CRYPTO_ARC4
+kernel_config --disable CRYPTO_CMAC
+
+kernel_config --disable XZ_DEC_ARMTHUMB
+kernel_config --disable XZ_DEC_IA64
+kernel_config --disable XZ_DEC_POWERPC
+kernel_config --disable XZ_DEC_SPARC
+
+kernel_config --disable MICROCODE
+kernel_config --disable MICROCODE_AMD
+kernel_config --disable MICROCODE_INTEL

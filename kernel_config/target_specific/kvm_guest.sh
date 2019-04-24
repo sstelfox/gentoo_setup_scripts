@@ -36,6 +36,8 @@ kernel_config --enable MEMORY_HOTPLUG
 kernel_config --enable MEMORY_HOTPLUG_DEFAULT_ONLINE
 kernel_config --enable MEMORY_HOTREMOVE
 
+kernel_config --enable PVPANIC
+
 # These also might be needed... but maybe not?
 #kernel_config --enable SCSI_VIRTIO
 #kernel_config --enable VIRTIO_BLK_SCSI

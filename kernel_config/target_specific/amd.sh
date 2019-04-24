@@ -24,4 +24,7 @@ kernel_config --enable MK8
 kernel_config --enable IOMMU_SUPPORT
 kernel_config --enable AMD_IOMMU
 
+kernel_config --enable MICROCODE
+kernel_config --enable MICROCODE_AMD
+
 kernel_config --enable KVM_AMD

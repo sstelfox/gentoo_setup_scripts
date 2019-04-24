@@ -68,3 +68,6 @@ kernel_config --enable SENSORS_ACPI_POWER
 
 # Use the RTC to save and restore the current clock
 kernel_config --enable RTC_HCTOSYS
+
+# Enable access to physical sensors
+kernel_config --enable I2C_CHARDEV

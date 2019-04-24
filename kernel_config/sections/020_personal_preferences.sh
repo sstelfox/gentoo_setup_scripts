@@ -21,3 +21,9 @@ kernel_config --enable IOSCHED_BFQ
 # unresponsive. Can't hurt to have another mechanism to automatically recover
 # from failures.
 kernel_config --enable HANGCHECK_TIMER
+
+# Seems arch defaults its kernel loglevel default to the equivalent quiet
+# default. These settings will match the arch linux versions. I don't know if I
+# would prefer that or not.
+#kernel_config --set-val CONSOLE_LOGLEVEL_DEFAULT 4
+#kernel_config --undefine CONSOLE_LOGLEVEL_QUIET
