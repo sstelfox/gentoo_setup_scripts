@@ -96,3 +96,6 @@ kernel_config --disable DRM_I915
 kernel_config --enable EDAC_DEBUG
 kernel_config --enable EDAC_GHES
 kernel_config --enable EDAC_I7CORE
+
+# For lm_sensors
+kernel_config --enable SENSORS_CORETEMP
