@@ -25,7 +25,10 @@ modules="dhclient iproute2"
 
 config_eth0="dhcp"
 
-#config_eth0="192.168.122.70/24"
+#config_eth0=(
+#  "192.168.122.70/24"
+#  "2001:db8::daf:0:a100/64"
+#)
 #routes_eth0="default gw 192.168.122.1"
 EOF
 
