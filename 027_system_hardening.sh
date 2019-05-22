@@ -36,8 +36,8 @@ kernel.perf_event_paranoid = 2
 # Disable the magic sysrq key
 kernel.sysrq = 0
 
-# Set ptrace protections
-kernel.yama.ptrace_scope = 3
+# Set ptrace protections (can't be 3 as gentoo build sandbox uses ptracing)
+kernel.yama.ptrace_scope = 2
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/net_hardening.conf
