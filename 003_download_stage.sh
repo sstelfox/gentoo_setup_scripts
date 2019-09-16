@@ -7,7 +7,7 @@
 . ./_error_handling.sh
 
 if [ "${LOCAL}" != "yes" ]; then
-  TARGET_FILES=$(curl -s "${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/" | grep -oE 'stage4-amd64-hardened\+minimal-nomultilib-[0-9TZ]+\.tar\.bz2(\.DIGESTS\.asc)?')
+  TARGET_FILES=$(curl -s "${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/" | grep -oE 'stage4-amd64-hardened\+minimal-nomultilib-[0-9TZ]+\.tar\.xz(\.DIGESTS\.asc)?')
   for FILE in ${TARGET_FILES}; do
     curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/${FILE}
   done
@@ -32,18 +32,18 @@ EOF
   fi
 
   # The script will automatically abort if this check fails
-  gpg2 --verify /mnt/gentoo/*.tar.bz2.DIGESTS.asc
+  gpg2 --verify /mnt/gentoo/*.tar.xz.DIGESTS.asc
 
-  SHA512_DGST=$(openssl dgst -r -sha512 /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
-  GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  SHA512_DGST=$(openssl dgst -r -sha512 /mnt/gentoo/*.tar.xz | awk '{ print $1 }')
+  GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
 
   if [ "${SHA512_DGST}" != "${GOOD_SHA512_DGST}" ]; then
     echo "Bad SHA512 Checksum."
     exit 1
   fi
 
-  GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.bz2.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
-  WHRLPL_DGST=$(openssl dgst -r -whirlpool /mnt/gentoo/*.tar.bz2 | awk '{ print $1 }')
+  GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  WHRLPL_DGST=$(openssl dgst -r -whirlpool /mnt/gentoo/*.tar.xz | awk '{ print $1 }')
 
   if [ "${WHRLPL_DGST}" != "${GOOD_WHRLPL_DGST}" ]; then
     echo "Bad Whirlpool Checksum."
@@ -52,13 +52,13 @@ EOF
 
   if [ -n "${NFS_SOURCE}" ]; then
     mkdir -p /mnt/nfs_source/reference_files/
-    cp /mnt/gentoo/*.tar.bz2 /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.bz2
+    cp /mnt/gentoo/*.tar.xz /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.xz
   fi
 fi
 
 if [ "${LOCAL}" == "yes" ]; then
-  tar -xpf /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.bz2 -C /mnt/gentoo
+  tar -xpf /mnt/nfs_source/reference_files/stage4-amd64-hardened+minimal-nomultilib.tar.xz -C /mnt/gentoo
 else
-  tar -xpf /mnt/gentoo/*.tar.bz2 -C /mnt/gentoo
-  rm -f /mnt/gentoo/*.tar.bz2*
+  tar -xpf /mnt/gentoo/*.tar.xz -C /mnt/gentoo
+  rm -f /mnt/gentoo/*.tar.xz*
 fi
