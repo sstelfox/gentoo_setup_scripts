@@ -137,3 +137,12 @@ kernel_config --enable CRYPTO_XTS
 kernel_config --enable CRYPTO_AES_X86_64
 
 kernel_config --enable PROC_CHILDREN
+
+# Additional cgroup and namespace bits, mostly used by containerization stuff
+kernel_config --enable BLK_CGROUP
+kernel_config --enable CGROUP_DEVICE
+kernel_config --enable CGROUP_HUGETLB
+kernel_config --enable CGROUP_PIDS
+kernel_config --enable MEMCG
+kernel_config --enable MEMCG_SWAP
+kernel_config --enable USER_NS

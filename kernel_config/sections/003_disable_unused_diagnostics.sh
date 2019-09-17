@@ -13,6 +13,7 @@
 log "Disabling unused diagnostic information"
 
 kernel_config --disable ATA_VERBOSE_ERROR
+kernel_config --disable BUG
 kernel_config --disable DEBUG_BOOT_PARAMS
 kernel_config --disable DEBUG_BUGVERBOSE
 kernel_config --disable DEBUG_MEMORY_INIT
@@ -21,6 +22,7 @@ kernel_config --disable DYNAMIC_EVENTS
 kernel_config --disable EARLY_PRINTK_DBGP
 kernel_config --disable EVENT_TRACING
 kernel_config --disable FTRACE
+kernel_config --disable KALLSYMS
 kernel_config --disable KPROBES
 kernel_config --disable PM_DEBUG
 kernel_config --disable PNP_DEBUG_MESSAGES

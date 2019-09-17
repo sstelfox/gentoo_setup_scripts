@@ -10,6 +10,7 @@ log "Running target specific kernel options: intel"
 
 kernel_config --enable CPU_SUP_INTEL
 kernel_config --enable INTEL_IDLE
+kernel_config --enable X86_CPU_RESCTRL
 kernel_config --enable X86_INTEL_PSTATE
 kernel_config --enable X86_P4_CLOCKMOD
 

@@ -41,4 +41,5 @@ kernel_config --enable CRYPTO_SHA1_SSSE3
 kernel_config --enable CRYPTO_SHA512_SSSE3
 
 # Speed up tcpdump usage
+kernel_config --enable BPF_SYSCALL
 kernel_config --enable BPF_JIT
