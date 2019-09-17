@@ -3,7 +3,11 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-# Use NFTables...
+
+echo 'WARNING: perl 5.26.2 is deprecated but still required for nftables!'
+mkdir -p /mnt/gentoo/etc/portage/package.unmask
+echo '=dev-lang/perl-5.26.2' > /mnt/gentoo/etc/portage/package.unmask/nftables
+
 chroot /mnt/gentoo emerge net-firewall/nftables
 
 cat << 'EOF' > /mnt/gentoo/etc/conf.d/nftables

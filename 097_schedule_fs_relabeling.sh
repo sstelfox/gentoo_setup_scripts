@@ -16,4 +16,4 @@ EOF
 
 chmod +x /mnt/gentoo/root/first_boot.sh
 
-echo '@reboot ( /root/first_boot.sh )' | chroot /mnt/gentoo crontab
+echo '@reboot ( /root/first_boot.sh )' | chroot /mnt/gentoo crontab -
