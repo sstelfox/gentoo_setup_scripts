@@ -27,3 +27,5 @@ kernel_config --enable HANGCHECK_TIMER
 # would prefer that or not.
 #kernel_config --set-val CONSOLE_LOGLEVEL_DEFAULT 4
 #kernel_config --undefine CONSOLE_LOGLEVEL_QUIET
+
+kernel_config --enable BPFILTER
