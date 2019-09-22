@@ -43,8 +43,8 @@ kernel_config --disable LOG_ARP
 kernel_config --disable IP_NF_MANGLE
 kernel_config --disable IP6_NF_MANGLE
 
-kernel_config --enable IP_NF_SECURITY
-kernel_config --enable IP6_NF_SECURITY
+#kernel_config --enable IP_NF_SECURITY
+#kernel_config --enable IP6_NF_SECURITY
 
 kernel_config --enable IP_NF_TARGET_SYNPROXY
 kernel_config --enable IP6_NF_TARGET_SYNPROXY
