@@ -33,6 +33,8 @@ kernel_config --enable NETFILTER_XT_MATCH_IPVS
 kernel_config --enable NETFILTER_XT_TARGET_REDIRECT
 # This was the dick bag that was breaking proxier.go...
 kernel_config --enable NETFILTER_XT_MATCH_COMMENT
+# This was breaking coreDNS
+kernel_config --enable NETFILTER_XT_MATCH_MULTIPORT
 
 kernel_config --enable DM_THIN_PROVISIONING
 kernel_config --enable BFQ_GROUP_IOSCHED
