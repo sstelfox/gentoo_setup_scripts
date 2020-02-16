@@ -35,11 +35,7 @@ fi
 
 if ! mount | grep -q '/mnt/gentoo '; then
   mkdir -p /mnt/gentoo
-
-  # TODO: I want discard in this list when we're on an SSD. Otherwise there
-  # will be a lot of errors spit out during the installation. Maybe I should
-  # just have a flag for this...
-  mount -o defaults,noatime /dev/mapper/system-root /mnt/gentoo
+  mount -o defaults,discard,noatime /dev/mapper/system-root /mnt/gentoo
 fi
 
 # No reason not to always encrypt swap
