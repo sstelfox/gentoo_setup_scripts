@@ -24,6 +24,9 @@ USE="audit caps cgroups kerberos python -perl -systemd -tcpd"
 GRUB_PLATFORMS="efi-64 pc"
 POLICY_TYPES="strict"
 
+PYTHON_TARGETS="python3_7"
+PYTHON_SINGLE_TARGET="python3_7"
+
 L10N="en"
 LINGUAS="en"
 EOF
