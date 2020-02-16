@@ -29,7 +29,7 @@ EXISTING_VM="$(virsh list --all | awk '/gentoo-test/ { print $2 }' | head -n 1)"
 if [ -n "${EXISTING_VM}" ]; then
   # This first one will fail if it's not running
   virsh destroy ${EXISTING_VM} || true
-  virsh undefine --remove-all-storage ${EXISTING_VM}
+  virsh undefine --remove-all-storage --nvram ${EXISTING_VM}
 else
   echo "Couldn't find a running Gentoo VM"
 fi

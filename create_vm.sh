@@ -89,21 +89,30 @@ if !ip link show dev br0 &> /dev/null; then
   exit 1
 fi
 
+echo "The boot menu will appear shortly after this..."
+echo "Remember to edit the boot entry adding 'console=ttyS0' to the end of boot entry"
+echo "Press any key to begin..."
+read -n 1
+echo
+
 virt-install \
   --connect qemu:///system \
   --name gentoo-test-$(uuidgen) \
-  --ram 2048 \
+  --ram 2048 --vcpus 3 --check-cpu \
   --arch x86_64 \
-  --vcpus 3 \
-  --hvm \
-  --virt-type kvm \
+  --hvm --virt-type kvm \
   --security "type=dynamic" \
   --os-type linux --os-variant archlinux \
   --graphics none \
   --memballoon virtio \
-  --check-cpu \
   --network "bridge=br0" \
   --boot "uefi,bootmenu.enable=on,bios.useserial=on" \
-  --console "pty,target_type=serial" \
+  --console "pty,target_type=virtio" \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
-  --disk "pool=default,size=20,sparse=true,format=qcow2"
+  --disk "pool=default,size=20,sparse=true,format=qcow2" \
+  --tpm "backend.type=emulator,backend.version=2.0"
+
+# For the tpm flag I may want to add in the argument model=tpm-crb, the default
+# should be model=tpm-tis. There is another field "encryption" that exists in
+# the libvirt XML which I should verify is being randomly generated and
+# actually set.
