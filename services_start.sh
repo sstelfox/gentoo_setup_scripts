@@ -2,16 +2,13 @@
 
 . ./_error_handling.sh
 
-if [ "$(getenforce)" == "Enforcing" ]; then
-  echo "Unable to run with SELinux in enforcing mode..."
-  exit 1
-fi
+podman run -d --rm --security-opt label=disable -p 2049:2049 \
+  --name gentoo_nfs_server -e SHARED_DIRECTORY=/setup_scripts \
+  -v $(pwd):/setup_scripts itsthenetwork/nfs-server-alpine:latest
 
-docker run -d --rm --name gentoo_nfs --privileged -v $(pwd):/setup_scripts \
-  -p 2049:2049 -e SHARED_DIRECTORY=/setup_scripts itsthenetwork/nfs-server-alpine:latest
-
-docker run -d --rm --name gentoo_binhost -p 8200:80 \
+mkdir -p $(pwd)/cache
+podman run -d --rm --security-opt label=disable -p 8200:80 \
+  --name gentoo_binhost -v $(pwd)/cache:/usr/share/nginx/html:ro \
   -v $(pwd)/cache:/usr/share/nginx/html:ro nginx:alpine
 
-sudo iptables -A INPUT -m tcp -p tcp --dport 2049 -i virbr0 -j ACCEPT
-sudo iptables -A INPUT -m tcp -p tcp --dport 8200 -i virbr0 -j ACCEPT
+echo "Ensure the following ports are allowed through any firewall that's present: 2049/tcp, 8200/tcp"
