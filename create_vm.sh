@@ -95,6 +95,13 @@ echo "Press any key to begin..."
 read -n 1
 echo
 
+# For the tpm flag I may want to add in the argument model=tpm-crb, the default
+# should be model=tpm-tis. There is another field "encryption" that exists in
+# the libvirt XML which I should verify is being randomly generated and
+# actually set.
+#
+# Note: The `--serial pty` flag is required to enable the TPM.
+
 virt-install \
   --connect qemu:///system \
   --name gentoo-test-$(uuidgen) \
@@ -106,13 +113,8 @@ virt-install \
   --graphics none \
   --memballoon virtio \
   --network "bridge=br0" \
-  --boot "uefi,bootmenu.enable=on,bios.useserial=on" \
-  --console "pty,target_type=virtio" \
+  --boot "uefi,menu=on,useserial=on" \
+  --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
   --disk "pool=default,size=20,sparse=true,format=qcow2" \
   --tpm "backend.type=emulator,backend.version=2.0"
-
-# For the tpm flag I may want to add in the argument model=tpm-crb, the default
-# should be model=tpm-tis. There is another field "encryption" that exists in
-# the libvirt XML which I should verify is being randomly generated and
-# actually set.
