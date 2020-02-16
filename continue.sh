@@ -2,6 +2,11 @@
 
 . ./_error_handling.sh
 
+function prefix_output() {
+  local PREFIX="${1:-unknown_segment}"
+  awk "{ print \"[${PREFIX}]\", \$0 }"
+}
+
 CONTINUE_FROM="${1:-}"
 if [ -z "${CONTINUE_FROM}" ]; then
   echo 'Need to provide an ID to start from'
@@ -13,7 +18,7 @@ for segment in $(ls 0*.sh | sort -n); do
 
   if [ "${seg_num}" -ge "${CONTINUE_FROM}" ]; then
     echo "Executing segment: ${segment}"
-    ./${segment}
+    ./${segment} 2>&1 | prefix_output "${segment%%.sh}"
     echo "Segment complete"
   fi
 done
