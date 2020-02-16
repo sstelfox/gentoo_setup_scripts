@@ -9,6 +9,6 @@ function prefix_output() {
 
 for segment in $(ls 0*.sh | sort -n); do
   echo "Executing segment: ${segment}"
-  ./${segment} | prefix_output "${segment%%.sh}"
+  ./${segment} 2>&1 | prefix_output "${segment%%.sh}"
   echo "Segment complete"
 done
