@@ -12,9 +12,6 @@ chroot /mnt/gentoo emerge net-misc/openssh
 cat << 'EOF' > /mnt/gentoo/etc/ssh/ssh_config
 # /etc/ssh/ssh_config
 
-Port 22
-Port 2200
-
 CheckHostIP yes
 HashKnownHosts yes
 IdentitiesOnly yes
@@ -43,6 +40,9 @@ EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/ssh/sshd_config
 # /etc/ssh/sshd_config
+
+Port 22
+Port 2200
 
 HostKeyAlgorithms ssh-ed25519,ecdsa-sha2-nistp521,ssh-rsa
 
