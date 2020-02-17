@@ -31,7 +31,10 @@ EOF
 if [ -n "${GENTOO_MIRRORS:-}" ]; then
   echo -e "\nGENTOO_MIRRORS=\"${GENTOO_MIRRORS}\"" >> /mnt/gentoo/etc/portage/make.conf
 elif [ "${LOCAL}" != "yes" ]; then
-  mirrorselect -o -s 3 -q -D -H -R 'North America' 2> /dev/null >> /mnt/gentoo/etc/portage/make.conf
+  # Only attempt to find the fastest Gentoo mirror if the utility is available
+  if which mirrorselect &> /dev/null; then
+    mirrorselect -o -s 3 -q -D -H -R 'North America' 2> /dev/null >> /mnt/gentoo/etc/portage/make.conf
+  fi
 fi
 
 if [ -n "${BIN_HOST:-}" ]; then
