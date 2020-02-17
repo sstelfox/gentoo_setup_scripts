@@ -6,10 +6,15 @@
 . ./_config.sh
 . ./_error_handling.sh
 
+# In the event we don't have a specific mirror for our general stage download
+# fallback on a random one I chose that was a good mirrorselect once upon a
+# time.
+STAGE_MIRROR="${GENTOO_MIRRORS:-http://gentoo.mirrors.easynews.com/linux/gentoo/}"
+
 if [ "${LOCAL}" != "yes" ]; then
-  TARGET_FILES=$(curl -s "${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/" | grep -oE 'stage4-amd64-hardened\+minimal-nomultilib-[0-9TZ]+\.tar\.xz(\.DIGESTS\.asc)?')
+  TARGET_FILES=$(curl -s "${STAGE_MIRROR}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/" | grep -oE 'stage4-amd64-hardened\+minimal-nomultilib-[0-9TZ]+\.tar\.xz(\.DIGESTS\.asc)?')
   for FILE in ${TARGET_FILES}; do
-    curl -s -C - -o /mnt/gentoo/${FILE} ${GENTOO_MIRRORS}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/${FILE}
+    curl -s -C - -o /mnt/gentoo/${FILE} ${STAGE_MIRROR}/releases/amd64/autobuilds/current-stage4-amd64-hardened+minimal-nomultilib/${FILE}
   done
 
   rm -rf /root/.gnupg
