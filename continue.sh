@@ -13,14 +13,14 @@ if [ -z "${CONTINUE_FROM}" ]; then
   exit 1
 fi
 
-for segment in $(ls 0*.sh | sort -n); do
+for segment in $(ls build_scripts/0*.sh | sort -n); do
   seg_num="$(echo ${segment} | cut -d _ -f 1)"
 
   if [ "${seg_num}" -ge "${CONTINUE_FROM}" ]; then
     ./resize_console.sh
 
     echo "Executing segment: ${segment}"
-    ./${segment} 2>&1 | prefix_output "${segment%%.sh}"
+    ./${segment} 2>&1 | prefix_output "$(basename ${segment%%.sh})"
     echo "Segment complete"
   fi
 done
