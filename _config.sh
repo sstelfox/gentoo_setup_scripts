@@ -1,6 +1,6 @@
 
 # Which block device to use as the root filesystem
-DISK="/dev/vda"
+DISK="/dev/sda"
 
 # Whether to attempt to run the entire installation without making an external
 # network connection, instead this will use the configured NFS server
@@ -14,10 +14,10 @@ NFS_SOURCE="192.168.122.1:/"
 # When provided the install will configure and attempt to source compiled
 # packages from the following location. This can drastically speed up the
 # install time if matching packages are available.
-BIN_HOST="http://192.168.122.1:8200/packages"
+BIN_HOST="http://192.168.122.1:8200/binpkgs"
 
 # Whether or not to use UEFI or a normal boot shim
-EFI="no"
+EFI="yes"
 
 # Whether to encrypt the root partition and the swap partition. Encrypted
 # mechanism is a work in process as there needs to be an initramfs to handle
