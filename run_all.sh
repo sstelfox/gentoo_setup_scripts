@@ -8,6 +8,8 @@ function prefix_output() {
 }
 
 for segment in $(ls 0*.sh | sort -n); do
+  ./resize_console.sh
+
   echo "Executing segment: ${segment}"
   ./${segment} 2>&1 | prefix_output "${segment%%.sh}"
   echo "Segment complete"
