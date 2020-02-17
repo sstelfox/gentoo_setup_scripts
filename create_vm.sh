@@ -101,6 +101,10 @@ echo
 # actually set.
 #
 # Note: The `--serial pty` flag is required to enable the TPM.
+#
+# I'm using the SCSI bus as the virtio one doesn't currently support discard, I
+# may want to drop both these options in favor of virtio for performance
+# reasons though...
 
 virt-install \
   --connect qemu:///system \
@@ -116,5 +120,5 @@ virt-install \
   --boot "uefi,menu=on,useserial=on" \
   --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
-  --disk "pool=default,size=20,sparse=true,format=qcow2,driver.discard=unmap" \
+  --disk "pool=default,size=20,sparse=true,format=qcow2,cache=writeback,bus=scsi,driver.discard=unmap" \
   --tpm "backend.type=emulator,backend.version=2.0"
