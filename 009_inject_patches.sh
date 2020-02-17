@@ -3,4 +3,4 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-cp -r patches /mnt/gentoo/etc/portage/patches
+cp -r patches /mnt/gentoo/etc/portage/
