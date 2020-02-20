@@ -1,2 +1,3 @@
-cache/
-reference_files/
+/cache/
+/pkg_repos/
+/reference_files/

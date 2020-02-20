@@ -59,4 +59,10 @@ if [ -n "${NFS_SOURCE}" ]; then
     mount --rbind /mnt/nfs_source/cache /mnt/gentoo/var/cache
     mount --make-rslave /mnt/gentoo/var/cache
   fi
+
+  if ! mount | grep -q '/mnt/gentoo/var/db/repos'; then
+    mkdir -p /mnt/nfs_source/pkg_repos /mnt/gentoo/var/db/repos
+    mount --rbind /mnt/nfs_source/pkg_repos /mnt/gentoo/var/db/repos
+    mount --make-rslave /mnt/gentoo/var/db/repos
+  fi
 fi

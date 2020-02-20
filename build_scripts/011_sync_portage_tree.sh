@@ -5,7 +5,7 @@
 
 if [ "${LOCAL}" != "yes" ]; then
   # Do a fast bulk sync if we have nothing, then a slower more refined rsync
-  [ -f /mnt/gentoo/usr/portage/header.txt ] || chroot /mnt/gentoo emerge-webrsync &> /dev/null
+  [ "$(ls /var/db/pkg/ 2>/dev/null | wc -l)" -eq 0 ] || chroot /mnt/gentoo emerge-webrsync &> /dev/null
   chroot /mnt/gentoo emerge --sync &> /dev/null
 fi
 
