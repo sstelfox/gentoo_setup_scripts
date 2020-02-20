@@ -15,7 +15,7 @@ chroot /mnt/gentoo emerge sys-boot/grub
 # We want to additionally spit out the kernel messages to the KVM serial
 # console
 if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
-  ADDITIONAL_BOOT_OPTS="console=tty0 console=ttyS0,115200n8"
+  ADDITIONAL_BOOT_OPTS="console=tty0 console=ttyS0"
 fi
 
 # GPD also wants "i915.fastboot=1 fbcon=rotate:1"
@@ -44,9 +44,6 @@ GRUB_TERMINAL="console serial"
 GRUB_SERIAL_COMMAND="serial --speed=115200 --unit=0 --word=8 --parity=no --stop=1"
 EOF
 fi
-
-# For some stupid reason this kernel is getting installed...
-rm -f /mnt/gentoo/boot/*-openstack
 
 if [ "${EFI}" = "yes" ]; then
   chroot /mnt/gentoo grub-install --target=x86_64-efi --efi-directory=/boot --removable

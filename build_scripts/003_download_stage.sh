@@ -67,3 +67,6 @@ else
   tar -xpf /mnt/gentoo/*.tar.xz -C /mnt/gentoo
   rm -f /mnt/gentoo/*.tar.xz*
 fi
+
+# Remove the trash kernels that come with the stage
+rm -rf /mnt/gentoo/boot/*

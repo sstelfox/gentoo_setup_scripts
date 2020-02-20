@@ -120,5 +120,5 @@ virt-install \
   --boot "uefi,menu=on,useserial=on" \
   --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
-  --disk "pool=default,size=20,sparse=true,format=qcow2,cache=writeback,bus=scsi,driver.discard=unmap" \
+  --disk "pool=default,size=20,sparse=true,format=qcow2" \
   --tpm "backend.type=emulator,backend.version=2.0"

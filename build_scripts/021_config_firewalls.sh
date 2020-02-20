@@ -49,7 +49,7 @@ table inet filter {
     ip6 version 6 ip6 nexthdr icmpv6 icmpv6 type { echo-request, nd-neighbor-advert, nd-neighbor-solicit, nd-router-advert } accept
 
     # SSH (port 22 locally and my alt port everywhere)
-    ip saddr 192.168.122.0/24 tcp dport 22 accept
+    ip saddr 10.0.0.0/8 tcp dport 22 accept
     tcp dport 2200 accept
 
     # Probably don't want this on production systems but great for
@@ -86,16 +86,18 @@ table inet filter {
     # with a dedicated update server and/or web proxies.
     tcp dport { 80, 443, 873 } accept
 
-    # Allow SSH'ing into other local boxes once you're on one, this is libvirt specific
-    # TODO: This should be whatever local network the box is on
-    ip daddr 192.168.122.0/24 tcp dport 22 accept
+EOF
 
+if [ -n "${NFS_SOURCE}" ]; then
+  cat << EOF > /mnt/gentoo/var/lib/nftables/rules-save
     # Allow connecting to the NFS portage share and package server, this is
     # libvirt specific
-    #
-    # TODO: This should be whatever the local build box share is
-    ip daddr 192.168.122.1 tcp dport { 2049, 8200 } accept
+    ip daddr ${NFS_SOURCE} tcp dport { 2049, 8200 } accept
 
+EOF
+fi
+
+cat << 'EOF' > /mnt/gentoo/var/lib/nftables/rules-save
     # Allow DNS, could be restricted with a local recursive resolver
     tcp dport 53 accept
     udp dport 53 accept

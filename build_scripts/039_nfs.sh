@@ -13,12 +13,14 @@ echo 'net-fs/nfs-utils nfsdcld nfsv41' > /mnt/gentoo/etc/portage/package.use/nfs
 
 chroot /mnt/gentoo emerge net-fs/nfs-utils
 
-# TODO: Once kerberos is setup I should set the sec mode to 'krb5p'. I may need
-# to remove 'noexec' from this... When not on a build server, I should probably
-# have this as read only as well.
-echo '192.168.122.1:/cache      /usr/portage  nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0' >> /mnt/gentoo/etc/fstab
-
-# The following should be the build host export (ideally with sec=krb5p for integrity and encryption)
-# /etc/exports
+# TODO: Once kerberos is setup I should set the sec mode to 'krb5p'
 #
-# /srv/build/stable    2604:a880:800:10::/48(ro,no_subtree_check,root_squash)    10.0.0.0/8(ro,no_subtree_check,root_squash)
+# When not on a build server, I may need to have this noexec, though I don't
+# think that's necessary anymore. This should probably be read only as well for
+# anything that isn't a build server.
+echo "${NFS_SOURCE}:/cache      /var/cache  nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0" >> /mnt/gentoo/etc/fstab
+
+# The following should be the build host export (ideally with sec=krb5p for
+# integrity and encryption) /etc/exports
+#
+# /srv/build/stable  2604:a880:800:10::/48(ro,no_subtree_check,root_squash)  10.0.0.0/8(ro,no_subtree_check,root_squash)

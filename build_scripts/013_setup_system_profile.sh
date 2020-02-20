@@ -11,3 +11,11 @@ chroot /mnt/gentoo emerge @preserved-rebuild
 # be || true
 FEATURES="-selinux" chroot /mnt/gentoo emerge sec-policy/selinux-base sys-kernel/linux-firmware \
   sec-policy/selinux-base-policy
+
+if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
+  # These are the microcode updates. Ideally I should target the processor of
+  # the physical machine that is being built for. When dealing with KVM guests
+  # there aren't any microcode updates to be had, so we don't need either of
+  # these.
+  chroot /mnt/gentoo emerge sys-apps/iucode_tool sys-firmware/intel-microcode sys-kernel/linux-firmware
+fi

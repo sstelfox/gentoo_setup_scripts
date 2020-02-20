@@ -35,7 +35,7 @@ fi
 
 if ! mount | grep -q '/mnt/gentoo '; then
   mkdir -p /mnt/gentoo
-  mount -o defaults,discard,noatime /dev/mapper/system-root /mnt/gentoo
+  mount -o defaults,noatime /dev/mapper/system-root /mnt/gentoo
 fi
 
 # No reason not to always encrypt swap
@@ -51,7 +51,7 @@ fi
 if [ -n "${NFS_SOURCE}" ]; then
   if ! mount | grep -q '/mnt/nfs_source'; then
     mkdir -p /mnt/nfs_source
-    mount ${NFS_SOURCE} /mnt/nfs_source
+    mount -t nfs ${NFS_SOURCE}:/ /mnt/nfs_source
   fi
 
   if ! mount | grep -q '/mnt/gentoo/var/cache'; then
