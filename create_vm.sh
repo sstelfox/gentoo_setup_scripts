@@ -121,4 +121,5 @@ virt-install \
   --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
   --disk "pool=default,size=20,sparse=true,format=qcow2" \
+  --rng "/dev/urandom" \
   --tpm "backend.type=emulator,backend.version=2.0"
