@@ -89,7 +89,7 @@ table inet filter {
 EOF
 
 if [ -n "${NFS_SOURCE}" ]; then
-  cat << EOF > /mnt/gentoo/var/lib/nftables/rules-save
+  cat << EOF >> /mnt/gentoo/var/lib/nftables/rules-save
     # Allow connecting to the NFS portage share and package server, this is
     # libvirt specific
     ip daddr ${NFS_SOURCE} tcp dport { 2049, 8200 } accept
@@ -97,7 +97,7 @@ if [ -n "${NFS_SOURCE}" ]; then
 EOF
 fi
 
-cat << 'EOF' > /mnt/gentoo/var/lib/nftables/rules-save
+cat << 'EOF' >> /mnt/gentoo/var/lib/nftables/rules-save
     # Allow DNS, could be restricted with a local recursive resolver
     tcp dport 53 accept
     udp dport 53 accept
