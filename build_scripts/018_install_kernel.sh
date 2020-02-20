@@ -5,7 +5,7 @@
 
 mkdir -p /mnt/gentoo/etc/portage/package.accept_keywords
 echo 'sys-kernel/gentoo-sources ~amd64' > /mnt/gentoo/etc/portage/package.accept_keywords/kernel
-chroot /mnt/gentoo emerge sys-kernel/gentoo-sources
+chroot /mnt/gentoo emerge sys-kernel/gentoo-sources sys-kernel/dracut
 
 # TODO: sys-firmware/intel-microcode needs to be loaded, the following page has
 # information on how to build the firmware into the kernel:
