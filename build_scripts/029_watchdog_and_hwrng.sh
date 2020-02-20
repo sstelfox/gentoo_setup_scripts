@@ -3,7 +3,17 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-emerge sys-apps/watchdog
+chroot /mnt/gentoo emerge sys-apps/rng-tools sys-apps/watchdog
+
+cat << 'EOF' > /mnt/gentoo/etc/conf.d/rngd
+# /etc/conf.d/rngd
+
+HWRNG_DEVICE="/dev/hwrng"
+
+INCLUDE_ENTROPY_SOURCES="rdrand tpm"
+
+RDRAND_OPTIONS="use_aes:1"
+EOF
 
 cat << EOF > /mnt/gentoo/etc/watchdog.conf
 # /etc/watchdog.conf
@@ -51,4 +61,5 @@ pidfile = /var/run/syslog-ng.pid
 #interface = eth0
 EOF
 
+chroot /mnt/gentoo rc-update add rngd default
 chroot /mnt/gentoo rc-update add watchdog default

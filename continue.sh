@@ -14,7 +14,7 @@ if [ -z "${CONTINUE_FROM}" ]; then
 fi
 
 for segment in $(ls build_scripts/0*.sh | sort -n); do
-  seg_num="$(echo ${segment} | cut -d _ -f 1)"
+  seg_num="$(echo $(basename ${segment}) | cut -d _ -f 1)"
 
   if [ "${seg_num}" -ge "${CONTINUE_FROM}" ]; then
     ./resize_console.sh

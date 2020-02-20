@@ -13,7 +13,7 @@ chroot /mnt/gentoo rc-update add syslog-ng default
 
 chroot /mnt/gentoo curl -s -o /etc/syslog-ng/syslog-ng.conf https://stelfox.net/note_files/syslog-ng/syslog-ng.conf
 
-cat << 'EOF' > /etc/logrotate.conf
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.conf
 # /etc/logrotate.conf
 
 # Rotate log files daily
@@ -45,7 +45,7 @@ noolddir
 include /etc/logrotate.d
 EOF
 
-cat << 'EOF' > /etc/logrotate.d/login_data
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
 # /etc/logrotate.d/login_data
 
 # This data is normally in the global root, but isn't maintained by any
