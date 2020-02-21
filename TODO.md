@@ -1,8 +1,8 @@
 [ ] Review all log rotation configs for each service
-[ ] Embed configs into the Gentoo directory instead of pulling them via my
+[x] Embed configs into the Gentoo directory instead of pulling them via my
     website
-[ ] Update syslog-ng config to latest version
-[ ] Test watchdog to make sure it properly resets VMs on service failures
+[x] Update syslog-ng config to latest version
+[x] Test watchdog to make sure it properly resets VMs on service failures
 
 [ ] Make bare minimum custom initramfs (manual build, do I want a rescue shell?)
 [ ] Make custom microcode initramfs (manual build)

@@ -11,7 +11,55 @@ echo 'app-admin/syslog-ng json' > /mnt/gentoo/etc/portage/package.use/syslog-ng
 chroot /mnt/gentoo emerge app-admin/logrotate app-admin/syslog-ng
 chroot /mnt/gentoo rc-update add syslog-ng default
 
-chroot /mnt/gentoo curl -s -o /etc/syslog-ng/syslog-ng.conf https://stelfox.net/note_files/syslog-ng/syslog-ng.conf
+cat << 'EOF' > /mnt/gentoo/etc/syslog-ng/syslog-ng.conf
+# /etc/syslog-ng/syslog-ng.conf
+
+@version: 3.22
+@module system-source
+
+options {
+  # IP addresses are more reliable descriptors and doesn't require a network
+  # connection for consistent logging
+  use_dns(no);
+  dns_cache(no);
+
+  # Output log stats every 12 hours, and include details about individual
+  # connections and log files.
+  stats_freq(43200);
+  stats_level(1);
+
+  # Use a more standard timestamp, but keep the precision requested for
+  # RFC5424 TIME-SECFRAC
+  ts_format(iso);
+  frac_digits(6);
+};
+
+source local {
+  system();
+  internal();
+};
+
+destination auditFile { file(/var/log/audit.log); };
+destination cronFile { file(/var/log/cron); };
+destination kernFile { file(/var/log/kern); };
+destination mailFile { file(/var/log/maillog); };
+destination messageFile { file(/var/log/messages); };
+destination secureFile { file(/var/log/secure); };
+
+filter authpriv { facility(authpriv); };
+filter audit { level(info) and facility(local6); };
+filter cron { facility(cron); };
+filter kern { facility(kern); };
+filter mail { facility(mail); };
+filter messages { level(info) and not (facility(mail, authpriv, cron, local6)); };
+
+log { source(local); filter(audit); destination(auditFile); };
+log { source(local); filter(authpriv); destination(secureFile); };
+log { source(local); filter(cron); destination(cronFile); };
+log { source(local); filter(kern); destination(kernFile); };
+log { source(local); filter(mail); destination(mailFile); };
+log { source(local); filter(messages); destination(messageFile); };
+EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.conf
 # /etc/logrotate.conf
@@ -29,6 +77,11 @@ rotate 7
 # empty.
 create
 notifempty
+
+# When we rotate any files, by default stick them in this directory to keep the
+# standard log locations uncluttered
+olddir /var/log/archive
+createolddir 0700 root root
 
 # Dates are much better suffixes than incrementing numbers
 dateext
@@ -72,9 +125,15 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
 EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
-/var/log/messages {
+/var/log/audit.log
+/var/log/cron
+/var/log/kern
+/var/log/maillog
+/var/log/messages
+/var/log/secure {
   delaycompress
   missingok
+  notifempty
 
   sharedscripts
 
@@ -84,5 +143,19 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 }
 EOF
 
-# We log to syslog for these
-rm -f /etc/logrotate.d/{chrony,dracut}
+# Chrony goes to syslog, and dracut isn't logged either
+rm /etc/logrotate.d/{chrony,dracut}
+
+# Genkernel isn't used by these builds but this file persists, lets get rid of
+# it.
+rm /var/log/genkernel.log
+
+# Files that should be rotated but haven't been yet...
+#
+# /var/log/aide/aide.log
+# /var/log/boot
+# /var/log/dmesg
+# /var/log/emerge-fetch.log
+# /var/log/emerge.log
+# /var/log/genkernel.log
+# /var/log/lastlog
