@@ -70,3 +70,19 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
   rotate 3
 }
 EOF
+
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
+/var/log/messages {
+  delaycompress
+  missingok
+
+  sharedscripts
+
+  postrotate
+    /etc/init.d/syslog-ng reload > /dev/null 2>&1 || true
+  endscript
+}
+EOF
+
+# We log to syslog for these
+rm -f /etc/logrotate.d/{chrony,dracut}
