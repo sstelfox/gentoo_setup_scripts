@@ -18,7 +18,11 @@ chroot /mnt/gentoo emerge net-fs/nfs-utils
 # When not on a build server, I may need to have this noexec, though I don't
 # think that's necessary anymore. This should probably be read only as well for
 # anything that isn't a build server.
-echo "${NFS_SOURCE}:/cache      /var/cache  nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0" >> /mnt/gentoo/etc/fstab
+cat << EOF > /mnt/gentoo/etc/fstab
+
+${NFS_SOURCE}:/cache      /var/cache     nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0
+${NFS_SOURCE}:/pkg_repos  /var/db/repos  nfs4  rw,noatime,noauto,nodev,noexec,nosuid  0 0
+EOF
 
 # The following should be the build host export (ideally with sec=krb5p for
 # integrity and encryption) /etc/exports

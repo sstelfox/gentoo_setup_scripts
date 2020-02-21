@@ -9,6 +9,11 @@ app-crypt/tpm2-tools ~amd64
 app-crypt/tpm2-tss ~amd64
 EOF
 
+# I hit an incredibly annoyingly issue where the tss user and group weren't
+# created... I have no idea what went wrong but re-emerging the package didn't
+# solve it either... I had to unmerge the package, remove the binary package,
+# validate there were no artifacts left behind then re-install it.
+
 chroot /mnt/gentoo emerge app-crypt/tpm2-abrmd app-crypt/tpm2-tools
 
 # Might be useful:
