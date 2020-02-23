@@ -18,5 +18,16 @@ mount | grep -q gentoo && umount -rl /mnt/gentoo || true
 swapoff -a
 sync
 
+# When these fail to dismount, I can identify what processes are holding them
+# open with this:
+# grep system /proc/*/mounts | grep -vE '(cgroup|systemd)'
+
+# These processes are problematic and hold open the mounts despite having
+# nothing to do with them... Fucking systemd...
+systemctl stop havaged.service
+systemctl stop systemd-logind.service                                                                                                │
+systemctl stop systemd-udevd.service
+
 lvchange -a n system
+
 [ -b /dev/mapper/crypt ] && cryptsetup luksClose /dev/mapper/crypt || true
