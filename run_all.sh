@@ -8,7 +8,7 @@ function prefix_output() {
 }
 
 for segment in $(ls build_scripts/0*.sh | sort -n); do
-  ./resize_console.sh
+  ./resize_console.sh || true
 
   echo "Executing segment: ${segment}"
   ./${segment} 2>&1 | prefix_output "$(basename ${segment%%.sh})"

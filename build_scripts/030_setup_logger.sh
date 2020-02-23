@@ -143,12 +143,9 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 }
 EOF
 
-# Chrony goes to syslog, and dracut isn't logged either
-rm /etc/logrotate.d/{chrony,dracut}
-
 # Genkernel isn't used by these builds but this file persists, lets get rid of
 # it.
-rm /var/log/genkernel.log
+rm /mnt/gentoo/var/log/genkernel.log
 
 # Files that should be rotated but haven't been yet...
 #
