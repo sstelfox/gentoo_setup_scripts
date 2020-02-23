@@ -10,7 +10,7 @@ cat << 'EOF' > /mnt/gentoo/etc/conf.d/rngd
 
 HWRNG_DEVICE="/dev/hwrng"
 
-INCLUDE_ENTROPY_SOURCES="rdrand tpm"
+INCLUDE_ENTROPY_SOURCES="hwrng rdrand"
 
 RDRAND_OPTIONS="use_aes:1"
 EOF
