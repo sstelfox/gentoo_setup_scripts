@@ -9,8 +9,7 @@ chroot /mnt/gentoo emerge @preserved-rebuild
 
 # This may need to have the selinux feature disabled, and may need to
 # be || true
-FEATURES="-selinux" chroot /mnt/gentoo emerge sec-policy/selinux-base sys-kernel/linux-firmware \
-  sec-policy/selinux-base-policy
+FEATURES="-selinux" chroot /mnt/gentoo emerge sec-policy/selinux-base sec-policy/selinux-base-policy
 
 if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
   # These are the microcode updates. Ideally I should target the processor of
