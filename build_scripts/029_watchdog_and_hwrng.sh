@@ -15,20 +15,6 @@ INCLUDE_ENTROPY_SOURCES="hwrng rdrand"
 RDRAND_OPTIONS="use_aes:1"
 EOF
 
-# TODO: The postfix master process's pid file prefixes the number with a bunch
-# of whitespace for some stupid reason. When the watchdog process reads the
-# file it interprts the PID identity as 0, which is a special case that is
-# handled by the kernel and will always check as positive.
-#
-# This unfortunately means that if I want to verify that this core service
-# continues to operate, I'll need to write some kind of script, init hook, or
-# cron job that extracts the pid to a file that can be read by the watchdog
-# process so it can actually check it.
-#
-# It's probably also worth reviewing all the core system services again once I
-# get to the point I'm addressing these TODOs... The core services are already
-# pretty locked down but by then they should be even more stable.
-
 cat << EOF > /mnt/gentoo/etc/watchdog.conf
 # /etc/watchdog.conf
 
@@ -69,19 +55,63 @@ max-load-15 = $(($(nproc) * 3))
 #ping = 10.64.0.1
 #interface = eth0
 
+# Run any custom watchdog scripts we define, these are unfortunately necessary
+# at least as a minimum for postfix.
+test-directory = /etc/watchdog.d
+test-timeout = 1
+
 # Ensure the processes defined in the pidfiles here are running. If they fail,
 # crash, or are shutdown for too long we need to reset the system. This could
 # be a system fault, or it could be due to an attack.
+pidfile = /var/run/acpid.pid
+pidfile = /var/run/chrony/chronyd.pid
 pidfile = /var/run/crond.pid
-#pidfile = /var/spool/postfix/pid/master.pid
 pidfile = /var/run/sshd.pid
 pidfile = /var/run/syslog-ng.pid
 EOF
 
 if [ ! -c /dev/tpm0 ]; then
-  # TODO: Figure out the tpm2-abrmd PID file and append it to the watchdog file
-  echo 'todo'
+  echo 'pidfile = /var/run/tpm2-abrmd.pid' >> /mnt/gentoo/etc/watchdog.conf
 fi
+
+mkdir -p /mnt/gentoo/etc/watchdog.d
+
+# The postfix master process's pid file prefixes the number with a bunch of
+# whitespace for some stupid reason. When the watchdog process reads the file
+# it interprts the PID identity as 0, which is a special case that is handled
+# by the kernel and will always check as positive.
+#
+# This script handles basically the same thing as the pid checks but extracts
+# the pid from among the whitespace before checking it.
+cat << 'EOF' > /mnt/gentoo/etc/watchdog.d/check_postfix.sh
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+case $1 in
+  test)
+    # If the file is missing the service isn't running
+    if [ ! -f /var/spool/postfix/pid/master.pid ]; then
+      exit 1
+    fi
+
+    # Ping the process to make sure it's running, exit cleanly 
+    if kill -0 $(awk '{ print $1 }' /var/spool/postfix/pid/master.pid); then
+      exit 0
+    else
+      exit 1
+    fi
+    ;;
+  # Handle repair and any other possibilities with an error
+  *)
+    exit 1
+    ;;
+esac
+EOF
+
+chmod 0600 /mnt/gentoo/etc/watchdog.conf
+chmod -R 0700 /mnt/gentoo/etc/watchdog.d
 
 chroot /mnt/gentoo rc-update add rngd default
 chroot /mnt/gentoo rc-update add watchdog default
