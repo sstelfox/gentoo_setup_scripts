@@ -38,13 +38,18 @@ root    hard    nproc      65536
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/fs_hardening.conf
-# Prevent SUID executables from creating core dumps, should be set to '2' if an
-# administrator needs a dump from one of these executables
-fs.suid_dumpable = 0
+# Restrict the maximum size of file handles and inodes from unlimited to a
+# still incredibly high number, but protect against certain forms of memory
+# exhaustion.
+fs.file-max = 2097152
 
 # Provide protection against ToCToU races
 fs.protected_hardlinks = 1
 fs.protected_symlinks = 1
+
+# Prevent SUID executables from creating core dumps, should be set to '2' if an
+# administrator needs a dump from one of these executables
+fs.suid_dumpable = 0
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/kernel_hardening.conf
@@ -69,7 +74,7 @@ net.ipv6.conf.default.accept_redirects = 0
 net.ipv4.conf.default.accept_redirects = 0
 
 # Ignore source-routed packets
-net.ipv4.conf.all.accept_source_route=0
+net.ipv4.conf.all.accept_source_route = 0
 net.ipv6.conf.all.accept_source_route = 0
 net.ipv4.conf.default.accept_source_route = 0
 net.ipv6.conf.default.accept_source_route = 0
@@ -102,12 +107,24 @@ net.ipv6.conf.default.mc_forwarding = 0
 net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_responses = 1
 
-# Enable SYN flood protection
-net.ipv4.tcp_syncookies = 1
+# Increase the available port range for connections
+net.ipv4.ip_local_port_range = 16384 65536
+
+# Reduce the time that the kernel holds on to connections that have are in the
+# FIN state. This helps prevent certain forms of exhaustion attacks.
+net.ipv4.tcp_fin_timeout = 15
 
 # Implement informational RFC1337, this helps prevent against TIME_WAIT
 # assasination and corruption of connections.
 net.ipv4.tcp_rfc1337 = 1
+
+# Enable SYN flood protection
+net.ipv4.tcp_syncookies = 1
+
+# Reduce the TCP keepalive setting to prevent various DoS attacks
+net.ipv4.tcp_keepalive_intvl = 15
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_keepalive_time = 300
 
 # Increase the tcp-time-wait buckets pool size to prevent simple DOS attacks
 net.ipv4.tcp_max_tw_buckets = 1440000
@@ -117,11 +134,8 @@ net.ipv4.tcp_tw_reuse = 1
 # TODO: Additional options found in a hardening guide that had no explanations
 # but should probably look into.
 #net.ipv4.tcp_max_syn_backlog = 1024
-#net.ipv4.tcp_fin_timeout = 15
-#net.ipv4.tcp_keepalive_time = 1800
 #net.ipv4.tcp_window_scaling = 0
 #net.ipv4.tcp_sack = 0
-#net.ipv4.ip_local_port_range = 16384 65536
 
 ## BEGIN QUESTIONABLE IPV6 SETTINGS
 
