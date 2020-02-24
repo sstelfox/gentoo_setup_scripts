@@ -10,7 +10,6 @@ mount | grep -q /mnt/gentoo/sys && umount -l /mnt/gentoo/sys
 
 mount | grep -q '/mnt/gentoo/var/cache' && umount -l /mnt/gentoo/var/cache
 mount | grep -q '/mnt/gentoo/var/db/repos' && umount -l /mnt/gentoo/var/db/repos
-#mount | grep -q nfs_source && umount -l /mnt/nfs_source
 
 mount | grep -q boot && umount -f /mnt/gentoo/boot
 mount | grep -q gentoo && umount -rl /mnt/gentoo || true
