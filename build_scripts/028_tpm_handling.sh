@@ -4,7 +4,7 @@
 . ./_error_handling.sh
 
 # If there isn't a TPM device skip this section
-if [ ! -f /dev/tpm0 ]; then
+if [ ! -c /dev/tpm0 ]; then
   exit 0
 fi
 

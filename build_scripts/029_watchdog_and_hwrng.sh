@@ -78,7 +78,7 @@ pidfile = /var/run/sshd.pid
 pidfile = /var/run/syslog-ng.pid
 EOF
 
-if [ ! -f /dev/tpm0 ]; then
+if [ ! -c /dev/tpm0 ]; then
   # TODO: Figure out the tpm2-abrmd PID file and append it to the watchdog file
   echo 'todo'
 fi
