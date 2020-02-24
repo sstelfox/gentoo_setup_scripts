@@ -110,6 +110,10 @@ net.ipv4.icmp_ignore_bogus_error_responses = 1
 # Increase the available port range for connections
 net.ipv4.ip_local_port_range = 16384 65536
 
+# Increase the default backlog size for SYNs, even with syncookies these can be
+# exhausted.
+net.ipv4.tcp_max_syn_backlog = 4096
+
 # Reduce the time that the kernel holds on to connections that have are in the
 # FIN state. This helps prevent certain forms of exhaustion attacks.
 net.ipv4.tcp_fin_timeout = 15
@@ -131,11 +135,15 @@ net.ipv4.tcp_max_tw_buckets = 1440000
 net.ipv4.tcp_tw_recycle = 1
 net.ipv4.tcp_tw_reuse = 1
 
-# TODO: Additional options found in a hardening guide that had no explanations
-# but should probably look into.
-#net.ipv4.tcp_max_syn_backlog = 1024
-#net.ipv4.tcp_window_scaling = 0
-#net.ipv4.tcp_sack = 0
+# TCP window scaling may cause issues if upstream routers or firewalls don't
+# support it but it can drastically improve the performance of network
+# connections.
+net.ipv4.tcp_window_scaling = 1
+
+# Allow negotiation of selective TCP ACK negotiation. This will only be used on
+# remote hosts that support it but can also improve back and forth performance
+# by requiring fewer packets in general.
+net.ipv4.tcp_sack = 1
 
 ## BEGIN QUESTIONABLE IPV6 SETTINGS
 
