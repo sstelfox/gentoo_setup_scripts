@@ -23,9 +23,9 @@ sync
 
 # These processes are problematic and hold open the mounts despite having
 # nothing to do with them... Fucking systemd...
-systemctl stop havaged.service
-systemctl stop systemd-logind.service                                                                                                │
-systemctl stop systemd-udevd.service
+systemctl stop havaged.service &> /dev/null || true
+systemctl stop systemd-logind.service &> /dev/null || true                                                                                              │
+systemctl stop systemd-udevd.service &> /dev/null || true
 
 lvchange -a n system
 
