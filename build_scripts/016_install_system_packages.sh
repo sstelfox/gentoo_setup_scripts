@@ -10,6 +10,7 @@ chroot /mnt/gentoo emerge sys-apps/dmidecode app-arch/lz4 net-misc/curl \
 # We don't care about physical sensors on virtual machines
 if [ "${KERNEL_TARGET}" != "kvm_guest" ]; then
   chroot /mnt/gentoo emerge sys-apps/lm-sensors
+
   # Note: I haven't tested this... It may fail, but good to enable
   chroot /mnt/gentoo rc-update add lm_sensors default
 

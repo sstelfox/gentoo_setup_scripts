@@ -3,8 +3,6 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-# TODO: Need to convert this to support local mode
-
 mkdir -p /mnt/gentoo/etc/portage/package.use
 echo 'app-admin/syslog-ng json' > /mnt/gentoo/etc/portage/package.use/syslog-ng
 
@@ -147,7 +145,7 @@ EOF
 # it.
 rm /mnt/gentoo/var/log/genkernel.log
 
-# Files that should be rotated but haven't been yet...
+# TODO: Files that should be rotated but haven't been yet...
 #
 # /var/log/aide/aide.log
 # /var/log/boot

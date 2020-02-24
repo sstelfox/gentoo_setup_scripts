@@ -145,7 +145,7 @@ net.ipv4.tcp_window_scaling = 1
 # by requiring fewer packets in general.
 net.ipv4.tcp_sack = 1
 
-## BEGIN QUESTIONABLE IPV6 SETTINGS
+## TODO: QUESTIONABLE IPV6 SETTINGS NEEDING REVIEW
 
 # These settings are mostly useful for statically configured IPv6
 
