@@ -64,6 +64,11 @@ max-load-1 = 0
 max-load-5 = $(($(nproc) * 5))
 max-load-15 = $(($(nproc) * 3))
 
+# If we trust the network more than we trust the stability of the system, we
+# can perform a soft reboot when the gateway isn't available.
+#ping = 10.64.0.1
+#interface = eth0
+
 # Ensure the processes defined in the pidfiles here are running. If they fail,
 # crash, or are shutdown for too long we need to reset the system. This could
 # be a system fault, or it could be due to an attack.
@@ -71,12 +76,11 @@ pidfile = /var/run/crond.pid
 #pidfile = /var/spool/postfix/pid/master.pid
 pidfile = /var/run/sshd.pid
 pidfile = /var/run/syslog-ng.pid
-
-# If we trust the network more than we trust the stability of the system, we
-# can perform a soft reboot when the gateway isn't available.
-#ping = 10.64.0.1
-#interface = eth0
 EOF
+
+if [ ! -f /dev/tpm0 ]; then
+  # TODO: Figure out the tpm2-abrmd PID file and append it to the watchdog file
+fi
 
 chroot /mnt/gentoo rc-update add rngd default
 chroot /mnt/gentoo rc-update add watchdog default

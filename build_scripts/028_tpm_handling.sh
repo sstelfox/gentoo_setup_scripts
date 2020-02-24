@@ -3,6 +3,11 @@
 . ./_config.sh
 . ./_error_handling.sh
 
+# If there isn't a TPM device skip this section
+if [ ! -f /dev/tpm0 ]; then
+  exit 0
+fi
+
 cat << 'EOF' > /mnt/gentoo/etc/portage/package.accept_keywords/tpm_handling
 app-crypt/tpm2-abrmd ~amd64
 app-crypt/tpm2-tools ~amd64
