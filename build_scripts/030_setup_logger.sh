@@ -59,6 +59,8 @@ log { source(local); filter(mail); destination(mailFile); };
 log { source(local); filter(messages); destination(messageFile); };
 EOF
 
+chmod 0600 /mnt/gentoo/etc/syslog-ng/syslog-ng.conf
+
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.conf
 # /etc/logrotate.conf
 
@@ -141,9 +143,19 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 }
 EOF
 
+# Pre-create the directories others will create on the first boot so we can
+# proactively set their permissions
+mkdir -p /mnt/gentoo/var/log/{aide,archive,audit,chrony,portage,sandbox,sudo-io,watchdog}
+
+chmod -R u=rwX,g=,o= /mnt/gentoo/etc/logrotate.*
+chmod -R u=rwX,g=rX,o= /mnt/gentoo/var/log
+
+touch /mnt/gentoo/var/log/wtmp
+chmod 0660 /mnt/gentoo/var/log/wtmp
+
 # Genkernel isn't used by these builds but this file persists, lets get rid of
-# it.
-rm /mnt/gentoo/var/log/genkernel.log
+# it for a nice clean root.
+rm -f /mnt/gentoo/var/log/genkernel.log
 
 # TODO: Files that should be rotated but haven't been yet...
 #
