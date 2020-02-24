@@ -11,8 +11,8 @@ mount | grep -q /mnt/gentoo/sys && umount -l /mnt/gentoo/sys
 mount | grep -q '/mnt/gentoo/var/cache' && umount -l /mnt/gentoo/var/cache
 mount | grep -q '/mnt/gentoo/var/db/repos' && umount -l /mnt/gentoo/var/db/repos
 
-mount | grep -q boot && umount -f /mnt/gentoo/boot
-mount | grep -q gentoo && umount -rl /mnt/gentoo || true
+mount | grep -q /mnt/gentoo/boot && umount -f /mnt/gentoo/boot
+mount | grep -q /mnt/gentoo && umount -rl /mnt/gentoo || true
 
 swapoff -a
 sync
@@ -26,6 +26,12 @@ sync
 systemctl stop haveged.service &> /dev/null || true
 systemctl stop systemd-logind.service &> /dev/null || true                                                                                              │
 systemctl stop systemd-udevd.service &> /dev/null || true
+
+echo 'Waiting for processes with holds on the system mount to exit...'
+while grep system /proc/*/mounts | grep -qvE '(cgroup|systemd)'; do
+  sleep 0.1
+done
+echo '...mounts released.'
 
 lvchange -a n system
 
