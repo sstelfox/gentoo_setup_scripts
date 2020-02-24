@@ -8,9 +8,15 @@ echo 'sys-process/audit ~amd64' > /mnt/gentoo/etc/portage/package.accept_keyword
 
 chroot /mnt/gentoo emerge sys-process/audit
 
-chroot /mnt/gentoo rc-update add auditd boot
+# TODO: The audit rules and selinux policies need to be tweaked before I can
+# really enable this, its very noisy and not meaningful right now
+#chroot /mnt/gentoo rc-update add auditd boot
 
-rm -f /mnt/gentoo/etc/audisp/plugins.d/*
+# TODO: When reviewing SELinux policy it may be useful to allow the normal
+# plugin to log to the normal location. Likely I can use the normal tool
+# inspection of offenses with my redirected audit log but no point is getting
+# rid of a guaranteed useful diagnostic source without knowing for sure.
+#rm -f /mnt/gentoo/etc/audisp/plugins.d/*
 
 cat << 'EOF' > /mnt/gentoo/etc/audisp/audispd.conf
 # /etc/audisp/audispd.conf
