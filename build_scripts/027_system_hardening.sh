@@ -88,10 +88,14 @@ net.ipv4.tcp_syncookies = 1
 # assasination and corruption of connections.
 net.ipv4.tcp_rfc1337 = 1
 
+# Increase the tcp-time-wait buckets pool size to prevent simple DOS attacks
+net.ipv4.tcp_max_tw_buckets = 1440000
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_tw_reuse = 1
+
 # TODO: Additional options found in a hardening guide that had no explanations
 # but should probably look into.
 #net.ipv4.tcp_max_syn_backlog = 1024
-#net.ipv4.tcp_max_tw_buckets = 1440000
 #net.ipv4.tcp_fin_timeout = 15
 #net.ipv4.tcp_keepalive_time = 1800
 #net.ipv4.tcp_window_scaling = 0
