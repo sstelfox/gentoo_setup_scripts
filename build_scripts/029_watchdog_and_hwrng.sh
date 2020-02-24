@@ -37,7 +37,7 @@ watchdog-timeout = 60
 
 # How often in seconds to check the watchdog device. If all the tests pass this
 # will update the watchdog process. If the kernel doesn't receive an all clear
-# within `watchdog-timeout` seconds, the system will be rebooted. This either
+# within 'watchdog-timeout' seconds, the system will be rebooted. This either
 # happens by the kernel or the VM host.
 interval = 5
 
@@ -80,6 +80,7 @@ EOF
 
 if [ ! -f /dev/tpm0 ]; then
   # TODO: Figure out the tpm2-abrmd PID file and append it to the watchdog file
+  echo 'todo'
 fi
 
 chroot /mnt/gentoo rc-update add rngd default
