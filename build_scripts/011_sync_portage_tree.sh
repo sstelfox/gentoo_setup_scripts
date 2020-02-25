@@ -9,9 +9,6 @@ if [ "${LOCAL}" != "yes" ]; then
   chroot /mnt/gentoo emerge --sync &> /dev/null
 fi
 
-# TODO: I should probably set the system profile now so the packages can go
-# straight to the final binary targets.
-
 # Remove all of the gentoo news that has been announced to date
 chroot /mnt/gentoo eselect news read all --quiet
 chroot /mnt/gentoo eselect news purge

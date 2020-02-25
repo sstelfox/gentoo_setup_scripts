@@ -82,9 +82,9 @@ table inet filter {
     ip version 4 udp dport 67 udp sport 68 accept
     ip6 version 6 udp dport 547 udp sport 546 accept
 
-    # Allow HTTP, HTTPS, and rsync protocols, for updating. Could be restricted
-    # with a dedicated update server and/or web proxies.
-    tcp dport { 80, 443, 873 } accept
+    # Allow FTP, HTTP, HTTPS, and rsync protocols, for updating. Could be
+    # restricted with a dedicated update server and/or web proxies.
+    tcp dport { 21, 80, 443, 873 } accept
 
 EOF
 

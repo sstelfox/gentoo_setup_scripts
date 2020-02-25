@@ -108,7 +108,7 @@ net.ipv4.icmp_echo_ignore_broadcasts = 1
 net.ipv4.icmp_ignore_bogus_error_responses = 1
 
 # Increase the available port range for connections
-net.ipv4.ip_local_port_range = 16384 65536
+net.ipv4.ip_local_port_range = 16384 65535
 
 # Increase the default backlog size for SYNs, even with syncookies these can be
 # exhausted.
