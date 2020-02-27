@@ -31,8 +31,7 @@ echo 'Waiting for processes with holds on the system mount to exit...'
 while grep system /proc/*/mounts | grep -qvE '(cgroup|systemd)'; do
   sleep 0.1
 done
-echo '...mounts released.'
 
-lvchange -a n system
+lvchange -a n system || true
 
 [ -b /dev/mapper/crypt ] && cryptsetup luksClose /dev/mapper/crypt || true

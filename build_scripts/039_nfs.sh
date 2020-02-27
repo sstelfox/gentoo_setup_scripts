@@ -13,8 +13,6 @@ echo 'net-fs/nfs-utils nfsdcld nfsv41' > /mnt/gentoo/etc/portage/package.use/nfs
 
 chroot /mnt/gentoo emerge net-fs/nfs-utils
 
-mkdir -p /mnt/gentoo/usr/src/kernel
-
 # TODO: Once kerberos is setup I should set the sec mode to 'krb5p'
 #
 # When not on a build server, I may need to have this noexec, though I don't
@@ -23,7 +21,6 @@ mkdir -p /mnt/gentoo/usr/src/kernel
 cat << EOF >> /mnt/gentoo/etc/fstab
 
 ${NFS_SOURCE}:/cache          /var/cache       nfs4  rw,noatime,nodev,noexec,nosuid  0 0
-${NFS_SOURCE}:/src_cache      /usr/src         nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 ${NFS_SOURCE}:/kernel_config  /usr/src/kernel  nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 ${NFS_SOURCE}:/pkg_repos      /var/db/repos    nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 EOF
