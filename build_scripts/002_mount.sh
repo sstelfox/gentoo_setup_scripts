@@ -54,6 +54,12 @@ if [ -n "${NFS_SOURCE}" ]; then
     mount -t nfs ${NFS_SOURCE}:/ /mnt/nfs_source
   fi
 
+  if ! mount | grep -q '/mnt/gentoo/usr/src'; then
+    mkdir -p /mnt/nfs_source/src_cache /mnt/gentoo/usr/src
+    mount --rbind /mnt/nfs_source/src_cache /mnt/gentoo/usr/src
+    mount --make-rslave /mnt/gentoo/usr/src
+  fi
+
   if ! mount | grep -q '/mnt/gentoo/var/cache'; then
     mkdir -p /mnt/nfs_source/cache /mnt/gentoo/var/cache
     mount --rbind /mnt/nfs_source/cache /mnt/gentoo/var/cache

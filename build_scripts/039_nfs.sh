@@ -23,6 +23,7 @@ mkdir -p /mnt/gentoo/usr/src/kernel
 cat << EOF >> /mnt/gentoo/etc/fstab
 
 ${NFS_SOURCE}:/cache          /var/cache       nfs4  rw,noatime,nodev,noexec,nosuid  0 0
+${NFS_SOURCE}:/src_cache      /usr/src         nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 ${NFS_SOURCE}:/kernel_config  /usr/src/kernel  nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 ${NFS_SOURCE}:/pkg_repos      /var/db/repos    nfs4  rw,noatime,nodev,noexec,nosuid  0 0
 EOF
