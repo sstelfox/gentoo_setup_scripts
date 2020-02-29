@@ -64,7 +64,7 @@ test-timeout = 1
 # crash, or are shutdown for too long we need to reset the system. This could
 # be a system fault, or it could be due to an attack.
 pidfile = /var/run/acpid.pid
-pidfile = /var/run/chrony/chronyd.pid
+#pidfile = /var/run/chrony/chronyd.pid
 pidfile = /var/run/crond.pid
 pidfile = /var/run/sshd.pid
 pidfile = /var/run/syslog-ng.pid

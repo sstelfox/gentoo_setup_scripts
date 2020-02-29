@@ -149,8 +149,8 @@ mkdir -p /mnt/gentoo/var/log/{aide,archive,audit,chrony,portage,sandbox,sudo-io,
 chmod -R u=rwX,g=,o= /mnt/gentoo/etc/logrotate.*
 chmod -R u=rwX,g=rX,o= /mnt/gentoo/var/log
 
-touch /mnt/gentoo/var/log/wtmp
-chmod 0660 /mnt/gentoo/var/log/wtmp
+touch /mnt/gentoo/var/log/{lastlog,wtmp}
+chmod 0660 /mnt/gentoo/var/log/{lastlog,wtmp}
 
 # Genkernel isn't used by these builds but this file persists, lets get rid of
 # it for a nice clean root.

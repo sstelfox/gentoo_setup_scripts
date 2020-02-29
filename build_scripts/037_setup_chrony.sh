@@ -3,7 +3,7 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-chroot /mnt/gentoo emerge net-misc/chrony
+chroot /mnt/gentoo emerge --update --newuse net-misc/chrony
 chroot /mnt/gentoo rc-update add chronyd default
 
 chroot /mnt/gentoo chronyc keygen 1337 SHA256 256 > /mnt/gentoo/etc/chrony.keys
@@ -20,8 +20,10 @@ chmod 0600 /mnt/gentoo/etc/chrony.keys
 cat << 'EOF' > /mnt/gentoo/etc/chrony/chrony.conf
 # /etc/chrony/chrony.conf
 
-# Use the public NTP pool
-pool pool.ntp.org iburst
+# Query the US pools for faster and better synchronization
+pool 0.us.pool.ntp.org iburst
+pool 1.us.pool.ntp.org iburst
+pool 2.us.pool.ntp.org iburst
 
 # If connecting to an internal server (use server if just for one) or set of
 # servers (use pool if behind DNS, or multiple server entries otherwise). The
@@ -29,6 +31,19 @@ pool pool.ntp.org iburst
 # below).
 #server 10.116.109.101 key 7 iburst trust require
 #pool ntp.int.stelfox.net key 7 iburst trust require
+
+# This key file is used for both command authentication as well as client
+# authentication. I use the key slot 1337 for commands (yep hahah doesn't
+# matter if its guessed, this file is public and authentication still needs to
+# happen). Some clients may need SHA1 or *shudder* MD5 authentication.
+keyfile /etc/chrony.keys
+
+# Restrict commands to the local system and require authentication. This key
+# number should be different than any of the client authentication keys but
+# still needs to be in the same `chrony.keys` file.
+bindcmdaddress 127.0.0.1
+commandkey 1337
+cmdallow 127.0.0.1
 
 # Record the rate at which the system clock gains/loses time (TODO: validate
 # this path)
@@ -38,15 +53,15 @@ driftfile /var/lib/chrony/drift
 # seconds) so we maintain a consistent monitoncailly increasing clock.
 leapsecmode slew
 
+# Define which timezone reference is used by the system for determining if a
+# leap second exists or not
+leapsectz right/UTC
+
 # When serving NTP clients that don't support slewing of seconds I'll want to
 # add the following. I have to be careful to only have those clients sync to
 # similarly configured servers.
 #maxslewrate 1000
 #smoothtime 400 0.001 leaponly
-
-# Define which timezone reference is used by the system for determining if a
-# leap second exists or not
-leapsectz right/UTC
 
 # Step the clock for the first three updates if the difference is larger than a
 # second (allows quick clock recovery when highly inaccurate).
@@ -63,19 +78,6 @@ log measurements statistics tracking
 # Generate a syslog announcement if the system clock changes over this
 # threshold. This can be very important for correlating problematic events.
 logchange 0.1
-
-# This key file is used for both command authentication as well as client
-# authentication. I use the key slot 1337 for commands (yep hahah doesn't
-# matter if its guessed, this file is public and authentication still needs to
-# happen). Some clients may need SHA1 or *shudder* MD5 authentication.
-keyfile /etc/chrony.keys
-
-# Restrict commands to the local system and require authentication. This key
-# number should be different than any of the client authentication keys but
-# still needs to be in the same `chrony.keys` file.
-bindcmdaddress 127.0.0.1
-commandkey 1337
-cmdallow 127.0.0.1
 
 # By default operate in client only mode by specifying a zero to disable the
 # server portion

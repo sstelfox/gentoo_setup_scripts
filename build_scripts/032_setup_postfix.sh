@@ -23,6 +23,9 @@ shlib_directory = /usr/lib64/postfix/${mail_version}
 
 inet_interfaces = localhost
 mynetworks = 127.0.0.1/8
+
+# TODO: Figure out how to make this directory work with mailx or the like
+#home_mailbox = .mail/
 EOF
 
 chroot /mnt/gentoo chown root:mail /var/spool/mail

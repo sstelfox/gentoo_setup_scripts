@@ -13,7 +13,12 @@ kernel_config --enable NETFILTER_ADVANCED
 #kernel_config --enable IP_SET_HASH_IP
 #kernel_config --enable NETFILTER_XT_SET
 
-kernel_config --disable NF_CONNTRACK_FTP
+# Unfortunately one of the packages I pull in grabs source from an FTP server
+# that uses extended passive commands... That means I need to be able to track
+# FTP sessions...
+#kernel_config --disable NF_CONNTRACK_FTP
+kernel_config --enable NF_CONNTRACK_FTP
+
 kernel_config --disable NF_CONNTRACK_IRC
 kernel_config --disable NF_CONNTRACK_SIP
 kernel_config --disable NF_CONNTRACK_PROCFS
