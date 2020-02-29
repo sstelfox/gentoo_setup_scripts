@@ -92,7 +92,6 @@ compress
 # Don't care about receiving legacy logs via email when they're rotated out,
 # and keep them next to the original logs
 nomail
-noolddir
 
 # Include package specific log configuration from the directory
 include /etc/logrotate.d
