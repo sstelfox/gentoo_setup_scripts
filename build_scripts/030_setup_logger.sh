@@ -86,6 +86,9 @@ createolddir 0700 root root
 # Dates are much better suffixes than incrementing numbers
 dateext
 
+# Immediately compress rotated log files
+nodelaycompress
+
 # Older logs can be compressed. This saves a surprising amount of disk space.
 compress
 
@@ -123,6 +126,14 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
 }
 EOF
 
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
+/var/log/portage/elog/summary.log {
+  create 0600 portage portage
+  missingok
+  nocreate
+}
+EOF
+
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 /var/log/audit.log
 /var/log/cron
@@ -130,7 +141,6 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 /var/log/maillog
 /var/log/messages
 /var/log/secure {
-  delaycompress
   missingok
   notifempty
 
