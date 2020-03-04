@@ -124,15 +124,23 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
 
   rotate 3
 }
+
+# Note: /var/log/lastlog isn't rotated intentionally. It is not an append-style
+# file and can be read with the `lastlog` binary. This keeps the last timestamp
+# each user has logged into the system. Useful for disabling user accounts that
+# haven't been used in some time.
 EOF
 
-cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
-/var/log/portage/elog/summary.log {
-  create 0600 portage portage
-  missingok
-  nocreate
-}
-EOF
+# I don't think this is actually something I need to worry about... Am I
+# overwriting an existing file? If so I can probably just leave it
+#
+#cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
+#/var/log/portage/elog/summary.log {
+#  create 0600 portage portage
+#  missingok
+#  nocreate
+#}
+#EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 /var/log/audit.log
@@ -160,7 +168,8 @@ chmod -R u=rwX,g=,o= /mnt/gentoo/etc/logrotate.*
 chmod -R u=rwX,g=rX,o= /mnt/gentoo/var/log
 
 touch /mnt/gentoo/var/log/{lastlog,wtmp}
-chmod 0660 /mnt/gentoo/var/log/{lastlog,wtmp}
+chmod 0660 /mnt/gentoo/var/log/lastlog
+chmod 0664 /mnt/gentoo/var/log/wtmp
 
 # Genkernel isn't used by these builds but this file persists, lets get rid of
 # it for a nice clean root.
@@ -173,5 +182,3 @@ rm -f /mnt/gentoo/var/log/genkernel.log
 # /var/log/dmesg
 # /var/log/emerge-fetch.log
 # /var/log/emerge.log
-# /var/log/genkernel.log
-# /var/log/lastlog

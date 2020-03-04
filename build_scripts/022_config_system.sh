@@ -78,11 +78,18 @@ cat << 'EOF' > /mnt/gentoo/etc/profile.d/security_tweaks.sh
 # less pager.
 readonly LESSSECURE=1
 
-if [ "${EUID}" = "0" ]; then
-  # Ensure any carelessly left open administrative terminals will automatically
-  # close after half an hour.
-  readonly TMOUT=1800
-fi
+# Ensure any carelessly left open terminals will automatically close after half
+# an hour.
+readonly TMOUT=1800
+EOF
+
+cat << 'EOF' > /mnt/gentoo/etc/environment
+# /etc/environment
+
+# This file is parsed by the pam_env module and sudo. Syntax is a set of simple
+# KEY=VAL pairs on separate lines. Unfortunately these can't be marked readonly
+LESSSECURE=1
+TMOUT=1800
 EOF
 
 echo UTC > /mnt/gentoo/etc/timezone
