@@ -49,5 +49,10 @@ chroot /mnt/gentoo emerge app-crypt/tpm2-abrmd app-crypt/tpm2-tools
 # doc mentions SELinux will likely require policy changes to allow this to run
 # when I get that to enforcing mode.
 
+# Set the default TPM2 tooling to use the abrmd daemon
+cat << 'EOF' > /mnt/gentoo/etc/profile.d/tpm_management.sh
+export TPM2TOOLS_TCTI="tabrmd"
+EOF
+
 chroot /mnt/gentoo rc-update add dbus default
 chroot /mnt/gentoo rc-update add tpm2-abrmd default
