@@ -71,10 +71,10 @@ AllowGroups sshers
 EOF
 
 # These next two take a hot minute...
-ssh-keygen -G moduli-2048.candidates -b 2048
-ssh-keygen -T moduli-2048 -f moduli-2048.candidates
-cp moduli-2048 /mnt/gentoo/etc/ssh/moduli
+chroot /mnt/gentoo ssh-keygen -G moduli-2048.candidates -b 2048
+chroot /mnt/gentoo ssh-keygen -T moduli-2048 -f moduli-2048.candidates
+cp /mnt/gentoo/moduli-2048 /mnt/gentoo/etc/ssh/moduli
 chmod 0600 /mnt/gentoo/etc/ssh/moduli
-rm moduli*
+rm -f /mnt/gentoo/module-2048*
 
 chroot /mnt/gentoo rc-update add sshd default
