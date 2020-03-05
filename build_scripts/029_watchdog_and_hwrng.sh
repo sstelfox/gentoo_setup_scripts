@@ -8,6 +8,8 @@ chroot /mnt/gentoo emerge sys-apps/rng-tools sys-apps/watchdog
 cat << 'EOF' > /mnt/gentoo/etc/conf.d/rngd
 # /etc/conf.d/rngd
 
+EXTRA_ARGS="-q"
+
 HWRNG_DEVICE="/dev/hwrng"
 
 INCLUDE_ENTROPY_SOURCES="hwrng rdrand"
