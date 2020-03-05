@@ -90,9 +90,25 @@ template t_raw_message {
 # NOTE: Due to the 'final' flags later on in the config, any network based
 # senders need to be configured before the local destinations.
 #
-# TODO: I need to configure a memory and disk cache for this.
+#destination centralLogServer {
+#  network('10.64.0.120'
+#    ip-protocol(6)
+#    port(514)
+#    transport(tcp)
 #
-#destination centralLogServer { network('::1' ip-protocol(6) port(514) transport(tcp)); };
+#    # TODO: Transport could be switched to TLS by adjusting the transport(),
+#    # and matching the tls() configs in the sample network server above. This
+#    # requires a certificate authority and distribution of client certificates.
+#
+#    # Ensure any reload/restarts on server or client, or ephemeral network
+#    # issues do not cause us to lose messages.
+#    disk-buffer(
+#      mem-buf-size(10000)
+#      disk-buf-size(2000000)
+#      reliable(yes)
+#    )
+#  );
+#};
 #log { source(local); destination(centralLogServer); };
 
 
