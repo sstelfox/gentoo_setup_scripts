@@ -45,8 +45,7 @@ bindcmdaddress 127.0.0.1
 commandkey 1337
 cmdallow 127.0.0.1
 
-# Record the rate at which the system clock gains/loses time (TODO: validate
-# this path)
+# Record the rate at which the system clock gains/loses time
 driftfile /var/lib/chrony/drift
 
 # Don't jump the clock for leap seconds, skew it out over time (by default 12

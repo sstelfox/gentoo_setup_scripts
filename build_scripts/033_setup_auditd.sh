@@ -10,7 +10,7 @@ chroot /mnt/gentoo emerge sys-process/audit
 
 # TODO: The audit rules and selinux policies need to be tweaked before I can
 # really enable this, its very noisy and not meaningful right now
-#chroot /mnt/gentoo rc-update add auditd boot
+chroot /mnt/gentoo rc-update add auditd boot
 
 # TODO: When reviewing SELinux policy it may be useful to allow the normal
 # plugin to log to the normal location. Likely I can use the normal tool

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# TODO: In all these files include basepath so they can be called from
-# anywhere...
+# TODO: Add function helper for executing in a chroot and for writing to
+# targeted base paths.
 
 . ./_config.sh
 . ./_error_handling.sh
