@@ -145,15 +145,16 @@ net.ipv4.tcp_window_scaling = 1
 # by requiring fewer packets in general.
 net.ipv4.tcp_sack = 1
 
-## TODO: QUESTIONABLE IPV6 SETTINGS NEEDING REVIEW
+## Settings for Static IPv6 Addresses:
 
-# These settings are mostly useful for statically configured IPv6
+# Configuration for static IPv6 settings, this prevents a significant number of
+# potential attacks.
 
 # In static environments we don't need to accept router advertisements
 #net.ipv6.conf.default.accept_ra = 0
 
 # When we're statically configured, we shouldn't send any router solicitations
-#  as the information isn't useful to us.
+# as the information isn't useful to us.
 #net.ipv6.conf.default.router_solicitations = 0
 
 # When statically configured don't attempt any kind of auto configuration
@@ -173,7 +174,9 @@ net.ipv4.tcp_sack = 1
 # Limit the maximum global addresses on individual interfaces, the only edge
 # case this shouldn't be enabled is when privacy addresses with expiration is
 # on. Link local addresses do not count toward this.
-net.ipv6.conf.default.max_addresses = 1
+#net.ipv6.conf.default.max_addresses = 1
+
+## Settings for Dynamic IPv6 Addresses:
 
 # Privacy address settings (optional) can prefer outbound connections to use
 # changing 'privacy' addresses. A static address can still be set on the
@@ -193,20 +196,18 @@ net.ipv6.conf.default.max_addresses = 1
 #           This accounts for the static address (1), the potential delay of
 #           the lifetime by the desync factor (1), and the maximum temporary
 #           active addresses the machine can have at once.
-#net.ipv6.conf.all.addr_gen_mode = 3
-#net.ipv6.conf.all.max_addresses = 5
-#net.ipv6.conf.all.max_desync_factor = 600
-#net.ipv6.conf.all.temp_prefered_lft = 7200
-#net.ipv6.conf.all.temp_valid_lft = 14400
-#net.ipv6.conf.all.use_tempaddr = 2
-#net.ipv6.conf.default.addr_gen_mode = 3
-#net.ipv6.conf.default.max_addresses = 5
-#net.ipv6.conf.default.max_desync_factor = 600
-#net.ipv6.conf.default.temp_prefered_lft = 7200
-#net.ipv6.conf.default.temp_valid_lft = 14400
-#net.ipv6.conf.default.use_tempaddr = 2
-
-## END QUESTIONABLE IPV6 SETTINGS
+net.ipv6.conf.all.addr_gen_mode = 3
+net.ipv6.conf.all.max_addresses = 5
+net.ipv6.conf.all.max_desync_factor = 600
+net.ipv6.conf.all.temp_prefered_lft = 7200
+net.ipv6.conf.all.temp_valid_lft = 14400
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.addr_gen_mode = 3
+net.ipv6.conf.default.max_addresses = 5
+net.ipv6.conf.default.max_desync_factor = 600
+net.ipv6.conf.default.temp_prefered_lft = 7200
+net.ipv6.conf.default.temp_valid_lft = 14400
+net.ipv6.conf.default.use_tempaddr = 2
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/swap_tuning.conf
