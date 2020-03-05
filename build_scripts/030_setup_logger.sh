@@ -37,49 +37,85 @@ source local {
   internal();
 };
 
-# Send all system emergency messages to all users
-destination allUsers { usertty("*"); };
+
+### Handle the auditd syslog events to dedicated files, and prevent them from
+### going anywhere else.
+
+destination auditFile { file(/var/log/audit.log template('${MESSAGE}\n')); };
+destination avcFile { file(/var/log/avc.log template('${MESSAGE}\n'));   };
+filter auditLogs { level(info) and facility(local6) and program('audispd'); };
+
+log {
+  source(local);
+
+  filter(auditLogs);
+
+  if (message('type=AVC')) {
+    destination(avcFile);
+  } else {
+    destination(auditFile);
+  };
+
+  flags(final);
+};
+
+
+### General logging configuration that matches the standard RHEL rsyslog
+### config.
+
+destination messageFile { file(/var/log/messages); };
+filter messages { level(info) and not (facility(mail, authpriv, cron)); };
+log { source(local); filter(messages); destination(messageFile); };
+
+destination secureFile { file(/var/log/secure); };
+filter authpriv { facility(authpriv); };
+log { source(local); filter(authpriv); destination(secureFile); };
+
+destination mailFile { file(/var/log/maillog); };
+filter mail { facility(mail); };
+log { source(local); filter(mail); destination(mailFile); flags(final); };
+
+destination cronFile { file(/var/log/cron); };
+filter cron { facility(cron); };
+log { source(local); filter(cron); destination(cronFile); };
+
+destination spoolFile { file(/var/log/spooler); };
+filter spool { facility(uucp) or (facility(news) and level(crit)); };
+log { source(local); filter(spool); destination(spoolFile); };
+
+destination bootFile { file(/var/log/boot.log); };
+filter boot { facility(local7); };
+log { source(local); filter(boot); destination(bootFile); };
+
+
+### Send all system emergency messages to all users
+
+destination allUsers { usertty('*'); };
 filter emergency { level(emerg) and not (facility(mail)); };
 log { source(local); filter(emergency); destination(allUsers); };
 
-# General logging configuration that matches the standard RHEL rsyslog config,
-# the only difference is the messages file which also excludes local6
-# informational level which we use for auditd logging.
-destination bootFile { file(/var/log/boot.log); };
-destination cronFile { file(/var/log/cron); };
-destination mailFile { file(/var/log/maillog); };
-destination messageFile { file(/var/log/messages); };
-destination secureFile { file(/var/log/secure); };
 
-filter authpriv { facility(authpriv); };
-filter boot { facility(local7); };
-filter cron { facility(cron); };
-filter mail { facility(mail); };
-filter messages { level(info) and not (facility(mail, authpriv, cron, local6)); };
-
-log { source(local); filter(boot); destination(bootFile); };
-log { source(local); filter(cron); destination(cronFile); };
-log { source(local); filter(mail); destination(mailFile); };
-log { source(local); filter(messages); destination(messageFile); };
-log { source(local); filter(authpriv); destination(secureFile); };
+### Diagnostic Logging
 
 # I can't help but think there are some important logs being missed... This
 # diagnostic coding can allow me to track down missing logs locally when I need
-# to find those.
-#destination allLogs { file(/var/log/all template("${FACILITY}/${LEVEL} ${SOURCE} ${PROGRAM}/${PID} ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n")); };
+# to find those and where they're coming from. Worth noting that
+#destination allLogs { file(/var/log/all template('f:${FACILITY}/l:${LEVEL}/s:${SOURCE}/prog:${PROGRAM}/pid:${PID} - ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n')); };
 #log { source(local); destination(allLogs); };
 
-# Handle the auditd syslog events to a dedicated file
-destination auditFile { file(/var/log/audit.log); };
-filter audit { level(info) and facility(local6); };
-log { source(local); filter(audit); destination(auditFile); };
 
-# Simple Syslog UDP receiver (untested / probably not working)
+### Network logging samples
+
+# These aren't tested and are probably not working yet
+
 #source net { udp(); };
 #destination net_logs { file("/var/log/network/$HOST/system.log" create-dirs(yes)); };
 #log { source(net); destination(net_logs); };
 
-# Sample network senders
+### !!!IMPORTANT NOTE!!!
+# Due to the final flags in use above, any network senders should be placed
+# above the general local logging config to ensure all messages reach the
+# remote host.
 #destination loghost { udp("10.100.0.23", port(514)); };
 #log { source(local); destination(loghost); };
 EOF
@@ -89,13 +125,12 @@ chmod 0600 /mnt/gentoo/etc/syslog-ng/syslog-ng.conf
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.conf
 # /etc/logrotate.conf
 
-# Rotate log files daily
+# Rotate logs daily and keep a week's worth of them. System logs should be
+# centrally managed with copies of logs that persist much longer than on the
+# individual systems. Keeping one week of logs should handle non-security
+# related situations. When a security event occurs we should compare these
+# against centrally stored logs for evidence of tampering.
 daily
-
-# System logs should be centrally managed with copies of logs that persist much
-# longer than on the individual systems. Keeping one week of logs should handle
-# most non-security related situations. When a security event occurs we can't
-# trust locally stored logs anyway.
 rotate 7
 
 # If the log file doesn't exist... create it. It won't get rotated if it's
@@ -135,8 +170,6 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
   create 0664 root utmp
 
   monthly
-  minsize 1M
-
   rotate 3
 }
 
@@ -145,8 +178,6 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
   missingok
 
   monthly
-  minsize 1M
-
   rotate 3
 }
 
@@ -160,8 +191,6 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/aide
 /var/log/aide/aide.log {
   create 0600 root root
   missingok
-
-  nocreate
   notifempty
 }
 EOF
@@ -172,18 +201,18 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
 /var/log/portage/elog/summary.log {
   create 0600 portage portage
   missingok
-
-  nocreate
   notifempty
 }
 EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 /var/log/audit.log
+/var/log/avc.log
 /var/log/cron
 /var/log/maillog
 /var/log/messages
-/var/log/secure {
+/var/log/secure
+/var/log/spooler {
   missingok
   notifempty
 
@@ -200,6 +229,7 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
   missingok
 
   # Keep three months of logs for each host
+  daily
   rotate 90
 
   # Keep the file in the same directory as the host, but only bother rotating
