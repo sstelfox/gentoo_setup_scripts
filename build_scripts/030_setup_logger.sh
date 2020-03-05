@@ -37,13 +37,73 @@ source local {
   internal();
 };
 
+template t_raw_message {
+  template('${MESSAGE}\n');
+}
+
+
+### Network Server & Client Logging
+
+# NOTE: There are two network sources, syslog() and network(). network()
+# handles RFC3164 and RFC5424 syslog message formats with or without framing.
+# syslog() appears to only accept framed messages in RFC5424. syslog() defaults
+# to port 601/tcp, network() default to port 514/tcp.
+#
+# NOTE: By specifying IPv6 the port will bind to both protocols instead of just
+# IPv4
+#
+#source networkSrc {
+#  network(ip-protocol(6) transport(tcp));
+#  network(ip-protocol(6) transport(udp));
+#
+#  # Optional TLS mechanism for receiving logs encrypted and/or authenticated
+#  #network(
+#  #  ip-protocol(6)
+#  #  port(6514)
+#  #  transport(tls)
+#  #
+#  #  tls(
+#  #    cert-file(/etc/syslog-ng/server.crt)
+#  #    key-file(/etc/syslog-ng/server.key)
+#  #
+#  #    # Directory containing certificates in the PEM format that are
+#  #    # considered trusted signers for authentication.
+#  #    ca-dir(/etc/syslog-ng/ca.d)
+#  #
+#  #    # A custom suite of accepted ciphers, this is based on the version of
+#  #    # openssl used by syslog-ng.
+#  #    #cipher-suite('ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384')
+#  #
+#  #    # Other use parameters...
+#  #    #dhparam-file(...)
+#  #    #ecdh-curve-list('prime256v1:secp384r1')
+#  #
+#  #    # Disable mutual authentication, but if the client presents a
+#  #    # certificate ensure its valid. Default is 'required-trusted'
+#  #    #peer-verify(optional-trusted)
+#  #  )
+#  #);
+#};
+#destination networkLogs { file(/var/log/network/$HOST/system.log create-dirs(yes)); };
+#log { source(networkSrc); destination(networkLogs); };
+
+# NOTE: Due to the 'final' flags later on in the config, any network based
+# senders need to be configured before the local destinations.
+#
+# TODO: I need to configure a memory and disk cache for this.
+#
+#destination centralLogServer { network('::1' ip-protocol(6) port(514) transport(tcp)); };
+#log { source(local); destination(centralLogServer); };
+
 
 ### Handle the auditd syslog events to dedicated files, and prevent them from
 ### going anywhere else.
 
-destination auditFile { file(/var/log/audit.log template('${MESSAGE}\n')); };
-destination avcFile { file(/var/log/avc.log template('${MESSAGE}\n'));   };
-filter auditLogs { level(info) and facility(local6) and program('audispd'); };
+destination auditFile { file(/var/log/audit.log template(t_raw_message); };
+destination avcFile { file(/var/log/avc.log template(t_raw_message);   };
+filter auditLogs { level(info) and facility(local6) and program(audispd); };
+
+# NOTE: I don't believe AVC messages are getting grabbed by this...
 
 log {
   source(local);
@@ -100,24 +160,12 @@ log { source(local); filter(emergency); destination(allUsers); };
 # I can't help but think there are some important logs being missed... This
 # diagnostic coding can allow me to track down missing logs locally when I need
 # to find those and where they're coming from. Worth noting that
-#destination allLogs { file(/var/log/all template('f:${FACILITY}/l:${LEVEL}/s:${SOURCE}/prog:${PROGRAM}/pid:${PID} - ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n')); };
+#
+#template t_diagnostic {
+#  template('f:${FACILITY}/l:${LEVEL}/s:${SOURCE}/prog:${PROGRAM}/pid:${PID} - ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n');
+#}
+#destination allLogs { file(/var/log/all template(t_diagnostic); };
 #log { source(local); destination(allLogs); };
-
-
-### Network logging samples
-
-# These aren't tested and are probably not working yet
-
-#source net { udp(); };
-#destination net_logs { file("/var/log/network/$HOST/system.log" create-dirs(yes)); };
-#log { source(net); destination(net_logs); };
-
-### !!!IMPORTANT NOTE!!!
-# Due to the final flags in use above, any network senders should be placed
-# above the general local logging config to ensure all messages reach the
-# remote host.
-#destination loghost { udp("10.100.0.23", port(514)); };
-#log { source(local); destination(loghost); };
 EOF
 
 chmod 0600 /mnt/gentoo/etc/syslog-ng/syslog-ng.conf
