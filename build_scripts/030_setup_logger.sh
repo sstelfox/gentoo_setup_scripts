@@ -37,26 +37,51 @@ source local {
   internal();
 };
 
-destination auditFile { file(/var/log/audit.log); };
+# Send all system emergency messages to all users
+destination allUsers { usertty("*"); };
+filter emergency { level(emerg) and not (facility(mail)); };
+log { source(local); filter(emergency); destination(allUsers); };
+
+# General logging configuration that matches the standard RHEL rsyslog config,
+# the only difference is the messages file which also excludes local6
+# informational level which we use for auditd logging.
+destination bootFile { file(/var/log/boot.log); };
 destination cronFile { file(/var/log/cron); };
-destination kernFile { file(/var/log/kern); };
 destination mailFile { file(/var/log/maillog); };
 destination messageFile { file(/var/log/messages); };
 destination secureFile { file(/var/log/secure); };
 
 filter authpriv { facility(authpriv); };
-filter audit { level(info) and facility(local6); };
+filter boot { facility(local7); };
 filter cron { facility(cron); };
-filter kern { facility(kern); };
 filter mail { facility(mail); };
 filter messages { level(info) and not (facility(mail, authpriv, cron, local6)); };
 
-log { source(local); filter(audit); destination(auditFile); };
-log { source(local); filter(authpriv); destination(secureFile); };
+log { source(local); filter(boot); destination(bootFile); };
 log { source(local); filter(cron); destination(cronFile); };
-log { source(local); filter(kern); destination(kernFile); };
 log { source(local); filter(mail); destination(mailFile); };
 log { source(local); filter(messages); destination(messageFile); };
+log { source(local); filter(authpriv); destination(secureFile); };
+
+# I can't help but think there are some important logs being missed... This
+# diagnostic coding can allow me to track down missing logs locally when I need
+# to find those.
+#destination allLogs { file(/var/log/all template("${FACILITY}/${LEVEL} ${SOURCE} ${PROGRAM}/${PID} ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n")); };
+#log { source(local); destination(allLogs); };
+
+# Handle the auditd syslog events to a dedicated file
+destination auditFile { file(/var/log/audit.log); };
+filter audit { level(info) and facility(local6); };
+log { source(local); filter(audit); destination(auditFile); };
+
+# Simple Syslog UDP receiver (untested / probably not working)
+#source net { udp(); };
+#destination net_logs { file("/var/log/network/$HOST/system.log" create-dirs(yes)); };
+#log { source(net); destination(net_logs); };
+
+# Sample network senders
+#destination loghost { udp("10.100.0.23", port(514)); };
+#log { source(local); destination(loghost); };
 EOF
 
 chmod 0600 /mnt/gentoo/etc/syslog-ng/syslog-ng.conf
@@ -131,26 +156,57 @@ cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/login_data
 # haven't been used in some time.
 EOF
 
-# I don't think this is actually something I need to worry about... Am I
-# overwriting an existing file? If so I can probably just leave it
-#
-#cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
-#/var/log/portage/elog/summary.log {
-#  create 0600 portage portage
-#  missingok
-#  nocreate
-#}
-#EOF
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/aide
+/var/log/aide/aide.log {
+  create 0600 root root
+  missingok
+
+  nocreate
+  notifempty
+}
+EOF
+
+cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/elog-save-summary
+/var/log/emerge.log
+/var/log/emerge-fetch.log
+/var/log/portage/elog/summary.log {
+  create 0600 portage portage
+  missingok
+
+  nocreate
+  notifempty
+}
+EOF
 
 cat << 'EOF' > /mnt/gentoo/etc/logrotate.d/syslog-ng
 /var/log/audit.log
 /var/log/cron
-/var/log/kern
 /var/log/maillog
 /var/log/messages
 /var/log/secure {
   missingok
   notifempty
+
+  sharedscripts
+
+  postrotate
+    /etc/init.d/syslog-ng reload > /dev/null 2>&1 || true
+  endscript
+}
+
+# This covers rotating the UDP network host example and is fine to leave
+# enabled even on machines not acting as a loghost.
+/var/log/network/*/system.log {
+  missingok
+
+  # Keep three months of logs for each host
+  rotate 90
+
+  # Keep the file in the same directory as the host, but only bother rotating
+  # them if we have some content from them
+  nocreate
+  notifempty
+  noolddir
 
   sharedscripts
 
@@ -174,11 +230,3 @@ chmod 0664 /mnt/gentoo/var/log/wtmp
 # Genkernel isn't used by these builds but this file persists, lets get rid of
 # it for a nice clean root.
 rm -f /mnt/gentoo/var/log/genkernel.log
-
-# TODO: Files that should be rotated but haven't been yet...
-#
-# /var/log/aide/aide.log
-# /var/log/boot
-# /var/log/dmesg
-# /var/log/emerge-fetch.log
-# /var/log/emerge.log
