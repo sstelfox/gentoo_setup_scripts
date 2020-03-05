@@ -39,7 +39,7 @@ source local {
 
 template t_raw_message {
   template('${MESSAGE}\n');
-}
+};
 
 
 ### Network Server & Client Logging
@@ -115,8 +115,8 @@ template t_raw_message {
 ### Handle the auditd syslog events to dedicated files, and prevent them from
 ### going anywhere else.
 
-destination auditFile { file(/var/log/audit.log template(t_raw_message); };
-destination avcFile { file(/var/log/avc.log template(t_raw_message);   };
+destination auditFile { file(/var/log/audit.log template(t_raw_message)); };
+destination avcFile { file(/var/log/avc.log template(t_raw_message));   };
 filter auditLogs { level(info) and facility(local6) and program(audispd); };
 
 # NOTE: I don't believe AVC messages are getting grabbed by this...
@@ -179,7 +179,7 @@ log { source(local); filter(emergency); destination(allUsers); };
 #
 #template t_diagnostic {
 #  template('f:${FACILITY}/l:${LEVEL}/s:${SOURCE}/prog:${PROGRAM}/pid:${PID} - ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n');
-#}
+#};
 #destination allLogs { file(/var/log/all template(t_diagnostic); };
 #log { source(local); destination(allLogs); };
 EOF
