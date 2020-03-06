@@ -180,7 +180,7 @@ log { source(local); filter(emergency); destination(allUsers); };
 #template t_diagnostic {
 #  template('f:${FACILITY}/l:${LEVEL}/s:${SOURCE}/prog:${PROGRAM}/pid:${PID} - ${ISODATE} ${HOST} ${MSGHDR}${MESSAGE}\n');
 #};
-#destination allLogs { file(/var/log/all template(t_diagnostic); };
+#destination allLogs { file(/var/log/all template(t_diagnostic)); };
 #log { source(local); destination(allLogs); };
 EOF
 
