@@ -210,8 +210,10 @@ createolddir 0700 root root
 # Dates are much better suffixes than incrementing numbers
 dateext
 
-# Immediately compress rotated log files
-nodelaycompress
+# Don't immediately compress files. In general I would prefer it, but gzip
+# sometimes gets unhappy when the file keeps getting written to before it
+# finishes.
+delaycompress
 
 # Older logs can be compressed. This saves a surprising amount of disk space.
 compress
