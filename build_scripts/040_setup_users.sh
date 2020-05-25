@@ -13,7 +13,7 @@ chroot /mnt/gentoo newaliases
 
 mkdir -p /mnt/gentoo/home/${ADMIN_USER}/.ssh
 curl https://github.com/${GITHUB_KEY_USER}.keys > /mnt/gentoo/home/${ADMIN_USER}/.ssh/authorized_keys
-chroot /mnt/gentoo chown -R ${ADMIN_USER}:${ADMIN_USER} /home/${ADMIN_USER}
+chroot /mnt/gentoo chown -hR ${ADMIN_USER}:${ADMIN_USER} /home/${ADMIN_USER}
 chmod -R u=rwX,g=rX,o= /mnt/gentoo/home/${ADMIN_USER}
 chmod 0600 /mnt/gentoo/home/${ADMIN_USER}/.ssh/authorized_keys
 
