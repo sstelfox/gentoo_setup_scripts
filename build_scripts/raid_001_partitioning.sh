@@ -104,6 +104,12 @@ dd if=/dev/zero bs=1M count=16 of=${DISK_TWO}3 oflag=sync status=none
 mdadm --create /dev/md0 --level=raid1 --raid-devices=2 --metadata=1.2 /dev/vda3 /dev/vdb3
 PARTED_BASE_RAID_CMD="/usr/sbin/parted /dev/md0 --script --align optimal --machine --"
 
+# Things that need to be added to handle the raid array inside the chroot later on...
+#
+#   emerge sys-fs/mdadm
+#   rc-update add mdraid boot
+#   mdadm --examine --scan >> /etc/mdadm.conf
+
 ${PARTED_BASE_RAID_CMD} mklabel gpt
 ${PARTED_BASE_RAID_CMD} unit MiB mkpart system 1 -1
 
