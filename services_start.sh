@@ -19,8 +19,8 @@ if [ -n "${DEBUG:-}" ]; then
   set -o xtrace
 fi
 
-if [ ${EUID} == 0 ]; then
-  echo "This script is not expecting to run as root."
+if [ ${EUID} != 0 ]; then
+  echo "This script is expecting to run as root."
   exit 1
 fi
 
