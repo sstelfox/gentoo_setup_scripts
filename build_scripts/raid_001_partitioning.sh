@@ -101,8 +101,8 @@ dd if=/dev/zero bs=1M count=1 of=${DISK_TWO}2 oflag=sync status=none
 dd if=/dev/zero bs=1M count=16 of=${DISK_TWO}3 oflag=sync status=none
 
 # Create our raid array
-/bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0 oflag=sync
 mdadm --create /dev/md0 --level=raid1 --raid-devices=2 --metadata=1.2 /dev/vda3 /dev/vdb3
+/bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0 oflag=sync
 PARTED_BASE_RAID_CMD="/usr/sbin/parted /dev/md0 --script --align optimal --machine --"
 
 # Things that need to be added to handle the raid array inside the chroot later on...
