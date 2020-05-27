@@ -120,8 +120,8 @@ virt-install \
   --boot "uefi,menu=on,useserial=on" \
   --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
-  --disk "pool=default,size=10,sparse=true,format=qcow2" \
-  --disk "pool=default,size=10,sparse=true,format=qcow2" \
+  --disk "pool=default,size=15,sparse=true,format=qcow2" \
+  --disk "pool=default,size=15,sparse=true,format=qcow2" \
   --disk "pool=default,size=5,sparse=true,format=qcow2" \
   --disk "pool=default,size=5,sparse=true,format=qcow2" \
   --disk "pool=default,size=5,sparse=true,format=qcow2" \
