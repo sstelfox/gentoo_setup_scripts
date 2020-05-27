@@ -110,8 +110,8 @@ ${PARTED_BASE_RAID_CMD} unit MiB mkpart system 1 -1
 # Format our base partitions
 mkfs.vfat -F 32 -n EFI ${DISK_ONE}2 > /dev/null
 
-pvcreate -ff -y --zero y /dev/md0 > /dev/null
-vgcreate system /dev/md0 > /dev/null
+pvcreate -ff -y --zero y /dev/md0p1 > /dev/null
+vgcreate system /dev/md0p1 > /dev/null
 
 # Limit the size of the swap partition to 10% of whats left of the drive after
 # the EFI and boot partitions are created
