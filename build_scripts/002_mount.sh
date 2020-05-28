@@ -38,7 +38,7 @@ if ! mount | grep -q '/mnt/gentoo '; then
   mount -o defaults,noatime /dev/mapper/system-root /mnt/gentoo
 fi
 
-# No reason not to always encrypt swap
+# TODO: No reason not to always encrypt swap...
 if ! swapon -s | grep -qE '(/dev/mapper/system-swap|dm-1)'; then
   swapon /dev/mapper/system-swap
 fi

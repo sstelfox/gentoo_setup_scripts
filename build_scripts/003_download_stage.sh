@@ -40,18 +40,28 @@ EOF
   gpg2 --verify /mnt/gentoo/*.tar.xz.DIGESTS.asc
 
   SHA512_DGST=$(openssl dgst -r -sha512 /mnt/gentoo/*.tar.xz | awk '{ print $1 }')
-  GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  GOOD_SHA512_DGST=$(grep -A 1 -E ' SHA512' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS)|(^-)' | awk '{ print $1 }')
 
-  if [ "${SHA512_DGST}" != "${GOOD_SHA512_DGST}" ]; then
-    echo "Bad SHA512 Checksum."
+  if [ -n "${GOOD_SHA512_DGST}" ]; then
+    if [ "${SHA512_DGST}" != "${GOOD_SHA512_DGST}" ]; then
+      echo "Bad SHA512 Checksum."
+      exit 1
+    fi
+  else
+    echo "SHA512 checksum was missing from the digest"
     exit 1
   fi
 
-  GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS$)|(^-)' | awk '{ print $1 }')
+  GOOD_WHRLPL_DGST=$(grep -A 1 -E ' WHIRLPOOL' /mnt/gentoo/*.tar.xz.DIGESTS.asc | grep -vE '(^#)|(CONTENTS)|(^-)' | awk '{ print $1 }')
   WHRLPL_DGST=$(openssl dgst -r -whirlpool /mnt/gentoo/*.tar.xz | awk '{ print $1 }')
 
-  if [ "${WHRLPL_DGST}" != "${GOOD_WHRLPL_DGST}" ]; then
-    echo "Bad Whirlpool Checksum."
+  if [ -n "${GOOD_WHRLPL_DGST}" ]; then
+    if [ "${WHRLPL_DGST}" != "${GOOD_WHRLPL_DGST}" ]; then
+      echo "Bad Whirlpool Checksum."
+      exit 1
+    fi
+  else
+    echo "Whirlpool checksum was missing from the digest"
     exit 1
   fi
 
