@@ -89,6 +89,21 @@ ${PARTED_BASE_TWO_CMD} unit MiB mkpart bios 1 2 name 1 '"BIOS Grub"' set 1 bios_
 ${PARTED_BASE_TWO_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
 ${PARTED_BASE_TWO_CMD} unit MiB mkpart raid 514 -1
 
+# This is needed sometimes to get the partition devices to show up, this needs
+# to be allowed to fail as other partitions may be dirty (such as the boot
+# media).
+partprobe &> /dev/null || true
+
+# Validate each of the devices are present and block devices before continuing
+for disk in ${DISK_ONE} ${DISK_TWO}; do
+  for part in 1 2 3; do
+    if [ ! -b "${disk}${part}" ]; then
+      echo "Unable to find expected block device: ${disk}${part}"
+      exit 1
+    fi
+  done
+done
+
 # Remove any partition headers on the individual partitions, this is simply for
 # consistency when running this on a disk that had an existing partition table
 # (usually only identical ones are problems).
@@ -101,7 +116,7 @@ dd if=/dev/zero bs=1M count=1 of=${DISK_TWO}2 oflag=sync status=none
 dd if=/dev/zero bs=1M count=16 of=${DISK_TWO}3 oflag=sync status=none
 
 # Create our raid array
-mdadm --create /dev/md0 --level=raid1 --raid-devices=2 --metadata=1.2 ${DISK_ONE}3 ${DISK_TWO}3 &> /dev/null
+mdadm --create /dev/md0 --level=raid1 --raid-devices=2 --metadata=1.2 ${DISK_ONE}3 ${DISK_TWO}3
 /bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0 oflag=sync
 PARTED_BASE_RAID_CMD="/usr/sbin/parted /dev/md0 --script --align optimal --machine --"
 
