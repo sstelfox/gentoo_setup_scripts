@@ -124,4 +124,5 @@ virt-install \
   --disk "pool=default,size=12,sparse=true,format=qcow2" \
   --check disk_size=off \
   --rng "/dev/urandom" \
-  --tpm "backend.type=emulator,backend.version=2.0"
+  --tpm "backend.type=emulator,backend.version=2.0" \
+  --noreboot

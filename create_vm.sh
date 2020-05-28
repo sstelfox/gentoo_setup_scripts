@@ -122,4 +122,5 @@ virt-install \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
   --disk "pool=default,size=15,sparse=true,format=qcow2" \
   --rng "/dev/urandom" \
-  --tpm "backend.type=emulator,backend.version=2.0"
+  --tpm "backend.type=emulator,backend.version=2.0" \
+  --noreboot

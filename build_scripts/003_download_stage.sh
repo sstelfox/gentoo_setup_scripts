@@ -78,5 +78,11 @@ else
   rm -f /mnt/gentoo/*.tar.xz*
 fi
 
+# This needs to be a symlink and isn't in the stage... This was causing some
+# installation issues so I have to migrate it by hand...
+mv /mnt/gentoo/lib/* /mnt/gentoo/lib64/
+rmdir /mnt/gentoo/lib
+ln -s lib64 /mnt/gentoo/lib
+
 # Remove the trash kernels that come with the stage
 rm -rf /mnt/gentoo/boot/*
