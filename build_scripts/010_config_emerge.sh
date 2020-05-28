@@ -28,6 +28,12 @@ L10N="en"
 LINGUAS="en"
 EOF
 
+mkdir -p /mnt/gentoo/etc/portage/package.use
+cat << EOF > /mnt/gentoo/etc/portage/package.use/restrict_unstable_python_upgrade
+*/* PYTHON_TARGETS: -python3_7 python3_6
+*/* PYTHON_SINGLE_TARGET: -* python_3_6
+EOF
+
 if [ -n "${GENTOO_MIRRORS:-}" ]; then
   echo -e "\nGENTOO_MIRRORS=\"${GENTOO_MIRRORS}\"" >> /mnt/gentoo/etc/portage/make.conf
 elif [ "${LOCAL}" != "yes" ]; then
