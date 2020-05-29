@@ -35,3 +35,8 @@ done
 lvchange -a n system || true
 
 [ -b /dev/mapper/crypt ] && cryptsetup luksClose /dev/mapper/crypt || true
+
+if [ -b "/dev/md0" ]; then
+  mdadm --stop /dev/md0
+  mdadm --remove /dev/md0
+fi
