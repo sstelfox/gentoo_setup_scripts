@@ -33,6 +33,13 @@ if lvscan | grep system | grep -q inactive &> /dev/null; then
   vgchange --activate y system &> /dev/null
 fi
 
+# This usually is only needed if I need to remount a completed installation.
+# The nodes won't be present if we've cleaned them up and we're not recreating
+# them. This will recreate the nodes so they're usable again.
+if [ ! -b /dev/mapper/system-root ]; then
+  vgscan --mknodes
+fi
+
 if ! mount | grep -q '/mnt/gentoo '; then
   mkdir -p /mnt/gentoo
   mount -o defaults,noatime /dev/mapper/system-root /mnt/gentoo
