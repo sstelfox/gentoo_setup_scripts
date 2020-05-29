@@ -38,6 +38,9 @@ lvchange -a n system || true
 
 [ -b /dev/mapper/crypt ] && cryptsetup luksClose /dev/mapper/crypt || true
 
+# Sometimes this stuff gets left behind and a properly clean system needs this gone
+rm -rf /dev/system /dev/mapper/system-{root,swap}
+
 if [ -b "/dev/md0" ]; then
   mdadm --stop /dev/md0
   mdadm --remove /dev/md0 || true
