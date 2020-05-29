@@ -44,7 +44,9 @@ cat << EOF > /mnt/gentoo/etc/sysctl.d/fs_hardening.conf
 fs.file-max = 2097152
 
 # Provide protection against ToCToU races
+fs.protected_fifos = 2
 fs.protected_hardlinks = 1
+fs.protected_regular = 2
 fs.protected_symlinks = 1
 
 # Prevent SUID executables from creating core dumps, should be set to '2' if an
@@ -53,8 +55,19 @@ fs.suid_dumpable = 0
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/kernel_hardening.conf
+# By default the Linux kernel will enable any line disciplines requested which
+# is a potential security issue
+dev.tty.ldisc_autoload = 0
+
+# Prevent unprivileged users from viewing the dmesg output
+kernel.dmesg_restrict = 1
+
+# I may want to support kexec'ing kernels in the future, but until then disable
+# the call.
+kernel.kexec_load_disabled = 1
+
 # Make locating kernel addresses more difficult
-kernel.kptr_restrict = 1
+kernel.kptr_restrict = 2
 
 # Retrict perf calls to only be done by root
 kernel.perf_event_paranoid = 2
@@ -62,8 +75,21 @@ kernel.perf_event_paranoid = 2
 # Disable the magic sysrq key
 kernel.sysrq = 0
 
+# Prevent unprivileged use of BPF for generic hooks and networking programmings
+net.core.bpf_jit_harden = 2
+kernel.unprivileged_bpf_disabled = 1
+
+# Disable unprivileged use of userspace namespaces. If I use unprivileged
+# podman containers I'll need to allow this.
+kernel.unprivileged_userns_clone = 0
+
 # Set ptrace protections (can't be 3 as gentoo build sandbox uses ptracing)
 kernel.yama.ptrace_scope = 2
+
+# Increase the bits of entropy used for the kernel ASLR. There is a compat
+# control as well but that only applies to 32 bit compatible applications which
+# are not supported by my kernel.
+vm.mmap_rnd_bits = 32
 EOF
 
 cat << EOF > /mnt/gentoo/etc/sysctl.d/net_hardening.conf
@@ -129,6 +155,9 @@ net.ipv4.tcp_syncookies = 1
 net.ipv4.tcp_keepalive_intvl = 15
 net.ipv4.tcp_keepalive_probes = 5
 net.ipv4.tcp_keepalive_time = 300
+
+# Disable TCP timestamps to avoid minor leaks of system information
+net.ipv4.tcp_timestamps = 0
 
 # Increase the tcp-time-wait buckets pool size to prevent simple DOS attacks
 net.ipv4.tcp_max_tw_buckets = 1440000
