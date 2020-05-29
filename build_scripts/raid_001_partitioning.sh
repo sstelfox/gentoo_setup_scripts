@@ -134,7 +134,7 @@ mkfs.vfat -F 32 -n EFI ${DISK_ONE}2 > /dev/null
 
 /bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0p1 oflag=sync
 pvcreate -ff -y --zero y /dev/md0p1 > /dev/null
-vgcreate system /dev/md0p1 > /dev/null
+vgcreate system --force --zero y /dev/md0p1 > /dev/null
 
 # Limit the size of the swap partition to 10% of whats left of the drive after
 # the EFI and boot partitions are created
