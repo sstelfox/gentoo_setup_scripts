@@ -25,6 +25,8 @@ sync
 # nothing to do with them... Fucking systemd...
 systemctl stop haveged.service &> /dev/null || true
 systemctl stop systemd-logind.service &> /dev/null || true                                                                                              │
+systemctl stop systemd-udevd-control.socket &> /dev/null || true
+systemctl stop systemd-udevd-kernel.socket &> /dev/null || true
 systemctl stop systemd-udevd.service &> /dev/null || true
 
 echo 'Waiting for processes with holds on the system mount to exit...'
@@ -38,5 +40,5 @@ lvchange -a n system || true
 
 if [ -b "/dev/md0" ]; then
   mdadm --stop /dev/md0
-  mdadm --remove /dev/md0
+  mdadm --remove /dev/md0 || true
 fi
