@@ -4,6 +4,11 @@
 . ./_error_handling.sh
 
 chroot /mnt/gentoo eselect profile set default/linux/amd64/17.0/no-multilib/hardened/selinux
+
+# dev-python/matplotlib is broken and must be handled with some weird care, I
+# don't know if this is going to be reliable here...
+chroot /mnt/gentoo /bin/bash -l -c 'MAKEOPTS="-j1" emerge --jobs=1 --ignore-default-opts dev-python/matplotlib'
+
 chroot /mnt/gentoo emerge --update --newuse --deep --with-bdeps=y --complete-graph y @world
 chroot /mnt/gentoo emerge @preserved-rebuild
 

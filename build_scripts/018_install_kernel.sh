@@ -51,6 +51,7 @@ cat << 'EOF' > /mnt/gentoo/etc/dracut.conf.d/00_base_system.conf
 
 dracutmodules="base bash caps crypt dm i18n kernel-modules lvm rootfs-block selinux terminfo udev-rules usrmount"
 
+add_dracutmodules+="mdraid"
 #add_dracutmodules+="plymouth"
 
 compress="lz4"

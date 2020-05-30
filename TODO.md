@@ -1,4 +1,4 @@
-[ ] Review all log rotation configs for each service
+[x] Review all log rotation configs for each service
 [x] Embed configs into the Gentoo directory instead of pulling them via my
     website
 [x] Update syslog-ng config to latest version

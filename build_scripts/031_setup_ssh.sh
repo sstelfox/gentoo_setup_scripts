@@ -70,7 +70,10 @@ AllowGroups sshers
 #KerberosAuthentication yes
 EOF
 
-# These next two take a hot minute...
+# These next two take a hot minute... When 8.2 comes around these options have
+# changed. I'll need to change them to the following:
+# ssh-keygen -M generate -O bits=2048 moduli-2048.candidates
+# ssh-keygen -M screen -f moduli-2048.candidates moduli-2048
 chroot /mnt/gentoo ssh-keygen -G moduli-2048.candidates -b 2048
 chroot /mnt/gentoo ssh-keygen -T moduli-2048 -f moduli-2048.candidates
 cp /mnt/gentoo/moduli-2048 /mnt/gentoo/etc/ssh/moduli
