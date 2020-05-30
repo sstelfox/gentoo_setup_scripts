@@ -18,15 +18,12 @@ if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   ADDITIONAL_BOOT_OPTS="console=tty0 console=ttyS0"
 fi
 
-# During raid I may need to add rd.md.uuid=${UUID} to boot off the raid... The
-# UUID can be found in /etc/mdadm.conf
-
 # GPD also wants "i915.fastboot=1 fbcon=rotate:1"
 # Plymouth wants "quiet splash"
 cat << EOF > /mnt/gentoo/etc/default/grub
 # /etc/default/grub
 
-GRUB_CMDLINE_LINUX_DEFAULT="lvm net.ifnames=0 ${ADDITIONAL_BOOT_OPTS:-}"
+GRUB_CMDLINE_LINUX_DEFAULT="rd.auto net.ifnames=0 ${ADDITIONAL_BOOT_OPTS:-}"
 
 GRUB_DEFAULT=1
 GRUB_TIMEOUT=3
