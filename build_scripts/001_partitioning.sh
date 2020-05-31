@@ -3,8 +3,6 @@
 . ./_config.sh
 . ./_error_handling.sh
 
-PARTED_BASE_CMD="/usr/sbin/parted ${DISK} --script --align optimal --machine --"
-
 # Seems like swap is still a good idea... Fedora recommendation is (seems
 # reasonable):
 #
@@ -23,54 +21,101 @@ PARTED_BASE_CMD="/usr/sbin/parted ${DISK} --script --align optimal --machine --"
 # * LVM -> root (whatever is left)
 # * LVM -> swap (based on table above)
 
-if [ ! -b ${DISK} ]; then
-  echo "Configured disk doesn't exist."
-  exit 1
-fi
+if [ "${RAID}" = "yes" ]; then
+  DISK_ONE="$(echo '${DISK}' | awk '{ print $1 }')"
+  DISK_TWO="$(echo '${DISK}' | awk '{ print $2 }')"
 
-# We need to clear and reset the partition tabel
-/bin/dd bs=1M count=4 status=none if=/dev/zero of=${DISK} oflag=sync
-${PARTED_BASE_CMD} mklabel gpt
+  if [ ! -b ${DISK_ONE} ]; then
+    echo "Configured disk one doesn't exist."
+    exit 1
+  fi
 
-# Identify the size of the disk we're working with
-DISK_SIZE="$(
-  ${PARTED_BASE_CMD} unit MiB print |
-  cut -d : -f 2 |
-  grep -oE '[0-9]+'
-)"
+  if [ ! -b ${DISK_TWO} ]; then
+    echo "Configured disk one doesn't exist."
+    exit 1
+  fi
 
-# Calculate how much RAM we have available to figure out what we need for
-# swap.
-RAM_SIZE="$(free -m | grep Mem | awk '{ print $2 }')"
+  PARTED_BASE_ONE_CMD="/usr/sbin/parted ${DISK_ONE} --script --align optimal --machine --"
+  PARTED_BASE_TWO_CMD="/usr/sbin/parted ${DISK_TWO} --script --align optimal --machine --"
 
-# Calculate ideal swap partition size, this may not be the final size
-if [ "${RAM_SIZE}" -lt "4096" ]; then
-  SWAP_SIZE="2048"
-elif [ "${RAM_SIZE}" -lt "16384" ]; then
-  SWAP_SIZE="4096"
-elif [ "${RAM_SIZE}" -lt "65536" ]; then
-  SWAP_SIZE="8192"
-elif [ "${RAM_SIZE}" -lt "262144" ]; then
-  SWAP_SIZE="16384"
+  # We need to clear and reset the partition tables
+  /bin/dd bs=1M count=4 status=none if=/dev/zero of=${DISK_ONE} oflag=sync
+  ${PARTED_BASE_ONE_CMD} mklabel gpt
+
+  /bin/dd bs=1M count=4 status=none if=/dev/zero of=${DISK_TWO} oflag=sync
+  ${PARTED_BASE_TWO_CMD} mklabel gpt
+
+  # Create the actual partitions, the last will the a raid partition, while the
+  # non-raid partitions are not fully setup on to the second one, since raid
+  # partitions have to be the same size we would loose the space on the second
+  # disk anyway and having the partitions setup identially can be useful in case
+  # we need to use the mirror as a full restoration disk.
+  ${PARTED_BASE_ONE_CMD} unit MiB mkpart bios 1 2 name 1 '"BIOS Grub"' set 1 bios_grub on
+  ${PARTED_BASE_ONE_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
+  ${PARTED_BASE_ONE_CMD} unit MiB mkpart raid 514 -1
+
+  ${PARTED_BASE_TWO_CMD} unit MiB mkpart bios 1 2 name 1 '"BIOS Grub"' set 1 bios_grub on
+  ${PARTED_BASE_TWO_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
+  ${PARTED_BASE_TWO_CMD} unit MiB mkpart raid 514 -1
+
+  # This is needed sometimes to get the partition devices to show up, this needs
+  # to be allowed to fail as other partitions may be dirty (such as the boot
+  # media).
+  partprobe &> /dev/null || true
+
+  # Validate each of the devices are present and block devices before continuing
+  for disk in ${DISK_ONE} ${DISK_TWO}; do
+    for part in 1 2 3; do
+      if [ ! -b "${disk}${part}" ]; then
+        echo "Unable to find expected block device: ${disk}${part}"
+        exit 1
+      fi
+    done
+  done
+
+  PARTED_BASE_CMD="/usr/sbin/parted /dev/md0 --script --align optimal --machine --"
+
+  ${PARTED_BASE_RAID_CMD} mklabel gpt
+  ${PARTED_BASE_RAID_CMD} unit MiB mkpart system 1 -1
+
+  # Format our base partitions
+  mkfs.vfat -F 32 -n EFI ${DISK_ONE}2 > /dev/null
+
+  /bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0p1 oflag=sync
+  pvcreate -ff -y --zero y /dev/md0p1 > /dev/null
+  vgcreate system --force --zero y /dev/md0p1 > /dev/null
+
+  SYSTEM_PARTITION="/dev/md0p1"
 else
-  SWAP_SIZE="32768"
+  PARTED_BASE_CMD="/usr/sbin/parted ${DISK} --script --align optimal --machine --"
+
+  if [ ! -b ${DISK} ]; then
+    echo "Configured disk doesn't exist."
+    exit 1
+  fi
+
+  # We need to clear and reset the partition tabel
+  /bin/dd bs=1M count=4 status=none if=/dev/zero of=${DISK} oflag=sync
+  ${PARTED_BASE_CMD} mklabel gpt
+
+  # Create the actual partitions, the last will be an LVM container for the root
+  # and swap partition.
+  ${PARTED_BASE_CMD} unit MiB mkpart bios 1 2 name 1 '"BIOS Grub"' set 1 bios_grub on
+  ${PARTED_BASE_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
+  ${PARTED_BASE_CMD} unit MiB mkpart system 514 -1
+
+  # Remove any partition headers on the individual partitions, this is simply for
+  # consistency when running this on a disk that had an existing partition table
+  # (usually only identical ones are problems).
+  dd if=/dev/zero bs=1M count=1 of=${DISK}1 oflag=sync status=none
+  dd if=/dev/zero bs=1M count=1 of=${DISK}2 oflag=sync status=none
+  dd if=/dev/zero bs=1M count=16 of=${DISK}3 oflag=sync status=none
+
+  # Format our base partitions
+  mkfs.vfat -F 32 -n EFI ${DISK}2 > /dev/null
+
+  SYSTEM_PARTITION="${DISK}3"
 fi
-
-# Create the actual partitions, the last will be an LVM container for the root
-# and swap partition.
-${PARTED_BASE_CMD} unit MiB mkpart bios 1 2 name 1 '"BIOS Grub"' set 1 bios_grub on
-${PARTED_BASE_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
-${PARTED_BASE_CMD} unit MiB mkpart system 514 -1
-
-# Remove any partition headers on the individual partitions, this is simply for
-# consistency when running this on a disk that had an existing partition table
-# (usually only identical ones are problems).
-dd if=/dev/zero bs=1M count=1 of=${DISK}1 oflag=sync status=none
-dd if=/dev/zero bs=1M count=1 of=${DISK}2 oflag=sync status=none
-dd if=/dev/zero bs=1M count=16 of=${DISK}3 oflag=sync status=none
-
-# Format our base partitions
-mkfs.vfat -F 32 -n EFI ${DISK}2 > /dev/null
 
 if [ "${ENCRYPTED}" = "yes" ]; then
   # In case we're in DEBUG mode, do not print out the disk passphrase
@@ -93,12 +138,11 @@ if [ "${ENCRYPTED}" = "yes" ]; then
 
   unset VERIFY_PASSPHRASE
 
-  echo $DISK_PASSPHRASE | cryptsetup --verbose --cipher aes-xts-plain64 \
+  echo ${DISK_PASSPHRASE} | cryptsetup --verbose --cipher aes-xts-plain64 \
     --key-size 512 --hash sha512 --iter-time 2500 --use-urandom --batch-mode \
-    --force-password luksFormat ${DISK}3
+    --force-password luksFormat ${SYSTEM_PARTITION}
 
-  echo ${DISK_PASSPHRASE} | cryptsetup luksOpen --allow-discards ${DISK}3 crypt
-
+  echo ${DISK_PASSPHRASE} | cryptsetup luksOpen --allow-discards ${SYSTEM_PARTITION} crypt
   unset DISK_PASSPHRASE
 
   # This will re-enable debug mode if it was previously enabled and prevents
@@ -108,8 +152,25 @@ if [ "${ENCRYPTED}" = "yes" ]; then
   pvcreate -ff -y --zero y /dev/mapper/crypt > /dev/null
   vgcreate system /dev/mapper/crypt > /dev/null
 else
-  pvcreate -ff -y --zero y ${DISK}3 > /dev/null
-  vgcreate system ${DISK}3 > /dev/null
+  pvcreate -ff -y --zero y ${SYSTEM_PARTITION} > /dev/null
+  vgcreate system ${SYSTEM_PARTITION} > /dev/null
+fi
+
+# Calculate how much RAM we have available to figure out what we need for
+# swap.
+RAM_SIZE="$(free -m | grep Mem | awk '{ print $2 }')"
+
+# Calculate ideal swap partition size, this may not be the final size
+if [ "${RAM_SIZE}" -lt "4096" ]; then
+  SWAP_SIZE="2048"
+elif [ "${RAM_SIZE}" -lt "16384" ]; then
+  SWAP_SIZE="4096"
+elif [ "${RAM_SIZE}" -lt "65536" ]; then
+  SWAP_SIZE="8192"
+elif [ "${RAM_SIZE}" -lt "262144" ]; then
+  SWAP_SIZE="16384"
+else
+  SWAP_SIZE="32768"
 fi
 
 # Limit the size of the swap partition to 10% of whats left of the drive after

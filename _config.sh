@@ -1,6 +1,11 @@
 
-# Which block device to use as the root filesystem
+# Which block device to use as the root filesystem, specify two separated with
+# a space for a raid setup.
 DISK="/dev/vda"
+
+# Should provide two disks in the 'DISK' variable separated with a space if
+# this is set to yes.
+RAID="no"
 
 # Whether to attempt to run the entire installation without making an external
 # network connection, instead this will use the configured NFS server

@@ -51,7 +51,6 @@ cat << 'EOF' > /mnt/gentoo/etc/dracut.conf.d/00_base_system.conf
 
 dracutmodules="base bash caps crypt dm i18n kernel-modules lvm rootfs-block selinux terminfo udev-rules usrmount"
 
-add_dracutmodules+="mdraid"
 #add_dracutmodules+="plymouth"
 
 compress="lz4"
@@ -63,6 +62,10 @@ do_prelink="no"
 
 persistent_policy="by-uuid"
 EOF
+
+if [ "${RAID}" = "yes" ]; then
+  echo 'add_dracutmodules+="mdraid"' > /mnt/gentoo/etc/dracut.conf.d/01_raid.conf
+fi
 
 #if [ "${KERNEL_TARGET}" = "kvm_guest" ]; then
   # The KVM kernel is very minimal and doesn't use modules, if it wasn't for
