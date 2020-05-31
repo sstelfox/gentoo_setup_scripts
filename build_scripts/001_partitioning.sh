@@ -22,16 +22,16 @@
 # * LVM -> swap (based on table above)
 
 if [ "${RAID}" = "yes" ]; then
-  DISK_ONE="$(echo '${DISK}' | awk '{ print $1 }')"
-  DISK_TWO="$(echo '${DISK}' | awk '{ print $2 }')"
+  DISK_ONE="$(echo "${DISK}" | awk '{ print $1 }')"
+  DISK_TWO="$(echo "${DISK}" | awk '{ print $2 }')"
 
   if [ ! -b ${DISK_ONE} ]; then
-    echo "Configured disk one doesn't exist."
+    echo "Configured disk one (${DISK_ONE}) doesn't exist."
     exit 1
   fi
 
   if [ ! -b ${DISK_TWO} ]; then
-    echo "Configured disk one doesn't exist."
+    echo "Configured disk two (${DISK_TWO}) doesn't exist."
     exit 1
   fi
 
@@ -58,6 +58,10 @@ if [ "${RAID}" = "yes" ]; then
   ${PARTED_BASE_TWO_CMD} unit MiB mkpart boot 2 514 name 2 '"Boot"' set 2 boot on set 2 esp on
   ${PARTED_BASE_TWO_CMD} unit MiB mkpart raid 514 -1
 
+  # Create the actual raid array
+  mdadm --create /dev/md0 --level=raid1 --name=root --raid-devices=2 --metadata=1.2 ${DISK_ONE}3 ${DISK_TWO}3 &> /dev/null
+  /bin/dd bs=1M count=4 status=none if=/dev/zero of=/dev/md0 oflag=sync
+
   # This is needed sometimes to get the partition devices to show up, this needs
   # to be allowed to fail as other partitions may be dirty (such as the boot
   # media).
@@ -75,8 +79,8 @@ if [ "${RAID}" = "yes" ]; then
 
   PARTED_BASE_CMD="/usr/sbin/parted /dev/md0 --script --align optimal --machine --"
 
-  ${PARTED_BASE_RAID_CMD} mklabel gpt
-  ${PARTED_BASE_RAID_CMD} unit MiB mkpart system 1 -1
+  ${PARTED_BASE_CMD} mklabel gpt
+  ${PARTED_BASE_CMD} unit MiB mkpart system 1 -1
 
   # Format our base partitions
   mkfs.vfat -F 32 -n EFI ${DISK_ONE}2 > /dev/null
