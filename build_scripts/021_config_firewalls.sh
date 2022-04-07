@@ -23,7 +23,7 @@ cat << 'EOF' > /mnt/gentoo/var/lib/nftables/rules-save
 
 flush ruleset
 
-# Supports using the following syntax:
+# Supports using the following syntax (this is commented out):
 #include "/var/lib/nftables/rules/additional-rules"
 
 table inet filter {

@@ -14,7 +14,7 @@ LOCAL="${LOCAL:-no}"
 # When specified, this will mount an NFS directory specified. When run in local
 # mode this will be used to source installation files, otherwise it'll be used
 # to cache installation files.
-NFS_SOURCE="10.64.0.215"
+NFS_SOURCE="192.168.122.1"
 
 # When provided the install will configure and attempt to source compiled
 # packages from the following location. This can drastically speed up the
@@ -42,7 +42,7 @@ CIPHER="aes-xts-plain64"
 HASH="sha512"
 KEY_SIZE="512"
 
-HOST_NAME="unprovisioned-base-image.stelfox.net"
+HOST_NAME="looming-spring-waterfall.0x378.net"
 
 ADMIN_NAME="Sam Stelfox"
 ADMIN_USER="sstelfox"

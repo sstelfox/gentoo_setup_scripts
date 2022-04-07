@@ -5,6 +5,8 @@ set -o errtrace
 set -o pipefail
 set -o nounset
 
+INTERFACE="virbr0"
+
 function error_handler() {
   echo "Error occurred in ${3} executing line ${1} with status code ${2}"
   echo "The pipe status values were: ${4}"
@@ -84,7 +86,7 @@ if [ ! -f "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" ];
   popd &> /dev/null
 fi
 
-if !ip link show dev br0 &> /dev/null; then
+if !ip link show dev ${INTERFACE} &> /dev/null; then
   echo "Could not find expected bridge for guest networking."
   exit 1
 fi
@@ -116,7 +118,7 @@ virt-install \
   --os-type linux --os-variant archlinux \
   --graphics none \
   --memballoon virtio \
-  --network "bridge=br0" \
+  --network "bridge=${INTERFACE}" \
   --boot "uefi,menu=on,useserial=on" \
   --console "pty,target_type=virtio" --serial pty \
   --cdrom "/var/lib/libvirt/images/archlinux-${CURRENT_ARCH_DATE}-x86_64.iso" \
