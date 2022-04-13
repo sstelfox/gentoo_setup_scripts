@@ -21,7 +21,7 @@ compatibility_level = 2
 
 shlib_directory = /usr/lib64/postfix/${mail_version}
 
-inet_interfaces = localhost
+inet_interfaces = loopback-only
 mynetworks = 127.0.0.1/8
 
 # TODO: Figure out how to make this directory work with mailx or the like
